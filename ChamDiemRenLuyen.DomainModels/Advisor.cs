@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ChamDiemRenLuyen.DomainModels
+{
+    [Table("Advisor")]
+    public class Advisor
+    {
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime StartYear { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime EndYear { get; set; }
+        //
+        [ForeignKey("LecturerId")]
+        public string LecturerId { get; set; }
+        [ForeignKey("GradeId")]
+        public int GradeId { get; set; }
+        //
+        public Lecturer Lecturer { get; set; }
+        public Grade Grade { get; set; }
+    }
+}
