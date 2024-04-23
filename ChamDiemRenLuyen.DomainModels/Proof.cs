@@ -20,7 +20,7 @@ namespace ChamDiemRenLuyen.DomainModels
         public long FileSizeByte { get; set; }
 
         //
-        public ICollection<TrainingContentProof> TrainingContentProofs { get; set; }
-        public ICollection<TraniningDetailProof> TraniningDetailProofs { get; set; }
+        public TrainingContentProof TrainingContentProofs { get; set; }
+        public TraniningDetailProof TraniningDetailProofs { get; set; }
     }
 }

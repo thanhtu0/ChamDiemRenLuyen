@@ -275,7 +275,17 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetailId"), 1L, 1);
 
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("DetailId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("ProcessDetail");
                 });
@@ -334,15 +344,62 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScoreId"), 1L, 1);
 
-                    b.Property<DateTime>("ScoreDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ScoreValue")
+                    b.Property<int>("AcademicYearId")
                         .HasColumnType("int");
+
+                    b.Property<int>("EvalutionFormId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ScoreDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ScoringProcessProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SemesterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ScoreId");
 
+                    b.HasIndex("AcademicYearId");
+
+                    b.HasIndex("EvalutionFormId");
+
+                    b.HasIndex("ScoreDetailId");
+
+                    b.HasIndex("ScoringProcessProcessId");
+
+                    b.HasIndex("SemesterId");
+
+                    b.HasIndex("StudentId");
+
                     b.ToTable("Score");
+                });
+
+            modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.ScoreDetail", b =>
+                {
+                    b.Property<int>("ScoreDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScoreDetailId"), 1L, 1);
+
+                    b.Property<DateTime>("ScoreDetailDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ScoreDetailValue")
+                        .HasColumnType("int");
+
+                    b.HasKey("ScoreDetailId");
+
+                    b.ToTable("ScoreDetail");
                 });
 
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.ScoringProcess", b =>
@@ -438,19 +495,6 @@ namespace ChamDiemRenLuyen.Data.Migrations
                     b.ToTable("StudentClassCommittee");
                 });
 
-            modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.StudentScore", b =>
-                {
-                    b.Property<int>("StudentScoreId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentScoreId"), 1L, 1);
-
-                    b.HasKey("StudentScoreId");
-
-                    b.ToTable("StudentScore");
-                });
-
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.TrainingContent", b =>
                 {
                     b.Property<int>("TrainingContentId")
@@ -500,7 +544,8 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
                     b.HasKey("TrainingContentId", "ProofId");
 
-                    b.HasIndex("ProofId");
+                    b.HasIndex("ProofId")
+                        .IsUnique();
 
                     b.ToTable("TrainingContentProof");
                 });
@@ -584,7 +629,8 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
                     b.HasKey("TrainingDetailId", "ProofId");
 
-                    b.HasIndex("ProofId");
+                    b.HasIndex("ProofId")
+                        .IsUnique();
 
                     b.ToTable("TraniningDetailProof");
                 });
@@ -691,6 +737,76 @@ namespace ChamDiemRenLuyen.Data.Migrations
                         .HasForeignKey("DepartmentId");
                 });
 
+            modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.ProcessDetail", b =>
+                {
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.ScoringProcess", "ScoringProcess")
+                        .WithMany("ProcessDetail")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.Role", "Role")
+                        .WithMany("ProcessDetail")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("ScoringProcess");
+                });
+
+            modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.Score", b =>
+                {
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.AcademicYear", "AcademicYear")
+                        .WithMany("Scores")
+                        .HasForeignKey("AcademicYearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.EvaluationForm", "EvaluationForm")
+                        .WithMany("Scores")
+                        .HasForeignKey("EvalutionFormId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.ScoreDetail", "ScoreDetail")
+                        .WithMany("Scores")
+                        .HasForeignKey("ScoreDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.ScoringProcess", "ScoringProcess")
+                        .WithMany("Scores")
+                        .HasForeignKey("ScoringProcessProcessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.Semester", "Semester")
+                        .WithMany("Scores")
+                        .HasForeignKey("SemesterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChamDiemRenLuyen.DomainModels.Student", "Student")
+                        .WithMany("Scores")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AcademicYear");
+
+                    b.Navigation("EvaluationForm");
+
+                    b.Navigation("ScoreDetail");
+
+                    b.Navigation("ScoringProcess");
+
+                    b.Navigation("Semester");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.Student", b =>
                 {
                     b.HasOne("ChamDiemRenLuyen.DomainModels.Grade", "Grade")
@@ -735,8 +851,8 @@ namespace ChamDiemRenLuyen.Data.Migrations
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.TrainingContentProof", b =>
                 {
                     b.HasOne("ChamDiemRenLuyen.DomainModels.Proof", "Proof")
-                        .WithMany("TrainingContentProofs")
-                        .HasForeignKey("ProofId")
+                        .WithOne("TrainingContentProofs")
+                        .HasForeignKey("ChamDiemRenLuyen.DomainModels.TrainingContentProof", "ProofId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -776,8 +892,8 @@ namespace ChamDiemRenLuyen.Data.Migrations
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.TraniningDetailProof", b =>
                 {
                     b.HasOne("ChamDiemRenLuyen.DomainModels.Proof", "Proof")
-                        .WithMany("TraniningDetailProofs")
-                        .HasForeignKey("ProofId")
+                        .WithOne("TraniningDetailProofs")
+                        .HasForeignKey("ChamDiemRenLuyen.DomainModels.TraniningDetailProof", "ProofId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -795,6 +911,8 @@ namespace ChamDiemRenLuyen.Data.Migrations
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.AcademicYear", b =>
                 {
                     b.Navigation("EvaluationForms");
+
+                    b.Navigation("Scores");
                 });
 
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.ClassCommittee", b =>
@@ -818,6 +936,8 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.EvaluationForm", b =>
                 {
+                    b.Navigation("Scores");
+
                     b.Navigation("TrainingDirectories");
                 });
 
@@ -842,23 +962,43 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.Proof", b =>
                 {
-                    b.Navigation("TrainingContentProofs");
+                    b.Navigation("TrainingContentProofs")
+                        .IsRequired();
 
-                    b.Navigation("TraniningDetailProofs");
+                    b.Navigation("TraniningDetailProofs")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.Role", b =>
                 {
                     b.Navigation("LecturerRoleAssignments");
+
+                    b.Navigation("ProcessDetail");
+                });
+
+            modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.ScoreDetail", b =>
+                {
+                    b.Navigation("Scores");
+                });
+
+            modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.ScoringProcess", b =>
+                {
+                    b.Navigation("ProcessDetail");
+
+                    b.Navigation("Scores");
                 });
 
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.Semester", b =>
                 {
                     b.Navigation("EvaluationForms");
+
+                    b.Navigation("Scores");
                 });
 
             modelBuilder.Entity("ChamDiemRenLuyen.DomainModels.Student", b =>
                 {
+                    b.Navigation("Scores");
+
                     b.Navigation("StudentClassCommittees");
                 });
 

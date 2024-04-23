@@ -17,5 +17,6 @@ namespace ChamDiemRenLuyen.DomainModels
         public string SemesterName { get; set; }
         //
         public ICollection<EvaluationForm> EvaluationForms { get; set; }
+        public ICollection<Score> Scores { get; set; }
     }
 }

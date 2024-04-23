@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace ChamDiemRenLuyen.DomainModels
 {
-    [Table("AcademicYear")]
-    public class AcademicYear
+    [Table("ScoreDetail")]
+    public class ScoreDetail
     {
-        [Key]   
-        public int AcademicYearId { get; set; }
+        [Key]
+        public int ScoreDetailId { get; set; }
         [Required]
-        public string AcademicYearName { get; set; }
-        //
-        public ICollection<EvaluationForm> EvaluationForms { get; set; }
+        public int ScoreDetailValue { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime ScoreDetailDate { get; set; }
         public ICollection<Score> Scores { get; set; }
     }
 }

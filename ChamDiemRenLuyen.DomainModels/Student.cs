@@ -28,5 +28,6 @@ namespace ChamDiemRenLuyen.DomainModels
         public virtual Grade Grade { get; set; }
         //
         public virtual ICollection<StudentClassCommittee> StudentClassCommittees { get; set; }
+        public ICollection<Score> Scores { get; set; }
     }
 }

@@ -18,6 +18,8 @@ namespace ChamDiemRenLuyen.DomainModels
         public string RoleName { get; set; }
 
         //
+        //
         public ICollection<LecturerRoleAssignment> LecturerRoleAssignments { get; set; }
+        public virtual ICollection<ProcessDetail> ProcessDetail { get; set; }    
     }
 }

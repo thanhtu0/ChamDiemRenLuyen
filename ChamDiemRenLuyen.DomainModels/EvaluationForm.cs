@@ -24,9 +24,11 @@ namespace ChamDiemRenLuyen.DomainModels
         // 
         public int AcademicYearId { get; set; }
         public AcademicYear AcademicYear { get; set; }
+
         public int SemesterId { get; set; }
         public Semester Semester { get; set; }
         //
         public ICollection<TrainingDirectory> TrainingDirectories { get; set; }
+        public ICollection<Score> Scores { get; set; }
     }
 }

@@ -13,9 +13,30 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int ScoreId { get; set; }
-        [Required]
-        public int ScoreValue { get; set; }
-        [DataType(DataType.DateTime)]
-        public DateTime ScoreDate { get; set; }
+        //
+        [ForeignKey("StudentId")]
+        public string StudentId { get; set; }
+        public virtual Student Student { get; set; }
+
+        [ForeignKey("ScoringProcessId")]
+        public int ProcessId { get; set; }
+        public virtual ScoringProcess ScoringProcess { get; set; }
+
+        [ForeignKey("ScoreDetailId")]
+        public int ScoreDetailId {  get; set; }
+        public virtual ScoreDetail ScoreDetail { get; set; }
+
+        [ForeignKey("EvaluationFormId")]
+        public int EvalutionFormId { get; set; }
+        public virtual EvaluationForm EvaluationForm { get; set; }
+
+        [ForeignKey("AcademicYearId")]
+        public int AcademicYearId { get; set; }
+        public AcademicYear AcademicYear { get; set; }
+
+        [ForeignKey("SemesterId")]
+        public int SemesterId { get; set; }
+        public Semester Semester { get; set; }
+
     }
 }

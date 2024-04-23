@@ -17,5 +17,7 @@ namespace ChamDiemRenLuyen.DomainModels
         [MaxLength(50)]
         public string ProcessName { get; set; }
         //
+        public virtual ICollection<ProcessDetail> ProcessDetail { get; set; }
+        public ICollection<Score> Scores { get; set; }
     }
 }
