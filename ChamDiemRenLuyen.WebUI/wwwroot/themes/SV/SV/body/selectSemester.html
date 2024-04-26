@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Chọn học kỳ, năm học</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="card-header">
+            <div class="fw-bold display-6">Chọn học kỳ tác nghiệp</div>
+        </div>
+        <div class="card-body">
+            <div class="row alert alert-warning alert-dismissible fade show" role="alert">
+                <ul>
+                    <span class="fw-bold">Lưu ý:</span>
+                    <li class="ms-5">Bạn phải chọn đúng học kỳ trước khi thực hiện đánh giá rèn luyện.</li>
+                    <li class="ms-5">
+                        Đánh dấu chọn vào học kỳ tương ứng, 
+                        nhấn nút Tác nghiệp với học kỳ đã chọn 
+                        để thiết lập học kỳ tác nghiệp 
+                        (nhấn nút Quay lại nếu không muốn thay đổi học kỳ và ngành học tác nghiệp).
+                    </li>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <h4>Ngành học: <b>Kỹ thuật phần mềm (ĐT)</b></h4>
+            <div class="row">
+                <table class="table table-hover">
+                    <thead>
+                        <th></th>
+                        <th>Học kỳ</th>
+                        <th>Năm học</th>
+                        <th>Khóa học</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"><input type="radio" class="checkBox" name="KQ_HOC_TAP" checked></td>
+                            <td>Học kỳ 2:</td>
+                            <td>Năm học 2023-2024</td>
+                            <td>Khóa 44 (2020-2024)</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="radio" class="checkBox" name="KQ_HOC_TAP"></td>
+                            <td>Học kỳ 1:</td>
+                            <td>Năm học 2023-2024</td>
+                            <td>Khóa 44 (2020-2024)</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="radio" class="checkBox" name="KQ_HOC_TAP"></td>
+                            <td>Học kỳ 2:</td>
+                            <td>Năm học 2022-2023</td>
+                            <td>Khóa 44 (2020-2024)</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="radio" class="checkBox" name="KQ_HOC_TAP"></td>
+                            <td>Học kỳ 1:</td>
+                            <td>Năm học 2022-2023</td>
+                            <td>Khóa 44 (2020-2024)</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="radio" class="checkBox" name="KQ_HOC_TAP"></td>
+                            <td>Học kỳ 2:</td>
+                            <td>Năm học 2022-2021</td>
+                            <td>Khóa 44 (2020-2024)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row justify-content-center justify-content-lg-end">
+                <div class="col-auto">
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary btn-icon-split mx-1">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <span class="text">Tác nghiệp với Học kỳ đã chọn</span>
+                        </a>
+                        <a href="#" class="btn btn-secondary btn-icon-split mx-1">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">Quay lại</span>
+                        </a>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -16,11 +16,26 @@ namespace ChamDiemRenLuyen.DomainModels
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(20)]
         public string LastName { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [MaxLength(50)]
         public string Password { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
         public DateTime DateOfBirth { get; set; }
+
+        [Required]
         public bool Gender { get; set; }
+
         public string Province { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         //
         [ForeignKey("GradeId")]

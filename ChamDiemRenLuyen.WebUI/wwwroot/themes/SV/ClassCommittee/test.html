@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Evaluation</title>
+    <style>
+        /* CSS styling for the list of students */
+        .student-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .student-list li {
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        .student-list li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Your existing code for student evaluation -->
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Replace the dropdown with a list of classes -->
+                <ul class="class-list">
+                    <li class="class-item" data-class="ClassA">Class A</li>
+                    <li class="class-item" data-class="ClassB">Class B</li>
+                    <!-- Add more classes here -->
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <!-- Display the selected student's ID and name -->
+                <div class="student-info">
+                    <p><strong>Student ID:</strong> <span id="student-id"></span></p>
+                    <p><strong>Student Name:</strong> <span id="student-name"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- List of students in the selected class -->
+                <ul class="student-list">
+                    <!-- Student list will be dynamically populated here -->
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <!-- Text area for student evaluation -->
+                <textarea id="student-evaluation" rows="5" cols="50"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // List of classes
+            const classList = document.querySelectorAll('.class-item');
+
+            // Event listener for class selection
+            classList.forEach(function(classItem) {
+                classItem.addEventListener('click', function() {
+                    // Remove active class from all items
+                    classList.forEach(function(item) {
+                        item.classList.remove('active');
+                    });
+                    // Add active class to the clicked item
+                    classItem.classList.add('active');
+                    // Call a function to populate student list based on the selected class
+                    populateStudentList(classItem.dataset.class);
+                });
+            });
+
+            // Function to populate student list based on the selected class
+            function populateStudentList(className) {
+                // Example: Replace this with your logic to fetch student data based on class
+                const students = [
+                    { id: '001', name: 'John Doe' },
+                    { id: '002', name: 'Jane Smith' },
+                    // Add more student objects here
+                ];
+
+                const studentList = document.querySelector('.student-list');
+                studentList.innerHTML = ''; // Clear previous list
+
+                students.forEach(function(student) {
+                    const li = document.createElement('li');
+                    li.textContent = `${student.id} - ${student.name}`;
+                    li.setAttribute('data-id', student.id);
+                    li.setAttribute('data-name', student.name);
+                    li.addEventListener('click', function() {
+                        // Update student info and evaluation text area when a student is clicked
+                        document.getElementById('student-id').textContent = student.id;
+                        document.getElementById('student-name').textContent = student.name;
+                        document.getElementById('student-evaluation').value = ''; // Clear previous evaluation
+                    });
+                    studentList.appendChild(li);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

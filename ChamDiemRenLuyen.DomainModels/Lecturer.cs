@@ -8,12 +8,6 @@ using System.Threading.Tasks;
 
 namespace ChamDiemRenLuyen.DomainModels
 {
-    public enum GenderType
-    {
-        Male,
-        Female
-    }
-
     [Table("Lecturer")]
     public class Lecturer
     {
@@ -30,6 +24,7 @@ namespace ChamDiemRenLuyen.DomainModels
 
         [Required]
         [DataType(DataType.Password)]
+        [MaxLength(50)]
         public string Password { get; set; }
 
         [Required]
@@ -37,7 +32,7 @@ namespace ChamDiemRenLuyen.DomainModels
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        public GenderType Gender { get; set; }
+        public bool Gender { get; set; }
 
         public string Province { get; set; }
 
