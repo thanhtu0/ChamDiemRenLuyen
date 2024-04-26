@@ -13,13 +13,14 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int ProofId { get; set; }
+
         [Required]
         public string FileName { get; set; }
         public string FilePath { get; set; }
         public string FileType { get; set; }
         public long FileSizeByte { get; set; }
 
-        //
+        //Relationship
         public TrainingContentProof TrainingContentProofs { get; set; }
         public TraniningDetailProof TraniningDetailProofs { get; set; }
     }

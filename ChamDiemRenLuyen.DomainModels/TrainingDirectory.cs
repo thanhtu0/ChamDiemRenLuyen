@@ -19,7 +19,7 @@ namespace ChamDiemRenLuyen.DomainModels
         public int MaxScore {  get; set; }
         public string Location {  get; set; }
 
-        //
+        //Relationship
         public ICollection<TrainingContent> TrainingContents { get; set; }
 
         public int EvaluationFormId { get; set; }

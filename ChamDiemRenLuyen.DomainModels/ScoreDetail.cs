@@ -13,8 +13,10 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int ScoreDetailId { get; set; }
+
         [Required]
         public int ScoreDetailValue { get; set; }
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime ScoreDetailDate { get; set; }
         public ICollection<Score> Scores { get; set; }

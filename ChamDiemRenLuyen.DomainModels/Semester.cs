@@ -13,9 +13,11 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int SemesterId { get; set; }
+
         [Required]
+        [MaxLength(10)]
         public string SemesterName { get; set; }
-        //
+        //Relationship
         public ICollection<EvaluationForm> EvaluationForms { get; set; }
         public ICollection<Score> Scores { get; set; }
     }

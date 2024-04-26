@@ -16,14 +16,13 @@ namespace ChamDiemRenLuyen.DomainModels
         [DataType(DataType.DateTime)]
         public DateTime LastUpdatedAt { get; set; }
 
-        //
+        //Relationship
         [ForeignKey("TrainingContentId")]
         public int TrainingContentId { get; set; }
 
         [ForeignKey("ProofId")]
         public int ProofId { get; set; }
 
-        // Navigation properties
         public TrainingContent TrainingContent  { get; set; }
         public Proof Proof { get; set; }
     }

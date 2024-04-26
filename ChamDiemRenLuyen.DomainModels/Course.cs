@@ -13,14 +13,20 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int CourseId { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string CourseName { get; set; }
+
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime StartYear { get; set; }
+
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime EndYear { get; set; }
-        //
+
+        //Relationship
         public virtual ICollection<Grade> Grades { get; set; }
     }
 }

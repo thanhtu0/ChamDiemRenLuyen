@@ -14,8 +14,11 @@ namespace ChamDiemRenLuyen.DomainModels
         [Key]   
         public int AcademicYearId { get; set; }
         [Required]
+        [StringLength(50)]
         public string AcademicYearName { get; set; }
-        //
+
+
+        // Relationship
         public ICollection<EvaluationForm> EvaluationForms { get; set; }
         public ICollection<Score> Scores { get; set; }
     }

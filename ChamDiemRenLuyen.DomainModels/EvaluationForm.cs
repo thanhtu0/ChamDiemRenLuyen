@@ -13,21 +13,26 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int EvalutionFormId { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string EvaluationFormName { get; set; }
+
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime DateStarted { get; set; }
+
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime DateFinished { get; set; }
 
-        // 
-        public int AcademicYearId { get; set; }
-        public AcademicYear AcademicYear { get; set; }
+        // Relationship
+        public int AcademicYearId { get; set; } // Foreign key referencing AcademicYearId in the associated table
+        public AcademicYear AcademicYear { get; set; } // Navigation property representing the associated AcademicYear
 
-        public int SemesterId { get; set; }
-        public Semester Semester { get; set; }
-        //
+        public int SemesterId { get; set; } // Foreign key referencing SemesterId in the associated table
+        public Semester Semester { get; set; } // Navigation property representing the associated Semester
+
         public ICollection<TrainingDirectory> TrainingDirectories { get; set; }
         public ICollection<Score> Scores { get; set; }
     }

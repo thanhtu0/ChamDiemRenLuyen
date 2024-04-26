@@ -17,7 +17,7 @@ namespace ChamDiemRenLuyen.DomainModels
         [MaxLength(50)]
         public string ClassCommitteeName { get; set; }
 
-        //
+        //Relationship
         public virtual ICollection<StudentClassCommittee> StudentClassCommittees { get; set; }
     }
 }

@@ -13,11 +13,12 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int MajorId { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string MajorName { get; set; }
 
-        //
+        //Relationship
         public virtual ICollection<Grade> Grades { get; set; }
     }
 }

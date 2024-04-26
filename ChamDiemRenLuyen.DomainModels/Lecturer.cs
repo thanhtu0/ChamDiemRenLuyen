@@ -8,28 +8,47 @@ using System.Threading.Tasks;
 
 namespace ChamDiemRenLuyen.DomainModels
 {
+    public enum GenderType
+    {
+        Male,
+        Female
+    }
+
     [Table("Lecturer")]
     public class Lecturer
     {
         [Key]
         public string LecturerId { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(20)]
         public string LastName { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
-        public bool Gender { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime DateOfBirth { get; set; }
+
+        [Required]
+        public GenderType Gender { get; set; }
+
         public string Province { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        //
+        //Relationship 
         public int DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
-
-        //
         public ICollection<LecturerRoleAssignment> LecturerRoleAssignments { get; set; }
-        //
         public ICollection<Advisor> Advisors { get; set; }
     }
 }

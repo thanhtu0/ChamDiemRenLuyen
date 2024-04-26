@@ -14,14 +14,18 @@ namespace ChamDiemRenLuyen.DomainModels
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime StartYear { get; set; }
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime EndYear { get; set; }
-        //
+
+        // Foreign key referencing LecturerId in the associated table
         [ForeignKey("LecturerId")]
         public string LecturerId { get; set; }
+        // Foreign key referencing GradeId in the associated table
         [ForeignKey("GradeId")]
         public int GradeId { get; set; }
-        //
+
+        // Relationship 
         public Lecturer Lecturer { get; set; }
         public Grade Grade { get; set; }
     }

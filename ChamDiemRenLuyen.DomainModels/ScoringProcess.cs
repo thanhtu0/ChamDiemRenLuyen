@@ -13,10 +13,12 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int ProcessId { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string ProcessName { get; set; }
-        //
+
+        //Relationship
         public virtual ICollection<ProcessDetail> ProcessDetail { get; set; }
         public ICollection<Score> Scores { get; set; }
     }

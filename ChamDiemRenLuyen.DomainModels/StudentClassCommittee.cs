@@ -11,7 +11,7 @@ namespace ChamDiemRenLuyen.DomainModels
     [Table("StudentClassCommittee")]
     public class StudentClassCommittee
     {
-        // 
+        // Foreign key referencing
         [ForeignKey("StudentId")]
         public string StudentId { get; set; }
 

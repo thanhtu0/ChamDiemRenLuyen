@@ -4,6 +4,7 @@ using ChamDiemRenLuyen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChamDiemRenLuyen.Data.Migrations
 {
     [DbContext(typeof(TrainingScroingDBContext))]
-    partial class TrainingScroingDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240426065549_AddAttributebasedMapping")]
+    partial class AddAttributebasedMapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

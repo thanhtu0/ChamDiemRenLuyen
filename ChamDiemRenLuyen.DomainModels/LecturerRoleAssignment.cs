@@ -11,14 +11,13 @@ namespace ChamDiemRenLuyen.DomainModels
     [Table("LecturerRoleAssignment")]
     public class LecturerRoleAssignment
     {
-        // 
+        // Relationship
         [ForeignKey("LecturerId")]
         public string LecturerId { get; set; }
 
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }
 
-        // Navigation properties
         public Lecturer Lecturer { get; set; }
         public Role Role { get; set; }
     }

@@ -4,6 +4,7 @@ using ChamDiemRenLuyen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChamDiemRenLuyen.Data.Migrations
 {
     [DbContext(typeof(TrainingScroingDBContext))]
-    partial class TrainingScroingDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240423045828_AddBirthDateForStudentAndLecturerTable")]
+    partial class AddBirthDateForStudentAndLecturerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +34,7 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
                     b.Property<string>("AcademicYearName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AcademicYearId");
 
@@ -211,13 +212,12 @@ namespace ChamDiemRenLuyen.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -435,8 +435,7 @@ namespace ChamDiemRenLuyen.Data.Migrations
 
                     b.Property<string>("SemesterName")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SemesterId");
 

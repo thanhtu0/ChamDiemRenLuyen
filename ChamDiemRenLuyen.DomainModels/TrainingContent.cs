@@ -13,6 +13,7 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int TrainingContentId { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string TrainingContentName { get; set; }
@@ -20,10 +21,9 @@ namespace ChamDiemRenLuyen.DomainModels
         public int MaxScore { get; set; }
         public string Location { get; set; }
 
-        //
+        //Relationship
         public ICollection<TrainingContentProof> TrainingContentProofs { get; set; }
         public ICollection<TrainingDetail> TrainingDetails { get; set; }
-        //
         public int TrainingDirectoryId { get; set; }
         public TrainingDirectory TrainingDirectory { get; set; }
     }

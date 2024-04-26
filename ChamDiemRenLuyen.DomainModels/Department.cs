@@ -13,11 +13,12 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int DepartmentId {  get; set; }
+
         [Required]
         [MaxLength(50)]
         public string DepartmentName { get; set; }
 
-        //Realationship one to many Major
+        //Realationship 
         public ICollection<Major> Majors { get; set; }
         public ICollection<Lecturer> Lecturers { get; set; }
         public virtual ICollection<Grade> Grades { get; set; }

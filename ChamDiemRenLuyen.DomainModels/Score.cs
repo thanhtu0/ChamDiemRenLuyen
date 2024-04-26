@@ -13,7 +13,8 @@ namespace ChamDiemRenLuyen.DomainModels
     {
         [Key]
         public int ScoreId { get; set; }
-        //
+
+        //Relationship
         [ForeignKey("StudentId")]
         public string StudentId { get; set; }
         public virtual Student Student { get; set; }
