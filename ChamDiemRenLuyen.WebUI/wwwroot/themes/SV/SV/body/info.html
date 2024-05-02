@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <section id="header"></section>
+    <section id="navbar"></section>
+    <section id="semester"></section>
+    <div class="container-fluid">
+        <div class="card-header">
+            <div class="card-title fw-bold text-uppercase">Quản lý thông tin cá nhân</div>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Nhắc nhở:</strong> Sinh viên kiểm tra thông tin cá nhân nếu có sai xót hãy tiến hành chỉnh sửa.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <fieldset>
+                <legend class="text-secondary row align-items-center">
+                    <div class="col-8">
+                        <h4 class="mb-0">Thông tin cá nhân</h4>
+                    </div>
+                    <div class="col-4 text-end">
+                        <a href="#" class="text-decoration-none">
+                            <i class="fas fa-edit" style="font-size: 20px;"></i>
+                        </a>
+                    </div>
+                </legend>                
+                <hr>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label for="studentID" class="col-sm-4 col-form-label text-end fw-bold">Mã sinh viên:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext">20T1080055</p>
+                            </div>
+                        </div>
+                
+                        <div class="mb-3 row">
+                            <label for="fullName" class="col-sm-4 col-form-label text-end fw-bold">Họ và tên:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext">Lưu Lê Thanh Tú</p>
+                            </div>
+                        </div>
+                
+                        <div class="mb-3 row">
+                            <label for="gender" class="col-sm-4 col-form-label text-end fw-bold">Giới tính:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext">Nam</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <div class="text-end" style="width: 275px; height:145px; position:relative; z-index:999; padding-left:10px; background:#ffffff;">
+                                <label for="filePhoto" style="cursor:pointer" title="Click để thay đổi ảnh">
+                                    <img id="studentPhoto" src="/Account/Photo" class="img-thumbnail" style="width:125px; height:140px;" alt="">
+                                </label>
+                                <form id="formUploadPhoto">
+                                    <input name="__RequestVerificationToken" type="hidden" value="lvxpEp0wJcut83KG41zsNFWYxUral54t4gfydK6gdaWeYJobWcOSF_4SU_BRY5d9GaCeXtSZLoArHRhOSPujxXfpsCCLAE86V8cBaEM4O4lAFqEZmvpDooDGYh0VnaYdkR9lEmTku6kB3kSHOEjvPff8BLqXuP0QISwDwv8-DMQMFT42sxDEUmSxf9i68cZmTfZS5AAyWrwbiXPDw5aHh_nf2fo1">
+                                    <input type="file" name="filePhoto" id="filePhoto" accept="image/x-png,image/gif,image/jpeg" style="position:absolute;left:0;top:0;opacity:0;">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Ngày sinh:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">01/01/2000</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Nơi sinh:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">Bệnh viện Trung Ương Huế</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Quốc tịch:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">Việt Nam</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Dân tộc:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">Kinh</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Số CCCD:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">046202003615</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Ngày cấp:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">02/07/2021</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Số điện thoại:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">0932547683</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Email:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext">thanhtuluu0301@gmail.com</p>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend class="text-secondary row align-items-center">
+                    <div class="col-8">
+                        <h4 class="mb-0">Thông tin về quê quán, hộ khẩu thường trú</h4>
+                    </div>
+                    <div class="col-4 text-end">
+                        <a href="#" class="text-decoration-none">
+                            <i class="fas fa-edit" style="font-size: 20px;"></i>
+                        </a>
+                    </div>
+                </legend>                
+                <hr>
+                
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end"><b>Quê Quán:</b></label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">Điện Bàn, Quảng Nam</p>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end"><b>Hộ khẩu thường trú:</b></label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">304 Bạch Đằng, Phường Gia Hội, Thành phố Huế, Tỉnh Thừa Thiên Huế, Việt Nam</p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        fetch('/SV/SV/header.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('header').innerHTML = data);
+        fetch('/SV/SV/navbar.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('navbar').innerHTML = data);
+        fetch('/SV/SV/semester.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('semester').innerHTML = data);
+        fetch('/SV/SV/footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer').innerHTML = data);
+    </script>
+</body>
+</html>

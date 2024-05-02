@@ -7,13 +7,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
         <style>
-            table, th, td {
-                border: 1px solid gray;
-            }
-            th, td {
-                padding: 8px;
-                border: 1px solid gray;
-            }
             th:nth-child(1),
             th:nth-child(2),
             td:nth-child(1),
@@ -21,8 +14,8 @@
                 text-align: center;
             }
 
-            th:nth-child(4),
-            td:nth-child(4) {
+            th:nth-child(5),
+            td:nth-child(5) {
                 text-align: center;
             }
 
@@ -38,6 +31,10 @@
 
             th:nth-child(8),
             td:nth-child(8) {
+                text-align: center;
+            }
+
+            td:nth-child(9) {
                 text-align: center;
             }
                     
@@ -72,63 +69,13 @@
             } 
 
             .checkBox {
-                transform: scale(1.5); 
+                transform: scale(1); 
             }
 
             .form-control-sm {
                 transform: scale(1); 
                 text-align: center; 
                 margin: auto;
-            }
-
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen với độ mờ */
-                z-index: 999; /* Lớp overlay cao hơn */
-                display: none; /* Ẩn ban đầu */
-            }
-
-            .modal {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 1000; /* Lớp modal cao hơn */
-                display: none; /* Ẩn ban đầu */
-            }
-
-            .modal img {
-                max-width: 90%;
-                max-height: 90%;
-            }
-
-            .btn-warning {
-                position: relative;
-                padding: 11px 16px;
-                font-size: 15px;
-                line-height: 1.5;
-                border-radius: 3px;
-                color: #fff;
-                border: 0;
-                overflow: hidden;
-                transition: 0.2s;
-            }
-
-            .btn-warning input[type="file"] {
-                cursor: pointer;
-                position: absolute;
-                left: 0%;
-                top: 0%;
-                transform: scale(5);
-                opacity: 0;
-            }
-
-            .btn-warning:hover {
-                background-color: #d9a400;
             }
 
             a {
@@ -138,27 +85,32 @@
             .card-header {
                 text-transform: uppercase;
             }
+
+            .footer {
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+            }
         </style>
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Thông báo cảnh báo: Điểm GVCV của sinh viên chưa được cập nhật. Vui lòng cập nhật để hoàn thiện đánh giá rèn luyện.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+        <section id="header"></section>
+        <section id="navbar"></section>
+        <section id="semester"></section>
 
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-3">
                     <div class="card">
                         <h4 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
                             <i class="fas fa-regular fa-address-book"></i>
-                            <span>Danh sách lớp</span>
+                            <span>Danh sách lớp thuộc Khoa</span>
                         </h4>
                         <div class="card-body" style="color: #072b4a;">
                             <h6>Lớp sinh hoạt: Kỹ thuật phần mềm (đặc thù) </h6>
                             <ul class="list-group mt-3">
                                 <a href="#"><li class="list-group-item">CNNK_44A - Công nghệ thông tin K44A</li></a>
-                                <a href="#"><li class="list-group-item">KTPM_K44 - Kỹ thuật phần mềm K44</li></a>
+                                <a href="#"><li class="list-group-item active">KTPM_K44 - Kỹ thuật phần mềm K44</li></a>
                                 <a href="#"><li class="list-group-item">KTPM_K43 - Kỹ thuật phần mềm K43</li></a>
                                 <a href="#"><li class="list-group-item">CNNK_44B - Công nghệ thông tin K44B</li></a>
                                 <a href="#"><li class="list-group-item">CNNK_44C - Công nghệ thông tin K44C</li></a>
@@ -171,7 +123,7 @@
                     <div class="card">
                         <h4 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
                             <i class="fas fa-solid fa-pen"></i>
-                            <span>Danh sách sinh viên kèm đánh giá rèn luyện của Ban cán sự</span>
+                            <span>Danh sách sinh viên kèm đánh giá rèn luyện của GVCV</span>
                         </h4>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -186,6 +138,8 @@
                                             <th>Điểm SV</th>
                                             <th>Điểm BCS</th>
                                             <th>Điểm GVCV</th>
+                                            <th>Điểm Hội đồng Khoa</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -197,8 +151,9 @@
                                             <td>Đã nạp</td>
                                             <td>99</td>
                                             <td class="diem-BCS">99</td>
-                                            <td class="diem-GVCV"></td>
-                                            <td><a href="#" class="text-info">Xem chi tiết</a></td>
+                                            <td class="diem-GVCV">99</td>
+                                            <td class="diem-HDKHOA"></td>
+                                            <td><a href="./StudentPoint.html" class="text-info">Xem chi tiết</a></td>
                                         </tr>
                                         <tr>
                                             <th><input type="checkbox" class="checkBox"></th>
@@ -208,8 +163,9 @@
                                             <td>Đã nạp</td>
                                             <td>90</td>
                                             <td class="diem-BCS">90</td>
-                                            <td class="diem-GVCV"></td>
-                                            <td><a href="#" class="text-info">Xem chi tiết</a></td>
+                                            <td class="diem-GVCV">90</td>
+                                            <td class="diem-HDKHOA"></td>
+                                            <td><a href="./StudentPoint.html" class="text-info">Xem chi tiết</a></td>
                                         </tr>
                                     </tbody>                                
                                 </table>
@@ -239,6 +195,10 @@
             </div>
         </div>
 
+        <section id="footer"></section>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
         <script>
             document.getElementById('checkAll').addEventListener('change', function (event) {
                 var checkboxes = document.querySelectorAll('.checkBox');
@@ -248,17 +208,34 @@
             });
 
             document.getElementById('duyetBtn').addEventListener('click', function () {
-                var rows = document.querySelectorAll('tbody tr');
-                rows.forEach(function (row) {
-                    var checkbox = row.querySelector('.checkBox');
-                    var diemBCS = row.querySelector('.diem-BCS');
-                    var diemGVCV = row.querySelector('.diem-GVCV');
-                    
-                    if (checkbox.checked) {
-                        diemGVCV.textContent = diemBCS.textContent;
-                    }
-                });
+            var rows = document.querySelectorAll('tbody tr');
+            rows.forEach(function (row) {
+                var checkbox = row.querySelector('.checkBox');
+                var diemBCS = row.querySelector('.diem-BCS');
+                var diemGVCV = row.querySelector('.diem-GVCV');
+                var diemHDKhoa = row.querySelector('.diem-HDKHOA'); // Lấy điểm Hội đồng Khoa
+
+                if (checkbox.checked) {
+                    diemGVCV.textContent = diemBCS.textContent;
+                    diemHDKhoa.textContent = diemGVCV.textContent; // Cập nhật điểm Hội đồng Khoa thành điểm GVCV
+                }
             });
+            });
+        </script>
+
+        <script>
+            fetch('/Teacher/header.html')
+                .then(response => response.text())
+                .then(data => document.getElementById('header').innerHTML = data);
+            fetch('/Teacher/navbar.html')
+                .then(response => response.text())
+                .then(data => document.getElementById('navbar').innerHTML = data);
+            fetch('/Teacher/semester.html')
+                .then(response => response.text())
+                .then(data => document.getElementById('semester').innerHTML = data);
+            fetch('/Teacher/footer.html')
+                .then(response => response.text())
+                .then(data => document.getElementById('footer').innerHTML = data);
         </script>
     </body>
     </html>
