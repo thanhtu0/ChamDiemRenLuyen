@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
-    [Table("Advisor")]
+    [Table("Advisors")]
     public class Advisor
     {
         [Required]

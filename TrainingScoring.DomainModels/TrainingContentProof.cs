@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
-    [Table("TrainingContentProof")]
+    [Table("TrainingContentProofs")]
     public class TrainingContentProof
     {
         [DataType(DataType.DateTime)]

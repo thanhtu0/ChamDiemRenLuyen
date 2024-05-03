@@ -17,6 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingScoring.Data", "Tra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingScoring.DomainModels", "TrainingScoring.DomainModels\TrainingScoring.DomainModels.csproj", "{3B0996F4-5864-4626-A18A-BFEAB8BBBFFD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{64FE2EFB-17A4-4CC8-85D6-AD735B481627}"
+	ProjectSection(SolutionItems) = preProject
+		Documents\Database_Diagram.xlsx = Documents\Database_Diagram.xlsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

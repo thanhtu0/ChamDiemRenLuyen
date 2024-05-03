@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
-    [Table("StudentClassCommittee")]
+    [Table("StudentClassCommittees")]
     public class StudentClassCommittee
     {
         // Foreign key referencing

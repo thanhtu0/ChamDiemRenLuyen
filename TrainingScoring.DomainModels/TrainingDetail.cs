@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
-    [Table("TrainingDetail")]
+    [Table("TrainingDetails")]
     public class TrainingDetail
     {
         [Key]
@@ -21,7 +21,7 @@ namespace TrainingScoring.DomainModels
         public string Location { get; set; }
 
         //Relationship
-        public ICollection<TraniningDetailProof> TraniningDetailProofs { get; set; }
+        public ICollection<TrainingDetailProof> TraniningDetailProofs { get; set; }
         public int TrainingContentId { get; set; }
         public TrainingContent TrainingContent { get; set; }
     }

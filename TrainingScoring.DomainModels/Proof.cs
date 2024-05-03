@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
-    [Table("Proof")]
+    [Table("Proofs")]
     public class Proof
     {
         [Key]
@@ -22,6 +22,6 @@ namespace TrainingScoring.DomainModels
 
         //Relationship
         public TrainingContentProof TrainingContentProofs { get; set; }
-        public TraniningDetailProof TraniningDetailProofs { get; set; }
+        public TrainingDetailProof TraniningDetailProofs { get; set; }
     }
 }

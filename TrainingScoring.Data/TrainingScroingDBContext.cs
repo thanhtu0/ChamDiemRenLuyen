@@ -38,7 +38,7 @@ namespace TrainingScoring.Data
         public DbSet<TrainingDetail> TrainingDetails { get; set; }
         public DbSet<Proof> Proofs { get; set; }
         public DbSet<TrainingContentProof> TrainingContentProofs { get; set; }
-        public DbSet<TraniningDetailProof> TraniningDetailProofs { get; set; }
+        public DbSet<TrainingDetailProof> TraniningDetailProofs { get; set; }
         public DbSet<Advisor> Advisors { get; set; }
         #endregion
 
@@ -59,7 +59,7 @@ namespace TrainingScoring.Data
                 .HasKey(tcp => new { tcp.TrainingContentId, tcp.ProofId });
 
             // Define composite primary key for TraniningDetailProof entity
-            modelBuilder.Entity<TraniningDetailProof>()
+            modelBuilder.Entity<TrainingDetailProof>()
                 .HasKey(tdp => new { tdp.TrainingDetailId, tdp.ProofId });
 
             // Define composite primary key for Advisor entity

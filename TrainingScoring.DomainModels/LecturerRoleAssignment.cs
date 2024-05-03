@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
-    [Table("LecturerRoleAssignment")]
+    [Table("LecturerRoleAssignments")]
     public class LecturerRoleAssignment
     {
         // Relationship

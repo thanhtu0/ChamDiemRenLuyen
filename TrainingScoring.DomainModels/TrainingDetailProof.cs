@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
-    [Table("TraniningDetailProof")]
-    public class TraniningDetailProof
+    [Table("TraniningDetailProofs")]
+    public class TrainingDetailProof
     {
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }

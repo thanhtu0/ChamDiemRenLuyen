@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingScoring.Data;
 
@@ -11,9 +12,10 @@ using TrainingScoring.Data;
 namespace TrainingScoring.Data.Migrations
 {
     [DbContext(typeof(TrainingScroingDBContext))]
-    partial class TrainingScroingDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240503132707_UpdateNameAllTables")]
+    partial class UpdateNameAllTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
