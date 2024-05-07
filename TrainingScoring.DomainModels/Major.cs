@@ -12,6 +12,9 @@ namespace TrainingScoring.DomainModels
     public class Major
     {
         [Key]
+        public int Id { get; set; }
+        [Required]
+        [MaxLength(10)]
         public int MajorId { get; set; }
 
         [Required]

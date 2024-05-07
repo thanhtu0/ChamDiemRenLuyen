@@ -35,6 +35,10 @@ namespace TrainingScoring.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Semester")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("AcademicYearId");
 
                     b.ToTable("AcademicYears");
@@ -42,8 +46,8 @@ namespace TrainingScoring.Data.Migrations
 
             modelBuilder.Entity("TrainingScoring.DomainModels.Advisor", b =>
                 {
-                    b.Property<string>("LecturerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("LecturerId")
+                        .HasColumnType("int");
 
                     b.Property<int>("GradeId")
                         .HasColumnType("int");
@@ -59,24 +63,6 @@ namespace TrainingScoring.Data.Migrations
                     b.HasIndex("GradeId");
 
                     b.ToTable("Advisors");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.ClassCommittee", b =>
-                {
-                    b.Property<int>("ClassCommitteeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassCommitteeId"), 1L, 1);
-
-                    b.Property<string>("ClassCommitteeName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ClassCommitteeId");
-
-                    b.ToTable("ClassCommittees");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.Course", b =>
@@ -143,14 +129,9 @@ namespace TrainingScoring.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SemesterId")
-                        .HasColumnType("int");
-
                     b.HasKey("EvalutionFormId");
 
                     b.HasIndex("AcademicYearId");
-
-                    b.HasIndex("SemesterId");
 
                     b.ToTable("EvaluationForms");
                 });
@@ -193,8 +174,11 @@ namespace TrainingScoring.Data.Migrations
 
             modelBuilder.Entity("TrainingScoring.DomainModels.Lecturer", b =>
                 {
-                    b.Property<string>("LecturerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -211,13 +195,18 @@ namespace TrainingScoring.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("Gender")
-                        .HasColumnType("bit");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("LecturerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -228,7 +217,7 @@ namespace TrainingScoring.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("LecturerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
@@ -237,8 +226,8 @@ namespace TrainingScoring.Data.Migrations
 
             modelBuilder.Entity("TrainingScoring.DomainModels.LecturerRoleAssignment", b =>
                 {
-                    b.Property<string>("LecturerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("LecturerId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -252,13 +241,17 @@ namespace TrainingScoring.Data.Migrations
 
             modelBuilder.Entity("TrainingScoring.DomainModels.Major", b =>
                 {
-                    b.Property<int>("MajorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MajorId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MajorId")
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<string>("MajorName")
@@ -266,7 +259,7 @@ namespace TrainingScoring.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("MajorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
@@ -365,12 +358,8 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<int>("ScoringProcessProcessId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SemesterId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
-
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ScoreId");
 
@@ -381,8 +370,6 @@ namespace TrainingScoring.Data.Migrations
                     b.HasIndex("ScoreDetailId");
 
                     b.HasIndex("ScoringProcessProcessId");
-
-                    b.HasIndex("SemesterId");
 
                     b.HasIndex("StudentId");
 
@@ -426,28 +413,13 @@ namespace TrainingScoring.Data.Migrations
                     b.ToTable("ScoringProcesses");
                 });
 
-            modelBuilder.Entity("TrainingScoring.DomainModels.Semester", b =>
+            modelBuilder.Entity("TrainingScoring.DomainModels.Student", b =>
                 {
-                    b.Property<int>("SemesterId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SemesterId"), 1L, 1);
-
-                    b.Property<string>("SemesterName")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("SemesterId");
-
-                    b.ToTable("Semesters");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.Student", b =>
-                {
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -461,11 +433,16 @@ namespace TrainingScoring.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("Gender")
-                        .HasColumnType("bit");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GradeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("IsClassmittee")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -481,26 +458,15 @@ namespace TrainingScoring.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("StudentId");
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("GradeId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.StudentClassCommittee", b =>
-                {
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ClassCommitteeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentId", "ClassCommitteeId");
-
-                    b.HasIndex("ClassCommitteeId");
-
-                    b.ToTable("StudentClassCommittees");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.TrainingContent", b =>
@@ -514,11 +480,10 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<bool>("IsProof")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("MaxScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
                     b.Property<string>("TrainingContentName")
@@ -569,11 +534,10 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<bool>("IsProof")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("MaxScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
                     b.Property<int>("TrainingContentId")
@@ -591,37 +555,7 @@ namespace TrainingScoring.Data.Migrations
                     b.ToTable("TrainingDetails");
                 });
 
-            modelBuilder.Entity("TrainingScoring.DomainModels.TrainingDirectory", b =>
-                {
-                    b.Property<int>("TrainingDirectoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingDirectoryId"), 1L, 1);
-
-                    b.Property<int>("EvaluationFormId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaxScore")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrainingDirectoryName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("TrainingDirectoryId");
-
-                    b.HasIndex("EvaluationFormId");
-
-                    b.ToTable("TrainingDirectories");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.TraniningDetailProof", b =>
+            modelBuilder.Entity("TrainingScoring.DomainModels.TrainingDetailProof", b =>
                 {
                     b.Property<int>("TrainingDetailId")
                         .HasColumnType("int");
@@ -641,6 +575,35 @@ namespace TrainingScoring.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("TraniningDetailProofs");
+                });
+
+            modelBuilder.Entity("TrainingScoring.DomainModels.TrainingDirectory", b =>
+                {
+                    b.Property<int>("TrainingDirectoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingDirectoryId"), 1L, 1);
+
+                    b.Property<int>("EvaluationFormId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrainingDirectoryName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("TrainingDirectoryId");
+
+                    b.HasIndex("EvaluationFormId");
+
+                    b.ToTable("TrainingDirectories");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.Advisor", b =>
@@ -670,15 +633,7 @@ namespace TrainingScoring.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrainingScoring.DomainModels.Semester", "Semester")
-                        .WithMany("EvaluationForms")
-                        .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("AcademicYear");
-
-                    b.Navigation("Semester");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.Grade", b =>
@@ -790,12 +745,6 @@ namespace TrainingScoring.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrainingScoring.DomainModels.Semester", "Semester")
-                        .WithMany("Scores")
-                        .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TrainingScoring.DomainModels.Student", "Student")
                         .WithMany("Scores")
                         .HasForeignKey("StudentId")
@@ -810,8 +759,6 @@ namespace TrainingScoring.Data.Migrations
 
                     b.Navigation("ScoringProcess");
 
-                    b.Navigation("Semester");
-
                     b.Navigation("Student");
                 });
 
@@ -824,25 +771,6 @@ namespace TrainingScoring.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Grade");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.StudentClassCommittee", b =>
-                {
-                    b.HasOne("TrainingScoring.DomainModels.ClassCommittee", "ClassCommittee")
-                        .WithMany("StudentClassCommittees")
-                        .HasForeignKey("ClassCommitteeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingScoring.DomainModels.Student", "Student")
-                        .WithMany("StudentClassCommittees")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClassCommittee");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.TrainingContent", b =>
@@ -886,22 +814,11 @@ namespace TrainingScoring.Data.Migrations
                     b.Navigation("TrainingContent");
                 });
 
-            modelBuilder.Entity("TrainingScoring.DomainModels.TrainingDirectory", b =>
-                {
-                    b.HasOne("TrainingScoring.DomainModels.EvaluationForm", "EvaluationForm")
-                        .WithMany("TrainingDirectories")
-                        .HasForeignKey("EvaluationFormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EvaluationForm");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.TraniningDetailProof", b =>
+            modelBuilder.Entity("TrainingScoring.DomainModels.TrainingDetailProof", b =>
                 {
                     b.HasOne("TrainingScoring.DomainModels.Proof", "Proof")
                         .WithOne("TraniningDetailProofs")
-                        .HasForeignKey("TrainingScoring.DomainModels.TraniningDetailProof", "ProofId")
+                        .HasForeignKey("TrainingScoring.DomainModels.TrainingDetailProof", "ProofId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -916,16 +833,22 @@ namespace TrainingScoring.Data.Migrations
                     b.Navigation("TrainingDetail");
                 });
 
+            modelBuilder.Entity("TrainingScoring.DomainModels.TrainingDirectory", b =>
+                {
+                    b.HasOne("TrainingScoring.DomainModels.EvaluationForm", "EvaluationForm")
+                        .WithMany("TrainingDirectories")
+                        .HasForeignKey("EvaluationFormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EvaluationForm");
+                });
+
             modelBuilder.Entity("TrainingScoring.DomainModels.AcademicYear", b =>
                 {
                     b.Navigation("EvaluationForms");
 
                     b.Navigation("Scores");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.ClassCommittee", b =>
-                {
-                    b.Navigation("StudentClassCommittees");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.Course", b =>
@@ -996,18 +919,9 @@ namespace TrainingScoring.Data.Migrations
                     b.Navigation("Scores");
                 });
 
-            modelBuilder.Entity("TrainingScoring.DomainModels.Semester", b =>
-                {
-                    b.Navigation("EvaluationForms");
-
-                    b.Navigation("Scores");
-                });
-
             modelBuilder.Entity("TrainingScoring.DomainModels.Student", b =>
                 {
                     b.Navigation("Scores");
-
-                    b.Navigation("StudentClassCommittees");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.TrainingContent", b =>

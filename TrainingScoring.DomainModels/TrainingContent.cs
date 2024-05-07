@@ -13,13 +13,13 @@ namespace TrainingScoring.DomainModels
     {
         [Key]
         public int TrainingContentId { get; set; }
-
+        [Required]
+        public int Order { get; set; }
         [Required]
         [MaxLength(50)]
         public string TrainingContentName { get; set; }
         public bool IsProof {  get; set; }
         public int MaxScore { get; set; }
-        public string Location { get; set; }
 
         //Relationship
         public ICollection<TrainingContentProof> TrainingContentProofs { get; set; }

@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
+    public enum SemesterType
+    {
+        First,  // 0
+        Second, // 1
+    }
     [Table("AcademicYears")]
     public class AcademicYear
     {
@@ -17,7 +22,7 @@ namespace TrainingScoring.DomainModels
         [StringLength(50)]
         public string AcademicYearName { get; set; }
 
-
+        public SemesterType Semester { get; set; }
         // Relationship
         public ICollection<EvaluationForm> EvaluationForms { get; set; }
         public ICollection<Score> Scores { get; set; }

@@ -16,7 +16,7 @@ namespace TrainingScoring.DomainModels
 
         //Relationship
         [ForeignKey("StudentId")]
-        public string StudentId { get; set; }
+        public int StudentId { get; set; }
         public virtual Student Student { get; set; }
 
         [ForeignKey("ScoringProcessId")]
@@ -34,10 +34,5 @@ namespace TrainingScoring.DomainModels
         [ForeignKey("AcademicYearId")]
         public int AcademicYearId { get; set; }
         public AcademicYear AcademicYear { get; set; }
-
-        [ForeignKey("SemesterId")]
-        public int SemesterId { get; set; }
-        public Semester Semester { get; set; }
-
     }
 }

@@ -24,14 +24,12 @@ namespace TrainingScoring.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Student> Students { get; set; }
-        public DbSet<ClassCommittee> ClassCommittees { get; set; }
-        public DbSet<StudentClassCommittee> StudentClassCommittees { get; set; } 
+
         public DbSet<ProcessDetail> ProcessDetails { get; set; }
         public DbSet<ScoringProcess> ScoringProcesses { get; set; }
         public DbSet<ScoreDetail> Scores { get; set; }
         public DbSet<Score> StudentScores { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
-        public DbSet<Semester> Semesters { get; set; }
         public DbSet<EvaluationForm> EvaluationForms { get; set; }
         public DbSet<TrainingDirectory> TrainingDirectories { get; set; }
         public DbSet<TrainingContent> TrainingContents { get; set; }
@@ -49,10 +47,6 @@ namespace TrainingScoring.Data
             // Define composite primary key for LecturerRoleAssignment entity
             modelBuilder.Entity<LecturerRoleAssignment>()
                 .HasKey(llr => new { llr.LecturerId, llr.RoleId });
-
-            // Define composite primary key for StudentClassCommittee entity
-            modelBuilder.Entity<StudentClassCommittee>()
-                .HasKey(stc => new { stc.StudentId, stc.ClassCommitteeId });
 
             // Define composite primary key for TrainingContentProof entity
             modelBuilder.Entity<TrainingContentProof>()
@@ -79,6 +73,34 @@ namespace TrainingScoring.Data
                     .WithMany(e => e.Scores)
                     .HasForeignKey(s => s.EvalutionFormId)
                     .OnDelete(DeleteBehavior.NoAction);
+
+            // Lecturer gender (enum)
+            modelBuilder.Entity<Lecturer>()
+                    .Property(s => s.Gender)
+                    .HasConversion(
+                     v => v.ToString(), 
+                     v => (LecturerGender)Enum.Parse(typeof(LecturerGender), v));
+
+            // Student gender (enum)
+            modelBuilder.Entity<Student>()
+                    .Property(s => s.Gender)
+                    .HasConversion(
+                     v => v.ToString(),
+                     v => (StudentGender)Enum.Parse(typeof(StudentGender), v));
+
+            // Student Classmittee gender (enum)
+            modelBuilder.Entity<Student>()
+                    .Property(s => s.IsClassmittee)
+                    .HasConversion(
+                     v => v.ToString(),
+                     v => (Classmittee)Enum.Parse(typeof(Classmittee), v));
+
+            // semester (enum)
+            modelBuilder.Entity<AcademicYear>()
+                    .Property(s => s.Semester)
+                    .HasConversion(
+                     v => v.ToString(),
+                     v => (SemesterType)Enum.Parse(typeof(SemesterType), v));
         }
     }
 }

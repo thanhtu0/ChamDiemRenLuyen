@@ -8,10 +8,22 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
+    public enum StudentGender
+    {
+        Male,       // 0
+        Female      // 1
+    }
+    public enum Classmittee
+    {
+        Class_Monitor,  // 0
+        Vice_Monitor,   // 1
+        Secretary       // 2
+    }
     [Table("Students")]
     public class Student
     {
         [Key]
+        public int Id { get; set; }
         public string StudentId { get; set; }
         [Required]
         [MaxLength(100)]
@@ -20,7 +32,8 @@ namespace TrainingScoring.DomainModels
         [Required]
         [MaxLength(20)]
         public string LastName { get; set; }
-
+        [Required]
+        public Classmittee IsClassmittee { get; set; }
         [Required]
         [DataType(DataType.Password)]
         [MaxLength(50)]
@@ -31,7 +44,7 @@ namespace TrainingScoring.DomainModels
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        public bool Gender { get; set; }
+        public StudentGender Gender { get; set; }
 
         public string Province { get; set; }
 
@@ -42,7 +55,6 @@ namespace TrainingScoring.DomainModels
         public int GradeId { get; set; }
         public virtual Grade Grade { get; set; }
         //
-        public virtual ICollection<StudentClassCommittee> StudentClassCommittees { get; set; }
         public ICollection<Score> Scores { get; set; }
     }
 }

@@ -14,10 +14,11 @@ namespace TrainingScoring.DomainModels
         [Key]
         public int TrainingDirectoryId { get; set; }
         [Required]
+        public int Order { get; set; }
+        [Required]
         [MaxLength(50)]
         public string TrainingDirectoryName { get; set; }
         public int MaxScore {  get; set; }
-        public string Location {  get; set; }
 
         //Relationship
         public ICollection<TrainingContent> TrainingContents { get; set; }

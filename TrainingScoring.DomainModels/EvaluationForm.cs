@@ -30,9 +30,6 @@ namespace TrainingScoring.DomainModels
         public int AcademicYearId { get; set; } // Foreign key referencing AcademicYearId in the associated table
         public AcademicYear AcademicYear { get; set; } // Navigation property representing the associated AcademicYear
 
-        public int SemesterId { get; set; } // Foreign key referencing SemesterId in the associated table
-        public Semester Semester { get; set; } // Navigation property representing the associated Semester
-
         public ICollection<TrainingDirectory> TrainingDirectories { get; set; }
         public ICollection<Score> Scores { get; set; }
     }

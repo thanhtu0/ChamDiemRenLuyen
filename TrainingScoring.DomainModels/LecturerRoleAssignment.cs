@@ -13,7 +13,7 @@ namespace TrainingScoring.DomainModels
     {
         // Relationship
         [ForeignKey("LecturerId")]
-        public string LecturerId { get; set; }
+        public int LecturerId { get; set; }
 
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }

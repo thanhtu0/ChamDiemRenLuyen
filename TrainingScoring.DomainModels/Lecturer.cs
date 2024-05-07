@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
+    public enum LecturerGender
+    {
+        Male,   // 0
+        Female   // 1
+    }
     [Table("Lecturers")]
     public class Lecturer
     {
         [Key]
+        public int Id { get; set; }
         public string LecturerId { get; set; }
 
         [Required]
@@ -32,7 +39,7 @@ namespace TrainingScoring.DomainModels
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        public bool Gender { get; set; }
+        public LecturerGender Gender { get; set; }
 
         public string Province { get; set; }
 

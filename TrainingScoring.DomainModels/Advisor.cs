@@ -20,7 +20,7 @@ namespace TrainingScoring.DomainModels
 
         // Foreign key referencing LecturerId in the associated table
         [ForeignKey("LecturerId")]
-        public string LecturerId { get; set; }
+        public int LecturerId { get; set; }
         // Foreign key referencing GradeId in the associated table
         [ForeignKey("GradeId")]
         public int GradeId { get; set; }
