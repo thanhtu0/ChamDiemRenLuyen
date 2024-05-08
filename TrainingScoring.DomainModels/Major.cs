@@ -12,10 +12,10 @@ namespace TrainingScoring.DomainModels
     public class Major
     {
         [Key]
-        public int Id { get; set; }
+        public int MajorId { get; set; }
         [Required]
         [MaxLength(10)]
-        public int MajorId { get; set; }
+        public string MajorCode { get; set; }
 
         [Required]
         [MaxLength(50)]

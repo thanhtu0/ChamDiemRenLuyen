@@ -18,8 +18,10 @@ namespace TrainingScoring.DomainModels
     public class Lecturer
     {
         [Key]
-        public int Id { get; set; }
-        public string LecturerId { get; set; }
+        public int LecturerId { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string LecturerCode { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -51,6 +53,6 @@ namespace TrainingScoring.DomainModels
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
         public ICollection<LecturerRoleAssignment> LecturerRoleAssignments { get; set; }
-        public ICollection<Advisor> Advisors { get; set; }
+        public ICollection<GradeLecturerAssignment> GradeLecturerAssignments { get; set; }
     }
 }

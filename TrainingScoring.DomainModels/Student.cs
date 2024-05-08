@@ -15,16 +15,19 @@ namespace TrainingScoring.DomainModels
     }
     public enum Classmittee
     {
-        Class_Monitor,  // 0
-        Vice_Monitor,   // 1
-        Secretary       // 2
+        Student,// 0
+        Class_Monitor,  // 1
+        Vice_Monitor,   // 2
+        Secretary     // 3
     }
     [Table("Students")]
     public class Student
     {
         [Key]
-        public int Id { get; set; }
-        public string StudentId { get; set; }
+        public int StudentId { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string StudentCode { get; set; }
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; }

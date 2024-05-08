@@ -13,6 +13,9 @@ namespace TrainingScoring.DomainModels
     {
         [Key]
         public int GradeId { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string GradeCode { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -36,9 +39,8 @@ namespace TrainingScoring.DomainModels
         [ForeignKey("MajorId")]
         public virtual Major Major { get; set; }
 
-
         // Relationship
         public virtual ICollection<Student> Students { get; set; }
-        public ICollection<Advisor> Advisors { get; set; }
+        public ICollection<GradeLecturerAssignment> GradeLecturerAssignments { get; set; }
     }   
 }

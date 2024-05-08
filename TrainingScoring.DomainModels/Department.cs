@@ -13,7 +13,9 @@ namespace TrainingScoring.DomainModels
     {
         [Key]
         public int DepartmentId {  get; set; }
-
+        [Required]
+        [MaxLength(30)]
+        public string DepartmentCode { get; set; }
         [Required]
         [MaxLength(50)]
         public string DepartmentName { get; set; }

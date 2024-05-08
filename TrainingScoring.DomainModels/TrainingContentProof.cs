@@ -5,17 +5,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrainingScoring.DomainModels.Interfaces;
 
 namespace TrainingScoring.DomainModels
 {
     [Table("TrainingContentProofs")]
-    public class TrainingContentProof
+    public class TrainingContentProof : ISoftDelete
     {
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
-        [DataType(DataType.DateTime)]
-        public DateTime LastUpdatedAt { get; set; }
+        
+        public bool IsDeleted { get; set; }
 
+        [DataType(DataType.DateTime)]
+        public DateTime? DeletedAt { get; set; }
         //Relationship
         [ForeignKey("TrainingContentId")]
         public int TrainingContentId { get; set; }

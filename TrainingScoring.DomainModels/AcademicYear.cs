@@ -19,9 +19,10 @@ namespace TrainingScoring.DomainModels
         [Key]   
         public int AcademicYearId { get; set; }
         [Required]
+        public string SemesterCode { get; set; }
+        [Required]
         [StringLength(50)]
         public string AcademicYearName { get; set; }
-
         public SemesterType Semester { get; set; }
         // Relationship
         public ICollection<EvaluationForm> EvaluationForms { get; set; }
