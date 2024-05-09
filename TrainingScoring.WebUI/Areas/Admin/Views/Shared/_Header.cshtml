@@ -1,0 +1,31 @@
+﻿@using TrainingScoring.WebUI;
+<!-- Header -->
+<!-- Title -->
+<div class="container-fluid d-flex justify-content-between bg-secondary">
+    <div class="text-black text-uppercase text-start p-1 fw-bold">
+        Trường Đại Học Khoa Học - Đại Học Huế
+    </div>
+    <div id="current-date" class="text-black text-end p-1 fw-lighter">
+        Thứ hai, ngày 22 tháng 04 năm 2024
+    </div>
+</div>
+<!-- Logo and Title -->
+<div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-md-between" style="height: auto; background-color: #006eb7;">
+    <div class="p-1 col-12 col-md-2 text-center mb-2 mb-md-0 border-end border-light d-sm-block">
+        <img class="rounded logo-img mx-auto d-block" src="~/themes/assets/img/Logo-ko-nen.png" alt="Logo-ko-nen" style="height: 60px;">
+    </div>
+    <div class="p-1 col-12 col-md-10 text-center" style="color: #f0f8ff;">
+        <h2 class="text-uppercase mb-0">Hệ thống Đánh giá điểm rèn luyện dành cho sinh viên</h2>
+    </div>
+</div>
+<script>
+    var currentDate = new Date();
+
+    var dayOfWeek = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+    var day = dayOfWeek[currentDate.getDay()];
+    var date = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+
+    document.getElementById("current-date").textContent = day + ", ngày " + date + " tháng " + month + " năm " + year;
+</script>

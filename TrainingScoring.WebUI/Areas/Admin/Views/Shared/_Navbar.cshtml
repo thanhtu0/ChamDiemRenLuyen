@@ -1,0 +1,83 @@
+﻿<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light">
+    <div class="container-xxl">
+        <a href="#"><img src="~/themes/assets/img/logo_teach.png" alt="logo-img" class="rounded logo-img d-block" style="width: 100px;"></a>
+        <!-- toggle button for mobile nav -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- navbar links -->
+        <div class="navbar-nav collapse navbar-collapse justify-content-start align-center" id="main-nav">
+            <ul class="navbar-nav col-md-10 col-12 me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href=""></a>
+                </li>
+                <!--Class Advisor-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Giáo viên cố vấn</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><h5 class="dropdown-header">Chức năng của Giáo viên Cố vấn</h5></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="./Advirsor/Mark Training Point/SetClassCommittee.html">Set quyền cho BCS lớp</a></li>
+                        <li><a class="dropdown-item" href="./Advirsor/Mark Training Point/StudentList.html">Danh sách các lớp cố vấn</a></li>
+                        <li><a class="dropdown-item" href="./Advirsor/Mark Training Point/StudentPoint.html">Đánh giá rèn luyện cho sinh viên</a></li>
+                        <li><a class="dropdown-item" href="./Advirsor/See Training Point/index.html">Xem kết quả rèn luyện sinh viên</a></li>
+                    </ul>
+                </li>
+                <!-- Teacher at Faculty -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Giáo viên cấp Khoa</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><h5 class="dropdown-header">Chức năng dành cho Giáo viên cấp Khoa</h5></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="./Department Council/Mark Training Point/StudentList.html">Danh sách các lớp thuộc Khoa</a></li>
+                        <li><a class="dropdown-item" href="./Department Council/Mark Training Point/StudentPoint.html">Đánh giá rèn luyện cho sinh viên</a></li>
+                        <li><a class="dropdown-item" href="./Department Council/See Training Point/index.html">Xem kết quả rèn luyện sinh viên</a></li>
+                    </ul>
+                </li>
+                <!-- Teacher at University level -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Giáo viên cấp Trường</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><h5 class="dropdown-header">Chức năng dành cho Giáo viên cấp Trường</h5></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="./School Council/Mark Training Point/GradeList.html">Danh sách các Khoa</a></li>
+                        <li><a class="dropdown-item" href="./School Council/Mark Training Point/GradePoint.html">Danh sách các Lớp thuộc Khoa</a></li>
+                        <li><a class="dropdown-item" href="./School Council/Mark Training Point/StudentPoint.html">Đánh giá rèn luyện sinh viên</a></li>
+                    </ul>
+                </li>
+
+                <!-- System Administrator -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Quản trị hệ thống</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><h5 class="dropdown-header">Chức năng dành cho quản trị hệ thống</h5></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="./EvaluationForm/index.html">Quản lý Phiếu đánh giá</a></li>
+                        <li><a class="dropdown-item" href="#!">Quản lý Sinh viên</a></li>
+                        <li><a class="dropdown-item" href="#!">Quản lý Giáo viên</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- User Info -->
+            <ul class="navbar-nav col-md-2 col-12 me-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="img-profile rounded-circle" src="~/themes/assets/icons/profile.png">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Lưu Lê Thanh Tú</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><h5 class="dropdown-header">Quản lý thông tin cá nhân</h5></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Thông tin cá nhân</a></li>
+                        <li><a class="dropdown-item" href="#!">Đổi mật khẩu</a></li>
+                        <li><a class="dropdown-divider"></a></li>
+                        <li><a class="dropdown-item" href="/login page/index.html">Đăng xuất</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

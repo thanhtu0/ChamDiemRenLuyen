@@ -7,20 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="UserRepository.cs" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TrainingScoring.Data\TrainingScoring.Data.csproj" />
     <ProjectReference Include="..\TrainingScoring.DomainModels\TrainingScoring.DomainModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="UserRepository.cs" />
   </ItemGroup>
 
 </Project>
