@@ -7,7 +7,7 @@ using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Data.Repositories.Interfaces
 {
-    public interface IAdvisorRepository : IRepository<Advisor>
+    public interface IGradeLecturerAssignmentRepository : IRepository<GradeLecturerAssignment>
     {
     }
 }

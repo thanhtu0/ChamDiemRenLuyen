@@ -1,0 +1,258 @@
+﻿@model TrainingScoring.WebUI.Models.EvaluationFormDetailsViewModel;
+@{
+    ViewData["Title"] = "EvaluationFormDetail";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Quản lý phiếu đánh giá rèn luyện</title>
+    <style>
+        th:nth-child(1),
+        th:nth-child(2),
+        th:nth-child(3),
+        td:nth-child(1),
+        td:nth-child(3),
+        td:nth-child(4),
+        td:nth-child(5),
+        td:nth-child(6),
+        td:nth-child(7) {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        tr.bold-row td,
+        tr.bold-row th {
+            font-weight: bold;
+        }
+
+        tr.training-title td,
+        tr.training-title th {
+            background-color: #36b2fa;
+        }
+
+        tr.training-directory td,
+        tr.training-directory th {
+            background-color: #7ccbfd;
+        }
+
+        tr.training-content td,
+        tr.training-content th {
+            background-color: #b9e2fe;
+        }
+
+        tr.training-details td,
+        tr.training-details th {
+            background-color: #e0f0fe;
+        }
+
+        tr.training-total td,
+        tr.training-total th {
+            background-color: rgba(7, 43, 74, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h3 class="text-uppercase">Quản lý nội dung đánh giá rèn luyện</h3>
+            </div>
+            <div class="card-body">
+                <h4 class="text-uppercase">Nội dung phiếu đánh giá</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="training-title table-dark training-title">
+                        <th colspan="2" style="width: 65%;">Nội dung đánh giá</th>
+                        <th colspan="2" style="width: 17.5%;">Điểm rèn luyện / minh chứng</th>
+                        <th colspan="2" style="width: 17.5%;">
+                            <a href="#" class="btn btn-flat btn-primary text-start">
+                                <i class="fas fa-plus"></i> Thêm mới danh mục
+                            </a>
+                        </th>
+                        </thead>
+                        <tbody>
+                            @{
+                                double sumScore = 0;
+                                string ToRoman(int number)
+                                {
+                                    if ((number < 0) || (number > 3999))
+                                        throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
+                                    if (number < 1) return string.Empty;
+                                    if (number >= 1000) return "M" + ToRoman(number - 1000);
+                                    if (number >= 900) return "CM" + ToRoman(number - 900);
+                                    if (number >= 500) return "D" + ToRoman(number - 500);
+                                    if (number >= 400) return "CD" + ToRoman(number - 400);
+                                    if (number >= 100) return "C" + ToRoman(number - 100);
+                                    if (number >= 90) return "XC" + ToRoman(number - 90);
+                                    if (number >= 50) return "L" + ToRoman(number - 50);
+                                    if (number >= 40) return "XL" + ToRoman(number - 40);
+                                    if (number >= 10) return "X" + ToRoman(number - 10);
+                                    if (number >= 9) return "IX" + ToRoman(number - 9);
+                                    if (number >= 5) return "V" + ToRoman(number - 5);
+                                    if (number >= 4) return "IV" + ToRoman(number - 4);
+                                    if (number >= 1) return "I" + ToRoman(number - 1);
+                                    throw new ArgumentOutOfRangeException("something bad happened");
+                                }
+
+                                char ToAlphabet(int number)
+                                {
+                                    if (number < 1 || number > 26)
+                                        throw new ArgumentOutOfRangeException("number", "Phải là một số từ 1 đến 26.");
+
+                                    return (char)('a' + number - 1);
+                                }
+
+                            }
+                                @foreach (var directory in Model.TrainingDirectories)
+                                {
+                                    <tr class="bold-row training-directory">
+                                        <td>@ToRoman(directory.Order)</td>
+                                        <td>@directory.TrainingDirectoryName</td>
+                                        <td colspan="4">
+                                            <a href="#" class="btn btn-flat btn-primary text-start">
+                                                <i class="fas fa-plus"></i> Thêm mới nội dung đánh giá
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @if (directory.TrainingContents != null && directory.TrainingContents.Any())
+                                    {
+                                        foreach (var content in directory.TrainingContents)
+                                        {
+                                            <tr class="training-content">
+                                                <td>@content.Order</td>
+                                                <td>@content.TrainingContentName</td>
+                                                @if (content.TrainingDetails == null)
+                                                {
+                                                    <td>@content.MaxScore</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                <td>
+                                                    @if (content.IsProof == true)
+                                                    {
+                                                        <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a href="#"><i class="fas fa-edit text-info"></i></a>
+                                                    <a href="#" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            @if (content.TrainingDetails != null && content.TrainingDetails.Any())
+                                            {
+                                                foreach (var detail in content.TrainingDetails)
+                                                {
+                                                    <tr class="training-details">
+                                                        <td>@ToAlphabet(detail.Order)</td>
+                                                        <td>@detail.TrainingDetailName</td>
+                                                        <td>@detail.MaxScore</td>
+                                                        <td>
+                                                            @if (content.IsProof == true)
+                                                            {
+                                                                @if (detail.IsProof == true)
+                                                                {
+                                                                    <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <a href="#"><i class="fas fa-edit text-info"></i></a>
+                                                            <a href="#" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            @if (directory.TrainingContents.Any() && content.TrainingDetails != null && content.TrainingDetails.Any())
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td colspan="5" class="text-start">
+                                                        <a href="#" class="btn btn-flat btn-primary text-start">
+                                                            <i class="fas fa-plus"></i> Thêm mới chi tiết đánh giá
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                    <tr>
+                                        <td></td>
+                                        <td class="fw-bold text-end">Tổng:</td>
+                                        <td colspan="2">@directory.MaxScore</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                }
+                                <tr class="training-total">
+                                    <td colspan="2" class="fw-bold text-end">Tổng điểm: (I + II +III +IV + V):0-100đ</td>
+                                    <td colspan="2" class="text-center">
+                                        @{
+                                            double totalDirectoryMaxScore = 0;
+                                            foreach (var directory in Model.TrainingDirectories)
+                                            {
+                                                totalDirectoryMaxScore += directory.MaxScore;
+                                            }
+                                            @totalDirectoryMaxScore
+                                        }
+                                    </td>
+                                    <td colspan="2"></td>
+                                </tr>
+                                <tr class="training-total">
+                                    <td colspan="2" class="fw-bold text-end">Xếp loại:</td>
+                                    <td colspan="2" class="text-center">
+                                        @{
+                                            string classification = "";
+                                            if (totalDirectoryMaxScore >= 90 && totalDirectoryMaxScore <= 100)
+                                            {
+                                                classification = "Xuất sắc";
+                                            }
+                                            else if (totalDirectoryMaxScore >= 80 && totalDirectoryMaxScore <= 89)
+                                            {
+                                                classification = "Tốt";
+                                            }
+                                            else if (totalDirectoryMaxScore >= 65 && totalDirectoryMaxScore <= 79)
+                                            {
+                                                classification = "Khá";
+                                            }
+                                            else if (totalDirectoryMaxScore >= 50 && totalDirectoryMaxScore <= 64)
+                                            {
+                                                classification = "Trung bình";
+                                            }
+                                            else if (totalDirectoryMaxScore >= 35 && totalDirectoryMaxScore <= 49)
+                                            {
+                                                classification = "Yếu";
+                                            }
+                                            else if (totalDirectoryMaxScore < 35)
+                                            {
+                                                classification = "Kém";
+                                            }
+                                            @classification
+                                        }
+                                    </td>
+                                    <td colspan="2"></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+

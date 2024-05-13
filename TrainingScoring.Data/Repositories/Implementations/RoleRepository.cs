@@ -10,8 +10,8 @@ namespace TrainingScoring.Data.Repositories.Implementations
 {
     public class RoleRepository : Repository<Role>, IRoleRepository
     {
-        private readonly TrainingScroingDBContext _context;
-        public RoleRepository(TrainingScroingDBContext context) : base(context)
+        private readonly TrainingScoingDBContext _context;
+        public RoleRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
         }

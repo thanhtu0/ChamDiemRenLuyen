@@ -11,9 +11,9 @@ namespace TrainingScoring.Data.Repositories.Implementations
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly TrainingScroingDBContext _context;
+        private readonly TrainingScoingDBContext _context;
 
-        public Repository(TrainingScroingDBContext context)
+        public Repository(TrainingScoingDBContext context)
         {
             _context = context;
         }
@@ -31,6 +31,7 @@ namespace TrainingScoring.Data.Repositories.Implementations
         public async Task<int> CreateAsync(T entity)
         {
             _context.Set<T>().Add(entity);
+            await _context.SaveChangesAsync();
             return entity.GetType().GetProperty("Id")?.GetValue(entity) as int? ?? 0;
         }
 

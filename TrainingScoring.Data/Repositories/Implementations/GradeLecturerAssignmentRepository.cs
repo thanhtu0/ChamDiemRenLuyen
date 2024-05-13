@@ -8,10 +8,10 @@ using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Data.Repositories.Implementations
 {
-    public class AdvisorRepository : Repository<Advisor>, IAdvisorRepository
+    public class GradeLecturerAssignmentRepository: Repository<GradeLecturerAssignment>, IGradeLecturerAssignmentRepository
     {
-        private readonly TrainingScroingDBContext _context;
-        public AdvisorRepository(TrainingScroingDBContext context) : base(context)
+        private readonly TrainingScoingDBContext _context;
+        public GradeLecturerAssignmentRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
         }

@@ -11,7 +11,7 @@ namespace TrainingScoring.Business.Services.Interfaces
     {
 
         #region TrainingDirectory
-        Task<List<TrainingDirectory>> GetTrainingDirectoriesAsync();
+        Task<List<TrainingDirectory>> GetAllTrainingDirectoriesAsync();
         Task<TrainingDirectory> GetTrainingDirectoryByIdAsync(int id);
         Task<TrainingDirectory> CreateTrainingDirectoryAsync(TrainingDirectory trainingDirectory);
         Task<TrainingDirectory> UpdateTrainingDirectoryAsync(TrainingDirectory trainingDirectory);

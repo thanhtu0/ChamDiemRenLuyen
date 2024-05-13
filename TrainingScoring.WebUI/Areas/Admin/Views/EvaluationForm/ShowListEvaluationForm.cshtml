@@ -1,0 +1,64 @@
+﻿@model TrainingScoring.WebUI.Models.EvaluationFormViewModel;
+@{
+    ViewData["Title"] = "Quản lý phiếu đánh giá rèn luyện";
+}
+<head>
+    <style>
+        th:nth-child(1),
+        th:nth-child(2),
+        th:nth-child(3),
+        th:nth-child(4),
+        td:nth-child(1),
+        td:nth-child(3), 
+        td:nth-child(4) {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        tr.bold-row td,
+        tr.bold-row th {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h3 class="text-uppercase">Quản lý phiếu đánh giá rèn luyện</h3>
+            </div>
+            <div class="card-body">
+                <h4 class="text-uppercase text-center">Danh sách phiếu đánh giá</h4>
+                <table class="table table-bordered">
+                    <thead class="training-title table-dark training-title">
+                    <th>Mã phiếu</th>
+                    <th>Tên phiếu</th>
+                    <th></th>
+                    <th class="text-link">
+                        <a asp-area="Admin" asp-controller="Systemmanagement" asp-action="CreateEvaluationForm" class="btn btn-flat btn-primary">
+                            <i class="fas fa-plus"></i> Thêm mới
+                        </a>
+                    </th>
+                    </thead>
+                    <tbody>
+                        @foreach (var evaluationForm in Model.EvaluationForms)
+                        {
+                            <tr>
+                                <td>@evaluationForm.EvaluationFormCode</td>
+                                <td>@evaluationForm.EvaluationFormName</td>
+                                <td>
+                                    <a asp-action="EvaluationFormDetail" asp-route-id="@evaluationForm.EvaluationFormId" class="text-decoration-none">Xem chi tiết</a>
+                                </td>
+                                <td>
+                                    <a href="#"><i class="fas fa-edit text-info"></i></a>
+                                    <a href="#" style="margin-left: 15px;"><i class="fas fa-trash text-danger"></i></a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>

@@ -28,7 +28,7 @@ namespace TrainingScoring.Business.Services.Implementations
         }
 
         #region TrainingDirectory
-        public async Task<List<TrainingDirectory>> GetTrainingDirectoriesAsync()
+        public async Task<List<TrainingDirectory>> GetAllTrainingDirectoriesAsync()
         {
             try
             {

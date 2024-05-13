@@ -30,7 +30,7 @@ namespace TrainingScoring.Business.Services.Implementations
 
 
         #region TrainingContent
-        public async Task<List<TrainingContent>> GetTrainingContentsAsync()
+        public async Task<List<TrainingContent>> GetAllTrainingContentsAsync()
         {
             try
             {

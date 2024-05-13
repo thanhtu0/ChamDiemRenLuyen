@@ -10,8 +10,8 @@ namespace TrainingScoring.Data.Repositories.Implementations
 {
     public class ScoreRepository : Repository<Score>, IScoreRepository
     {
-        private readonly TrainingScroingDBContext _context;
-        public ScoreRepository(TrainingScroingDBContext context) : base(context)
+        private readonly TrainingScoingDBContext _context;
+        public ScoreRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
         }

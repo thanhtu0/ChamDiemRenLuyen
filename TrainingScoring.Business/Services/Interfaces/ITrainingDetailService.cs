@@ -11,7 +11,7 @@ namespace TrainingScoring.Business.Services.Interfaces
     {
         // TrainingDetail
         #region TrainingDetail
-        Task<List<TrainingDetail>> GetTrainingDetailsAsync();
+        Task<List<TrainingDetail>> GetAllTrainingDetailsAsync();
         Task<TrainingDetail> GetTrainingDetailsByIdAsync(int id);
         Task<TrainingDetail> CreateTrainingDetailsAsync(TrainingDetail trainingDetail);
         Task<TrainingDetail> UpdateTrainingDetailsAsync(TrainingDetail trainingDetail);

@@ -10,8 +10,8 @@ namespace TrainingScoring.Data.Repositories.Implementations
 {
     public class MajorRepository : Repository<Major>, IMajorRepository
     {
-        private readonly TrainingScroingDBContext _context;
-        public MajorRepository(TrainingScroingDBContext context) : base(context)
+        private readonly TrainingScoingDBContext _context;
+        public MajorRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
         }

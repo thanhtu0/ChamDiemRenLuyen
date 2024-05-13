@@ -10,8 +10,8 @@ namespace TrainingScoring.Data.Repositories.Implementations
 {
     public class ProcessDetailRepository : Repository<ProcessDetail>, IProcessDetailRepository
     {
-        private readonly TrainingScroingDBContext _context;
-        public ProcessDetailRepository(TrainingScroingDBContext context) : base(context)
+        private readonly TrainingScoingDBContext _context;
+        public ProcessDetailRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
         }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace TrainingScoring.Data
 {
-    public class TrainingScroingDBContext : DbContext
+    public class TrainingScoingDBContext : DbContext
     {
-        public TrainingScroingDBContext(DbContextOptions<TrainingScroingDBContext> options) : base(options)
+        public TrainingScoingDBContext(DbContextOptions<TrainingScoingDBContext> options) : base(options)
         {
 
         }
@@ -20,11 +20,10 @@ namespace TrainingScoring.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Lecturer> Lecturers { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<LecturerRoleAssignment> LecturersRoleAssignments { get; set; }
+        public DbSet<LecturerRoleAssignment> LecturerRoleAssignments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Student> Students { get; set; }
-
         public DbSet<ProcessDetail> ProcessDetails { get; set; }
         public DbSet<ScoringProcess> ScoringProcesses { get; set; }
         public DbSet<ScoreDetail> Scores { get; set; }
@@ -37,14 +36,23 @@ namespace TrainingScoring.Data
         public DbSet<Proof> Proofs { get; set; }
         public DbSet<TrainingContentProof> TrainingContentProofs { get; set; }
         public DbSet<TrainingDetailProof> TraniningDetailProofs { get; set; }
-        public DbSet<Advisor> Advisors { get; set; }
+        public DbSet<GradeLecturerAssignment> GradeLecturerAssignments { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            // Define composite primary key for UserRole entity
+            modelBuilder.Entity<GradeLecturerAssignment>()
+                .HasKey(glr => new { glr.LecturerId, glr.GradeId });
 
-            // Define composite primary key for LecturerRoleAssignment entity
+            modelBuilder.Entity<GradeLecturerAssignment>()
+                .HasOne(gla => gla.Lecturer) 
+                .WithMany(l => l.GradeLecturerAssignments)
+                .HasForeignKey(gla => gla.LecturerId)
+                .OnDelete(DeleteBehavior.NoAction); 
+
+            // Define composite primary key for UserRole entity
             modelBuilder.Entity<LecturerRoleAssignment>()
                 .HasKey(llr => new { llr.LecturerId, llr.RoleId });
 
@@ -55,17 +63,6 @@ namespace TrainingScoring.Data
             // Define composite primary key for TraniningDetailProof entity
             modelBuilder.Entity<TrainingDetailProof>()
                 .HasKey(tdp => new { tdp.TrainingDetailId, tdp.ProofId });
-
-            // Define composite primary key for Advisor entity
-            modelBuilder.Entity<Advisor>()
-                .HasKey(a => new { a.LecturerId, a.GradeId });
-
-            // Configure relationship between Lecturer and Advisor entities
-            modelBuilder.Entity<Lecturer>()
-                .HasMany(l => l.Advisors)
-                .WithOne(a => a.Lecturer)
-                .HasForeignKey(l => l.LecturerId)
-                .OnDelete(DeleteBehavior.NoAction);
 
             // Configure relationship between Score and EvaluationForm entities
             modelBuilder.Entity<Score>()
@@ -78,7 +75,7 @@ namespace TrainingScoring.Data
             modelBuilder.Entity<Lecturer>()
                     .Property(s => s.Gender)
                     .HasConversion(
-                     v => v.ToString(), 
+                     v => v.ToString(),
                      v => (LecturerGender)Enum.Parse(typeof(LecturerGender), v));
 
             // Student gender (enum)

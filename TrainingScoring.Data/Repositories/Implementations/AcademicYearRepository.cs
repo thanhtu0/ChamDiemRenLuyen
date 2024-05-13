@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,8 @@ namespace TrainingScoring.Data.Repositories.Implementations
 {
     public class AcademicYearRepository : Repository<AcademicYear>, IAcademicYearRepository
     {
-        private readonly TrainingScroingDBContext _context;
-        public AcademicYearRepository(TrainingScroingDBContext context) : base(context)
+        private readonly TrainingScoingDBContext _context;
+        public AcademicYearRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
         }
