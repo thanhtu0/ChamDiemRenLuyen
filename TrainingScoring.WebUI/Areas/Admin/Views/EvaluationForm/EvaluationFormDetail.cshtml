@@ -106,15 +106,20 @@
                                 }
 
                             }
-                                @foreach (var directory in Model.TrainingDirectories)
+                            @foreach (var directory in Model.TrainingDirectories)
+                            {
+                                if (directory.TrainingContents != null && directory.TrainingContents.Any())
                                 {
                                     <tr class="bold-row training-directory">
                                         <td>@ToRoman(directory.Order)</td>
                                         <td>@directory.TrainingDirectoryName</td>
                                         <td colspan="4">
-                                            <a href="#" class="btn btn-flat btn-primary text-start">
-                                                <i class="fas fa-plus"></i> Thêm mới nội dung đánh giá
-                                            </a>
+                                            @if (directory.TrainingContents != null && directory.TrainingContents.Any())
+                                            {
+                                                <a href="#" class="btn btn-flat btn-primary text-start">
+                                                    <i class="fas fa-plus"></i> Thêm mới nội dung đánh giá
+                                                </a>
+                                            }
                                         </td>
                                     </tr>
                                     @if (directory.TrainingContents != null && directory.TrainingContents.Any())
@@ -199,54 +204,55 @@
                                         <td colspan="2"></td>
                                     </tr>
                                 }
-                                <tr class="training-total">
-                                    <td colspan="2" class="fw-bold text-end">Tổng điểm: (I + II +III +IV + V):0-100đ</td>
-                                    <td colspan="2" class="text-center">
-                                        @{
-                                            double totalDirectoryMaxScore = 0;
-                                            foreach (var directory in Model.TrainingDirectories)
-                                            {
-                                                totalDirectoryMaxScore += directory.MaxScore;
-                                            }
-                                            @totalDirectoryMaxScore
+                            }
+                            <tr class="training-total">
+                                <td colspan="2" class="fw-bold text-end">Tổng điểm: (I + II +III +IV + V):0-100đ</td>
+                                <td colspan="2" class="text-center">
+                                    @{
+                                        double totalDirectoryMaxScore = 0;
+                                        foreach (var directory in Model.TrainingDirectories)
+                                        {
+                                            totalDirectoryMaxScore += directory.MaxScore;
                                         }
-                                    </td>
-                                    <td colspan="2"></td>
-                                </tr>
-                                <tr class="training-total">
-                                    <td colspan="2" class="fw-bold text-end">Xếp loại:</td>
-                                    <td colspan="2" class="text-center">
-                                        @{
-                                            string classification = "";
-                                            if (totalDirectoryMaxScore >= 90 && totalDirectoryMaxScore <= 100)
-                                            {
-                                                classification = "Xuất sắc";
-                                            }
-                                            else if (totalDirectoryMaxScore >= 80 && totalDirectoryMaxScore <= 89)
-                                            {
-                                                classification = "Tốt";
-                                            }
-                                            else if (totalDirectoryMaxScore >= 65 && totalDirectoryMaxScore <= 79)
-                                            {
-                                                classification = "Khá";
-                                            }
-                                            else if (totalDirectoryMaxScore >= 50 && totalDirectoryMaxScore <= 64)
-                                            {
-                                                classification = "Trung bình";
-                                            }
-                                            else if (totalDirectoryMaxScore >= 35 && totalDirectoryMaxScore <= 49)
-                                            {
-                                                classification = "Yếu";
-                                            }
-                                            else if (totalDirectoryMaxScore < 35)
-                                            {
-                                                classification = "Kém";
-                                            }
-                                            @classification
+                                        @totalDirectoryMaxScore
+                                    }
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr class="training-total">
+                                <td colspan="2" class="fw-bold text-end">Xếp loại:</td>
+                                <td colspan="2" class="text-center">
+                                    @{
+                                        string classification = "";
+                                        if (totalDirectoryMaxScore >= 90 && totalDirectoryMaxScore <= 100)
+                                        {
+                                            classification = "Xuất sắc";
                                         }
-                                    </td>
-                                    <td colspan="2"></td>
-                                </tr>
+                                        else if (totalDirectoryMaxScore >= 80 && totalDirectoryMaxScore <= 89)
+                                        {
+                                            classification = "Tốt";
+                                        }
+                                        else if (totalDirectoryMaxScore >= 65 && totalDirectoryMaxScore <= 79)
+                                        {
+                                            classification = "Khá";
+                                        }
+                                        else if (totalDirectoryMaxScore >= 50 && totalDirectoryMaxScore <= 64)
+                                        {
+                                            classification = "Trung bình";
+                                        }
+                                        else if (totalDirectoryMaxScore >= 35 && totalDirectoryMaxScore <= 49)
+                                        {
+                                            classification = "Yếu";
+                                        }
+                                        else if (totalDirectoryMaxScore < 35)
+                                        {
+                                            classification = "Kém";
+                                        }
+                                        @classification
+                                    }
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
