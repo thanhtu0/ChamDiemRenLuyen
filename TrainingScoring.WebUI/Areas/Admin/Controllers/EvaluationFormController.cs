@@ -16,11 +16,11 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
         private readonly ITrainingDetailService _trainingDetailService;
         private readonly IAcademicYearService _academicYearService;
 
-        public EvaluationFormController(ILogger<EvaluationFormController> logger, 
-            IEvaluationFormService evaluationFormService, 
-            ITrainingDirectoryService trainingDirectoryService, 
-            ITrainingContentService trainingContentService, 
-            ITrainingDetailService trainingDetailService, 
+        public EvaluationFormController(ILogger<EvaluationFormController> logger,
+            IEvaluationFormService evaluationFormService,
+            ITrainingDirectoryService trainingDirectoryService,
+            ITrainingContentService trainingContentService,
+            ITrainingDetailService trainingDetailService,
             IAcademicYearService academicYearService)
         {
             _logger = logger;
@@ -253,7 +253,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-
         #region Create, Update, Delete TrainingDirectory
         public IActionResult CreateTrainingDirectory(int evaluationFormId)
         {
@@ -271,11 +270,11 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var maxOrder = await _trainingDirectoryService.GetMaxOrderAsync(); 
+                    var maxOrder = await _trainingDirectoryService.GetMaxOrderAsync();
 
                     if (viewModel.Order > maxOrder)
                     {
-                        viewModel.Order = maxOrder + 1; // Mặc định là MaxOrder + 1
+                        viewModel.Order = maxOrder + 1; 
                     }
 
                     var trainingDirectory = viewModel.ToTrainingDirectory();
@@ -322,11 +321,11 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
                 var viewModel = new TrainingDirectoryViewModel
                 {
-                    // Truyền dữ liệu của Training Directory vào view model
                     TrainingDirectoryId = trainingDirectory.TrainingDirectoryId,
                     EvaluationFormId = trainingDirectory.EvaluationFormId,
                     TrainingDirectoryName = trainingDirectory.TrainingDirectoryName,
-                    Order = trainingDirectory.Order
+                    Order = trainingDirectory.Order,
+                    MaxScore = trainingDirectory.MaxScore // Thêm MaxScore vào nếu cần
                 };
 
                 return View(viewModel);
@@ -345,31 +344,48 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Thực hiện cập nhật thông tin của Training Directory
+                    // Kiểm tra tên trùng lặp
+                    var isNameDuplicate = await _trainingDirectoryService.IsNameDuplicateAsync(viewModel.TrainingDirectoryId, viewModel.EvaluationFormId, viewModel.TrainingDirectoryName);
+                    if (isNameDuplicate)
+                    {
+                        ModelState.AddModelError("TrainingDirectoryName", "Training Directory Name already exists.");
+                        return View(viewModel);
+                    }
+
+                    // Lấy giá trị MaxOrder hiện tại
+                    var maxOrder = await _trainingDirectoryService.GetMaxOrderAsync();
+
+                    // Điều chỉnh Order nếu cần thiết
+                    if (viewModel.Order > maxOrder)
+                    {
+                        viewModel.Order = maxOrder + 1;
+                    }
+
                     var updatedTrainingDirectory = await _trainingDirectoryService.UpdateTrainingDirectoryAsync(viewModel.ToTrainingDirectory());
 
                     if (updatedTrainingDirectory != null)
                     {
-                        // Chuyển hướng người dùng đến trang chi tiết của phiếu đánh giá
                         return RedirectToAction("EvaluationFormDetail", new { id = viewModel.EvaluationFormId });
                     }
                     else
                     {
-                        // Xử lý khi cập nhật không thành công
                         TempData["ErrorMessage"] = "Failed to update training directory.";
-                        return RedirectToAction("UpdateTrainingDirectory", new { id = viewModel.TrainingDirectoryId });
                     }
                 }
-                else
-                {
-                    // Xử lý khi dữ liệu không hợp lệ
-                    return View(viewModel);
-                }
+
+                // Nếu dữ liệu không hợp lệ hoặc cập nhật không thành công, hiển thị lại view với view model hiện tại và lỗi
+                return View(viewModel);
+            }
+            catch (ApplicationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(viewModel);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error: {ex.Message}");
-                throw;
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the training directory.");
+                return View(viewModel);
             }
         }
 
@@ -427,7 +443,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
                     if (viewModel.Order > maxOrder)
                     {
-                        viewModel.Order = maxOrder + 1; 
+                        viewModel.Order = maxOrder + 1;
                     }
 
                     var trainingContent = viewModel.ToTrainingContent();

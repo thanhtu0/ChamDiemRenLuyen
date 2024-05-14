@@ -5,6 +5,7 @@ namespace TrainingScoring.WebUI.Models
 {
     public class TrainingDirectoryViewModel
     {
+        //
         public int EvaluationFormId { get; set; }
         public int TrainingDirectoryId { get; set; }
         public int Order { get; set; }

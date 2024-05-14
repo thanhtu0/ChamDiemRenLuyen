@@ -22,23 +22,26 @@ builder.Services.AddDbContext<TrainingScoingDBContext>(
 );
 
 builder.Services.AddScoped<ILogger<EvaluationFormService>, Logger<EvaluationFormService>>();
-//builder.Services.AddScoped<ILogger<TrainingDirectoryService>, Logger<TrainingDirectoryService>>();
-//builder.Services.AddScoped<ILogger<TrainingContentService>, Logger<TrainingContentService>>();
+builder.Services.AddScoped<ILogger<TrainingDirectoryService>, Logger<TrainingDirectoryService>>();
+builder.Services.AddScoped<ILogger<TrainingContentService>, Logger<TrainingContentService>>();
 //builder.Services.AddScoped<ILogger<TrainingDetailService>, Logger<TrainingDetailService>>();
 
 builder.Services.AddTransient<IEvaluationFormService, EvaluationFormService>();
 builder.Services.AddTransient<ITrainingDirectoryService, TrainingDirectoryService>();
 builder.Services.AddTransient<ITrainingContentService, TrainingContentService>();
 builder.Services.AddTransient<ITrainingDetailService, TrainingDetailService>();
+builder.Services.AddTransient<IAcademicYearService, AcademicYearService>();
 
 builder.Services.AddTransient<IEvaluationFormRepository, EvaluationFormRepository>();
 builder.Services.AddTransient<ITrainingDirectoryRepository, TrainingDirectoryRepository>();
 builder.Services.AddTransient<ITrainingContentRepository, TrainingContentRepository>();
 builder.Services.AddTransient<ITrainingDetailRepository, TrainingDetailRepository>();
+builder.Services.AddTransient<IAcademicYearRepository, AcademicYearRepository>();
+
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
 
-////Khong su dung thong bao mac dinh cho gia tri Null
+//Khong su dung thong bao mac dinh cho gia tri Null
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(option =>
     {
@@ -57,9 +60,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(option =>
 {
-   option.IdleTimeout = TimeSpan.FromMinutes(60);
-   option.Cookie.HttpOnly = true;
-   option.Cookie.IsEssential = true;
+    option.IdleTimeout = TimeSpan.FromMinutes(60);
+    option.Cookie.HttpOnly = true;
+    option.Cookie.IsEssential = true;
 });
 
 
@@ -86,9 +89,16 @@ app.UseSession();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllerRoute(
-      name: "areas",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    endpoints.MapAreaControllerRoute(
+        name: "areasAdmin",
+        areaName: "Admin",
+        pattern: "admin/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapAreaControllerRoute(
+        name: "areaStudent",
+        areaName: "Student",
+        pattern: "student/{controller=Home}/{action=Index}/{id?}"
     );
 });
 
@@ -97,10 +107,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 //Khởi tạo cấu hình cho ApplicationContext
- ApplicationContext.Configure
+ApplicationContext.Configure
 (
-    httpContextAccessor: app.Services.GetRequiredService<IHttpContextAccessor>(),
-    hostEnvironment: app.Services.GetService<IWebHostEnvironment>()
+   httpContextAccessor: app.Services.GetRequiredService<IHttpContextAccessor>(),
+   hostEnvironment: app.Services.GetService<IWebHostEnvironment>()
 );
 
 app.Run();
