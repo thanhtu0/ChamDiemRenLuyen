@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
     public enum SemesterType
     {
-        First,  // 0
-        Second, // 1
+        First = 1,  
+        Second = 2, 
     }
     [Table("AcademicYears")]
     public class AcademicYear

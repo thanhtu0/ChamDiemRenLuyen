@@ -98,6 +98,20 @@ namespace TrainingScoring.Data
                     .HasConversion(
                      v => v.ToString(),
                      v => (SemesterType)Enum.Parse(typeof(SemesterType), v));
+
+            // TypeofScoreContent (enum)
+            modelBuilder.Entity<TrainingContent>()
+                    .Property(tc => tc.TypeofScore)
+                    .HasConversion(
+                     v => v.ToString(),
+                     v => (TypeofScoreContent)Enum.Parse(typeof(TypeofScoreContent), v));
+
+            // TypeofScoreDetail (enum)
+            modelBuilder.Entity<TrainingDetail>()
+                    .Property(td => td.TypeofScore)
+                    .HasConversion(
+                     v => v.ToString(),
+                     v => (TypeofScoreDetail)Enum.Parse(typeof(TypeofScoreDetail), v));
         }
     }
 }

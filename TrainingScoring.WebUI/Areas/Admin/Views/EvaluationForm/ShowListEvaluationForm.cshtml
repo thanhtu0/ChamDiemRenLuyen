@@ -1,7 +1,9 @@
-﻿@model TrainingScoring.WebUI.Models.EvaluationFormViewModel;
+﻿@model TrainingScoring.WebUI.Models.EvaluationFormViewModel
+
 @{
     ViewData["Title"] = "Quản lý phiếu đánh giá rèn luyện";
 }
+
 <head>
     <style>
         th:nth-child(1),
@@ -9,7 +11,7 @@
         th:nth-child(3),
         th:nth-child(4),
         td:nth-child(1),
-        td:nth-child(3), 
+        td:nth-child(3),
         td:nth-child(4) {
             vertical-align: middle;
             text-align: center;
@@ -41,7 +43,7 @@
                     </th>
                     </thead>
                     <tbody>
-                        @foreach (var evaluationForm in Model.EvaluationForms)
+                        @foreach (var evaluationForm in Model.EvaluationForms.OrderBy(ef => ef.EvaluationFormCode))
                         {
                             <tr>
                                 <td>@evaluationForm.EvaluationFormCode</td>
@@ -50,8 +52,10 @@
                                     <a asp-action="EvaluationFormDetail" asp-route-id="@evaluationForm.EvaluationFormId" class="text-decoration-none">Xem chi tiết</a>
                                 </td>
                                 <td>
-                                    <a href="#"><i class="fas fa-edit text-info"></i></a>
-                                    <a href="#" style="margin-left: 15px;"><i class="fas fa-trash text-danger"></i></a>
+                                    <a asp-action="UpdateEvaluationForm" asp-route-id="@evaluationForm.EvaluationFormId" class="text-decoration-none"><i class="fas fa-edit text-info"></i></a>
+                                    <a href="#" class="text-decoration-none delete-evaluation-form" data-id="@evaluationForm.EvaluationFormId" style="margin-left: 15px;">
+                                        <i class="fas fa-trash text-danger"></i>
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -60,4 +64,45 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="deleteConfirmationModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa phiếu đánh giá này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-mdb-ripple-init id="confirmDeleteButton">Xóa</button>
+                    <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-bs-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deleteButtons = document.querySelectorAll('.delete-evaluation-form');
+            var confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            var deleteUrl = '';
+
+            deleteButtons.forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    var id = button.getAttribute('data-id');
+                    deleteUrl = '/Admin/EvaluationForm/DeleteEvaluationForm/' + id;
+                    var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+                    myModal.show();
+                });
+            });
+
+            confirmDeleteButton.addEventListener('click', function () {
+                window.location.href = deleteUrl;
+            });
+        });
+    </script>
 </body>

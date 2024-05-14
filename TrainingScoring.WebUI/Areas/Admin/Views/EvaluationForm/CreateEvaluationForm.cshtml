@@ -1,29 +1,55 @@
 ﻿@model TrainingScoring.WebUI.Models.EvaluationFormDetailsViewModel
 
-<h2>Create New Evaluation Form</h2>
+@{
+    ViewData["Title"] = "Thêm mới Phiếu đánh giá";
+}
 
-<form asp-action="CreateEvaluationForm" method="post">
-    <div class="mb-3">
-        <label for="EvaluationFormCode" class="form-label">Evaluation Form Code</label>
-        <input asp-for="EvaluationFormCode" class="form-control" id="EvaluationFormCode" />
-        <span asp-validation-for="EvaluationFormCode" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="EvaluationFormName" class="form-label">Evaluation Form Name</label>
-        <input asp-for="EvaluationFormName" class="form-control" id="EvaluationFormName" />
-        <span asp-validation-for="EvaluationFormName" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="AcademicYearId" class="form-label">Academic Year</label>
-        <select asp-for="AcademicYearId" class="form-select" id="AcademicYearId">
-            <option value="">Select Academic Year</option>
-            @foreach (var academicYear in Model.AcademicYears)
-            {
-                <option value="@academicYear.AcademicYearId">@academicYear.SemesterCode</option>
-            }
-        </select>
-        <span asp-validation-for="AcademicYearId" class="text-danger"></span>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="card">
+    <div class="card-header border-bottom-1 border-primary">
+        <h2>Thêm mới Phiếu đánh giá rèn luyện</h2>
+    </div>
+    <div class="card-body">
+        @if (ViewData.ModelState.ContainsKey(string.Empty))
+        {
+            <div class="alert alert-danger">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            </div>
+        }
+        <form asp-action="CreateEvaluationForm" method="post">
+            <div class="mb-3">
+                <label for="EvaluationFormCode" class="form-label">Mã phiếu:</label>
+                <input asp-for="EvaluationFormCode" class="form-control" id="EvaluationFormCode" />
+                <span asp-validation-for="EvaluationFormCode" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="EvaluationFormName" class="form-label">Tên phiếu:</label>
+                <input asp-for="EvaluationFormName" class="form-control" id="EvaluationFormName" />
+                <span asp-validation-for="EvaluationFormName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="AcademicYearId" class="form-label">Năm học / Học kỳ</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="academicYearAddon">
+                        <i class="far fa-calendar"></i>
+                    </span>
+                    <select asp-for="AcademicYearId" class="form-select" id="AcademicYearId" aria-describedby="academicYearAddon">
+                        <option value="">Chọn năm học / học kỳ</option>
+                        @foreach (var academicYear in Model.AcademicYears.OrderBy(ay => ay.SemesterCode))
+                        {
+                            <option value="@academicYear.AcademicYearId">@academicYear.SemesterCode</option>
+                        }
+                    </select>
+                </div>
+                <span asp-validation-for="AcademicYearId" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Lưu phiếu đánh giá
+            </button>
+            <a href="~/Admin/EvaluationForm/ShowListEvaluationForm" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

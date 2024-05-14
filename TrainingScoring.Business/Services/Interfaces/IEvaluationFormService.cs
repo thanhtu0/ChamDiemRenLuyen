@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrainingScoring.Business.Services.Utilities;
-using TrainingScoring.Data.Repositories.Interfaces;
-using TrainingScoring.DomainModels;
+﻿using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Business.Services.Interfaces
 {
@@ -18,6 +11,9 @@ namespace TrainingScoring.Business.Services.Interfaces
         Task<EvaluationForm> CreateEvaluationFormAsync(EvaluationForm evaluationForm);
         Task<EvaluationForm> UpdateEvaluationFormAsync(EvaluationForm evaluationForm);
         Task<EvaluationForm> DeleteEvaluationFormAsync(EvaluationForm evaluationForm);
+        Task<bool> IsEvaluationFormExists(int id);
+        Task<EvaluationForm> GetByCodeAsync(string code);
+
         #endregion
     }
 }

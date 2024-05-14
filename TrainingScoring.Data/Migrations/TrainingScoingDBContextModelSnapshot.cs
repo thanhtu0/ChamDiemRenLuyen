@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingScoring.Data;
 
@@ -12,10 +11,9 @@ using TrainingScoring.Data;
 namespace TrainingScoring.Data.Migrations
 {
     [DbContext(typeof(TrainingScoingDBContext))]
-    [Migration("20240509072303_ChangeName")]
-    partial class ChangeName
+    partial class TrainingScoingDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,11 +102,11 @@ namespace TrainingScoring.Data.Migrations
 
             modelBuilder.Entity("TrainingScoring.DomainModels.EvaluationForm", b =>
                 {
-                    b.Property<int>("EvalutionFormId")
+                    b.Property<int>("EvaluationFormId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EvalutionFormId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EvaluationFormId"), 1L, 1);
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("int");
@@ -119,19 +117,16 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EvaluationFormCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EvaluationFormName")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("EvalutionFormCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("EvalutionFormId");
+                    b.HasKey("EvaluationFormId");
 
                     b.HasIndex("AcademicYearId");
 
@@ -349,6 +344,11 @@ namespace TrainingScoring.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"), 1L, 1);
 
+                    b.Property<string>("RoleDescription")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -508,9 +508,6 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsProof")
                         .HasColumnType("bit");
 
@@ -527,6 +524,10 @@ namespace TrainingScoring.Data.Migrations
 
                     b.Property<int>("TrainingDirectoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TypeofScore")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TrainingContentId");
 
@@ -548,9 +549,6 @@ namespace TrainingScoring.Data.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("TrainingContentId", "ProofId");
 
@@ -574,9 +572,6 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsProof")
                         .HasColumnType("bit");
 
@@ -593,6 +588,10 @@ namespace TrainingScoring.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("TypeofScore")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TrainingDetailId");
 
@@ -614,9 +613,6 @@ namespace TrainingScoring.Data.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("TrainingDetailId", "ProofId");
 
@@ -642,9 +638,6 @@ namespace TrainingScoring.Data.Migrations
 
                     b.Property<int>("EvaluationFormId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("MaxScore")
                         .HasColumnType("int");

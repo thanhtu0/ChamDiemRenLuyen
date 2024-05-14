@@ -1,0 +1,59 @@
+﻿@model TrainingScoring.WebUI.Models.TrainingContentViewModel
+@using TrainingScoring.DomainModels
+
+
+@{
+    ViewData["Title"] = "Thêm mới Nội dung rèn luyện";
+}
+
+<div class="card mx-auto" style="max-width: 1040px;">
+    <div class="card-header border-bottom-1 border-primary">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateTrainingContent">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TrainingDirectoryId" />
+
+            <div class="mb-3">
+                <label for="Order" class="form-label">Vị trí:</label>
+                <input asp-for="Order" class="form-control" id="Order" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="TrainingContentName" class="form-label">Tên Nội dung rèn luyện:</label>
+                <input asp-for="TrainingContentName" class="form-control" id="TrainingContentName" />
+                <span asp-validation-for="TrainingContentName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="MaxScore" class="form-label">Điểm tối đa:</label>
+                <input asp-for="MaxScore" class="form-control" id="MaxScore" />
+                <span asp-validation-for="MaxScore" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="IsProof" class="form-check-input" id="IsProof" />
+                <label class="form-check-label" for="IsProof">Minh chứng</label>
+            </div>
+
+            <div class="mb-3">
+                <label for="TypeOfScore" class="form-label">Chấm theo dạng:</label>
+                <select asp-for="TypeofScore" class="form-control" id="TypeOfScore">
+                    @foreach (var value in Enum.GetValues(typeof(TypeofScoreContent)))
+                    {
+                        <option value="@value">@value</option>
+                    }
+                </select>
+            </div>
+
+
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Tạo mới</button>
+                <a href="~/Admin/EvaluationForm/EvaluationFormDetail/@Model.TrainingDirectoryId" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

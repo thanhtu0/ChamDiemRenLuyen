@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using TrainingScoring.Data.Repositories.Interfaces;
 using TrainingScoring.DomainModels;
 
@@ -14,6 +10,23 @@ namespace TrainingScoring.Data.Repositories.Implementations
         public EvaluationFormRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<EvaluationForm> CreateAsync(EvaluationForm evaluationForm)
+        {
+            _context.Set<EvaluationForm>().Add(evaluationForm);
+            await _context.SaveChangesAsync();
+            return evaluationForm;
+        }
+
+        public async Task<EvaluationForm> GetByCodeAsync(string code)
+        {
+            return await _context.EvaluationForms.FirstOrDefaultAsync(e => e.EvaluationFormCode == code);
+        }
+
+        public async Task<EvaluationForm> GetByNameAsync(string name)
+        {
+            return await _context.EvaluationForms.FirstOrDefaultAsync(e => e.EvaluationFormName == name);
         }
     }
 }

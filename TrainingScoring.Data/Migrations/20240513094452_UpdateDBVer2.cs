@@ -4,7 +4,7 @@
 
 namespace TrainingScoring.Data.Migrations
 {
-    public partial class ChangeName : Migration
+    public partial class UpdateDBVer2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

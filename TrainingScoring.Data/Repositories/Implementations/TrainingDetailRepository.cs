@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using TrainingScoring.Data.Repositories.Interfaces;
 using TrainingScoring.DomainModels;
 
@@ -14,6 +10,12 @@ namespace TrainingScoring.Data.Repositories.Implementations
         public TrainingDetailRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<List<TrainingDetail>> GetAllTrainingDetailByContentId(int id)
+        {
+            var details = await _context.TrainingDetails.Where(c => c.TrainingContentId == id).ToListAsync();
+            return details;
         }
     }
 }

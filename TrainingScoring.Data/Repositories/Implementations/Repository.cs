@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TrainingScoring.Data.Repositories.Interfaces;
-using TrainingScoring.DomainModels.Interfaces;
 
 namespace TrainingScoring.Data.Repositories.Implementations
 {
@@ -44,11 +38,7 @@ namespace TrainingScoring.Data.Repositories.Implementations
 
         public async Task<int> DeleteAsync(T entity)
         {
-            if (entity is ISoftDelete)
-            {
-                ((ISoftDelete)entity).IsDeleted = true;
-            }
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Set<T>().Remove(entity);
             return await _context.SaveChangesAsync();
         }
     }

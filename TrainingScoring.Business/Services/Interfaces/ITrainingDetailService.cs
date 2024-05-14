@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrainingScoring.DomainModels;
+﻿using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Business.Services.Interfaces
 {
@@ -12,10 +7,11 @@ namespace TrainingScoring.Business.Services.Interfaces
         // TrainingDetail
         #region TrainingDetail
         Task<List<TrainingDetail>> GetAllTrainingDetailsAsync();
-        Task<TrainingDetail> GetTrainingDetailsByIdAsync(int id);
-        Task<TrainingDetail> CreateTrainingDetailsAsync(TrainingDetail trainingDetail);
-        Task<TrainingDetail> UpdateTrainingDetailsAsync(TrainingDetail trainingDetail);
-        Task<TrainingDetail> DeleteTrainingDetailsAsync(TrainingDetail trainingDetail);
+        Task<TrainingDetail> GetTrainingDetailByIdAsync(int id);
+        Task<List<TrainingDetail>> GetAllTrainingDetailByContentId(int id);
+        Task<TrainingDetail> CreateTrainingDetailAsync(TrainingDetail trainingDetail);
+        Task<TrainingDetail> UpdateTrainingDetailAsync(TrainingDetail trainingDetail);
+        Task<TrainingDetail> DeleteTrainingDetailAsync(TrainingDetail trainingDetail);
         #endregion
     }
 }

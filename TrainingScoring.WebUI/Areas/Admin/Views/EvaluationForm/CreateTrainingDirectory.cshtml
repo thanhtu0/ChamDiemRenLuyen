@@ -1,0 +1,40 @@
+﻿@model TrainingScoring.WebUI.Models.TrainingDirectoryViewModel
+
+@{
+    ViewData["Title"] = "Thêm mới Danh mục rèn luyện";
+}
+
+<div class="card mx-auto" style="max-width: 1040px;">
+    <div class="card-header border-bottom-1 border-primary">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateTrainingDirectory">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EvaluationFormId" />
+
+            <div class="mb-3">
+                <label for="Order" class="form-label">Vị trí:</label>
+                <input asp-for="Order" class="form-control" id="Order" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="TrainingDirectoryName" class="form-label">Tên Danh mục rèn luyện:</label>
+                <input asp-for="TrainingDirectoryName" class="form-control" id="TrainingDirectoryName" />
+                <span asp-validation-for="TrainingDirectoryName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="MaxScore" class="form-label">Điểm tối đa:</label>
+                <input asp-for="MaxScore" class="form-control" id="MaxScore" />
+                <span asp-validation-for="MaxScore" class="text-danger"></span>
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Tạo mới</button>
+                <a href="~/Admin/EvaluationForm/EvaluationFormDetail/@Model.EvaluationFormId" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

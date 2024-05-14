@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
     public enum StudentGender
     {
-        Male,       // 0
-        Female      // 1
+        Male = 0,       // 0
+        Female = 1      // 1
     }
     public enum Classmittee
     {
-        Student,// 0
-        Class_Monitor,  // 1
-        Vice_Monitor,   // 2
-        Secretary     // 3
+        Student = 0,
+        Class_Monitor = 1,  
+        Vice_Monitor = 2,  
+        Secretary = 3    
     }
+
     [Table("Students")]
     public class Student
     {

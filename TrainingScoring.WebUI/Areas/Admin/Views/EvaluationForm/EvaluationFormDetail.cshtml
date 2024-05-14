@@ -1,6 +1,11 @@
 ﻿@model TrainingScoring.WebUI.Models.EvaluationFormDetailsViewModel;
 @{
     ViewData["Title"] = "EvaluationFormDetail";
+
+    // Tách năm học và học kỳ từ EvaluationFormCode
+    string[] parts = Model.EvaluationFormCode.Split('.');
+    string academicYear = parts[0]; // Năm học
+    string semester = parts[1]; // Học kỳ
 }
 
 <head>
@@ -61,15 +66,15 @@
                 <h3 class="text-uppercase">Quản lý nội dung đánh giá rèn luyện</h3>
             </div>
             <div class="card-body">
-                <h4 class="text-uppercase">Nội dung phiếu đánh giá</h4>
-                <div class="table-responsive">
+                <h4 class="text-uppercase text-center">Nội dung phiếu đánh giá năm học @academicYear Học kỳ @semester</h4>
+                <div class="table-responsive mt-3">
                     <table class="table table-bordered">
                         <thead class="training-title table-dark training-title">
                         <th colspan="2" style="width: 65%;">Nội dung đánh giá</th>
                         <th colspan="2" style="width: 17.5%;">Điểm rèn luyện / minh chứng</th>
                         <th colspan="2" style="width: 17.5%;">
-                            <a href="#" class="btn btn-flat btn-primary text-start">
-                                <i class="fas fa-plus"></i> Thêm mới danh mục
+                            <a href="@Url.Action("CreateTrainingDirectory", "EvaluationForm", new { evaluationFormId = Model.EvaluationFormId })" class="btn btn-flat btn-primary text-start">
+                                <i class="fas fa-plus"></i> Danh mục
                             </a>
                         </th>
                         </thead>
@@ -106,159 +111,236 @@
                                 }
 
                             }
-                            @foreach (var directory in Model.TrainingDirectories)
-                            {
-                                if (directory.TrainingContents != null && directory.TrainingContents.Any())
+                            @{
+                                if (Model.TrainingDirectories != null && Model.TrainingDirectories.Any())
                                 {
-                                    <tr class="bold-row training-directory">
-                                        <td>@ToRoman(directory.Order)</td>
-                                        <td>@directory.TrainingDirectoryName</td>
-                                        <td colspan="4">
-                                            @if (directory.TrainingContents != null && directory.TrainingContents.Any())
-                                            {
-                                                <a href="#" class="btn btn-flat btn-primary text-start">
-                                                    <i class="fas fa-plus"></i> Thêm mới nội dung đánh giá
-                                                </a>
-                                            }
-                                        </td>
-                                    </tr>
-                                    @if (directory.TrainingContents != null && directory.TrainingContents.Any())
+                                    @foreach (var directory in Model.TrainingDirectories.OrderBy(o => o.Order))
                                     {
-                                        foreach (var content in directory.TrainingContents)
+                                        if (directory.TrainingContents != null && directory.TrainingContents.Any())
                                         {
-                                            <tr class="training-content">
-                                                <td>@content.Order</td>
-                                                <td>@content.TrainingContentName</td>
-                                                @if (content.TrainingDetails == null)
-                                                {
-                                                    <td>@content.MaxScore</td>
-                                                }
-                                                else
-                                                {
-                                                    <td></td>
-                                                }
-                                                <td>
-                                                    @if (content.IsProof == true)
+                                            <tr class="bold-row training-directory">
+                                                <td>@ToRoman(directory.Order)</td>
+                                                <td>@directory.TrainingDirectoryName</td>
+                                                <td colspan="2">
+                                                    @if (directory.TrainingContents != null && directory.TrainingContents.Any())
                                                     {
-                                                        <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                        <a href="@Url.Action("CreateTrainingContent", "EvaluationForm", new { trainingDirectoryId = directory.TrainingDirectoryId })" class="btn btn-flat btn-primary text-start">
+                                                            <i class="fas fa-plus"></i> Nội dung đánh giá
+                                                        </a>
                                                     }
                                                 </td>
-                                                <td>
-                                                    <a href="#"><i class="fas fa-edit text-info"></i></a>
-                                                    <a href="#" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                <td colspan="2">
+                                                    <a href="@Url.Action("UpdateTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })"><i class="fas fa-edit text-info"></i></a>
+                                                    <a href="javascript:void(0);" onclick="showDeleteModal('@Url.Action("DeleteTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })')" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
                                                 </td>
                                             </tr>
-                                            @if (content.TrainingDetails != null && content.TrainingDetails.Any())
+                                            @if (directory.TrainingContents != null && directory.TrainingContents.Any())
                                             {
-                                                foreach (var detail in content.TrainingDetails)
+                                                foreach (var content in directory.TrainingContents)
                                                 {
-                                                    <tr class="training-details">
-                                                        <td>@ToAlphabet(detail.Order)</td>
-                                                        <td>@detail.TrainingDetailName</td>
-                                                        <td>@detail.MaxScore</td>
+                                                    <tr class="training-content">
+                                                        <td>@content.Order</td>
+                                                        <td>@content.TrainingContentName</td>
+                                                        @if (content.TrainingDetails == null)
+                                                        {
+                                                            <td>@content.MaxScore</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
                                                         <td>
                                                             @if (content.IsProof == true)
                                                             {
-                                                                @if (detail.IsProof == true)
-                                                                {
-                                                                    <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <input type="checkbox" class="checkBox" name="is_MinhChung">
-                                                                }
+                                                                <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
                                                             }
                                                             else
                                                             {
-
+                                                                <input type="checkbox" class="checkBox" name="is_MinhChung">
                                                             }
                                                         </td>
-                                                        <td>
+                                                        <td colspan="2">
                                                             <a href="#"><i class="fas fa-edit text-info"></i></a>
                                                             <a href="#" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
                                                         </td>
                                                     </tr>
+                                                    @if (content.TrainingDetails != null && content.TrainingDetails.Any())
+                                                    {
+                                                        foreach (var detail in content.TrainingDetails)
+                                                        {
+                                                            <tr class="training-details">
+                                                                <td>@ToAlphabet(detail.Order)</td>
+                                                                <td>@detail.TrainingDetailName</td>
+                                                                <td>@detail.MaxScore</td>
+                                                                <td>
+                                                                    @if (content.IsProof == true)
+                                                                    {
+                                                                        @if (detail.IsProof == true)
+                                                                        {
+                                                                            <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"><i class="fas fa-edit text-info"></i></a>
+                                                                    <a href="#" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    @if (directory.TrainingContents.Any() && content.TrainingDetails != null && content.TrainingDetails.Any())
+                                                    {
+                                                        <tr>
+                                                            <td></td>
+                                                            <td colspan="5" class="text-start">
+                                                                <a href="#" class="btn btn-flat btn-primary text-start">
+                                                                    <i class="fas fa-plus"></i> Chi tiết đánh giá 
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                 }
                                             }
-                                            @if (directory.TrainingContents.Any() && content.TrainingDetails != null && content.TrainingDetails.Any())
-                                            {
-                                                <tr>
-                                                    <td></td>
-                                                    <td colspan="5" class="text-start">
-                                                        <a href="#" class="btn btn-flat btn-primary text-start">
-                                                            <i class="fas fa-plus"></i> Thêm mới chi tiết đánh giá
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            }
+                                            <tr>
+                                                <td></td>
+                                                <td class="fw-bold text-end">Tổng:</td>
+                                                <td colspan="2">@directory.MaxScore</td>
+                                                <td colspan="2"></td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr class="bold-row training-directory">
+                                                <td>@ToRoman(directory.Order)</td>
+                                                <td>@directory.TrainingDirectoryName</td>
+                                                <td colspan="2">
+                                                    <a href="@Url.Action("CreateTrainingContent", "EvaluationForm", new { trainingDirectoryId = directory.TrainingDirectoryId })" class="btn btn-flat btn-primary text-start">
+                                                        <i class="fas fa-plus"></i> Nội dung đánh giá
+                                                    </a>
+                                                </td>
+                                                <td colspan="2">
+                                                    <a href="@Url.Action("UpdateTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })"><i class="fas fa-edit text-info"></i></a>
+                                                    <a href="javascript:void(0);" onclick="showDeleteModal('@Url.Action("DeleteTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })')" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="text-start">Chưa có nội dung đánh giá</td>
+                                            </tr>
                                         }
                                     }
-                                    <tr>
-                                        <td></td>
-                                        <td class="fw-bold text-end">Tổng:</td>
-                                        <td colspan="2">@directory.MaxScore</td>
+                                    <tr class="training-total">
+                                        <td colspan="2" class="fw-bold text-end">Tổng điểm: (I + II +III +IV + V):0-100đ</td>
+                                        <td colspan="2" class="text-center">
+                                            @{
+                                                double totalDirectoryMaxScore = 0;
+                                                foreach (var directory in Model.TrainingDirectories)
+                                                {
+                                                    totalDirectoryMaxScore += directory.MaxScore;
+                                                }
+                                                @totalDirectoryMaxScore
+                                            }
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr class="training-total">
+                                        <td colspan="2" class="fw-bold text-end">Xếp loại:</td>
+                                        <td colspan="2" class="text-center">
+                                            @{
+                                                string classification = "";
+                                                if (totalDirectoryMaxScore >= 90 && totalDirectoryMaxScore <= 100)
+                                                {
+                                                    classification = "Xuất sắc";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 80 && totalDirectoryMaxScore <= 89)
+                                                {
+                                                    classification = "Tốt";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 65 && totalDirectoryMaxScore <= 79)
+                                                {
+                                                    classification = "Khá";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 50 && totalDirectoryMaxScore <= 64)
+                                                {
+                                                    classification = "Trung bình";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 35 && totalDirectoryMaxScore <= 49)
+                                                {
+                                                    classification = "Yếu";
+                                                }
+                                                else if (totalDirectoryMaxScore < 35)
+                                                {
+                                                    classification = "Kém";
+                                                }
+                                                @classification
+                                            }
+                                        </td>
                                         <td colspan="2"></td>
                                     </tr>
                                 }
+                                else
+                                {
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center">Chưa có nội dung đánh giá</td>
+                                        </tr>
+                                    }
+                                }
                             }
-                            <tr class="training-total">
-                                <td colspan="2" class="fw-bold text-end">Tổng điểm: (I + II +III +IV + V):0-100đ</td>
-                                <td colspan="2" class="text-center">
-                                    @{
-                                        double totalDirectoryMaxScore = 0;
-                                        foreach (var directory in Model.TrainingDirectories)
-                                        {
-                                            totalDirectoryMaxScore += directory.MaxScore;
-                                        }
-                                        @totalDirectoryMaxScore
-                                    }
-                                </td>
-                                <td colspan="2"></td>
-                            </tr>
-                            <tr class="training-total">
-                                <td colspan="2" class="fw-bold text-end">Xếp loại:</td>
-                                <td colspan="2" class="text-center">
-                                    @{
-                                        string classification = "";
-                                        if (totalDirectoryMaxScore >= 90 && totalDirectoryMaxScore <= 100)
-                                        {
-                                            classification = "Xuất sắc";
-                                        }
-                                        else if (totalDirectoryMaxScore >= 80 && totalDirectoryMaxScore <= 89)
-                                        {
-                                            classification = "Tốt";
-                                        }
-                                        else if (totalDirectoryMaxScore >= 65 && totalDirectoryMaxScore <= 79)
-                                        {
-                                            classification = "Khá";
-                                        }
-                                        else if (totalDirectoryMaxScore >= 50 && totalDirectoryMaxScore <= 64)
-                                        {
-                                            classification = "Trung bình";
-                                        }
-                                        else if (totalDirectoryMaxScore >= 35 && totalDirectoryMaxScore <= 49)
-                                        {
-                                            classification = "Yếu";
-                                        }
-                                        else if (totalDirectoryMaxScore < 35)
-                                        {
-                                            classification = "Kém";
-                                        }
-                                        @classification
-                                    }
-                                </td>
-                                <td colspan="2"></td>
-                            </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row justify-content-center justify-content-lg-end">
+                    <div class="col-auto">
+                        <div class="text-center">
+                            <a href="~/Admin/EvaluationForm/ShowListEvaluationForm" class="btn btn-primary btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                                <span class="text">Quay lại</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal xác nhận xóa -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa mục này không?
+                </div>
+                <div class="modal-footer">
+                    <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Xóa</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 </div>
             </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <script>
+        function showDeleteModal(deleteUrl) {
+            var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            confirmDeleteBtn.href = deleteUrl;
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
 </body>
 

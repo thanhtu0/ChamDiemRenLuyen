@@ -1,0 +1,36 @@
+﻿@model TrainingScoring.DomainModels.EvaluationForm
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Phiếu đánh giá";
+}
+
+
+
+<div class="card">
+    <div class="card-header border-bottom-1 border-primary">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="card-body">
+        <!-- Hiển thị tất cả thông báo lỗi nếu có -->
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <form asp-action="UpdateEvaluationForm" method="post">
+            <input type="hidden" asp-for="EvaluationFormId" />
+
+            <div class="mb-3">
+                <label for="EvaluationFormCode" class="form-label">Mã phiếu:</label>
+                <input asp-for="EvaluationFormCode" class="form-control" id="EvaluationFormCode" />
+                <span asp-validation-for="EvaluationFormCode" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="EvaluationFormName" class="form-label">Tên phiếu:</label>
+                <input asp-for="EvaluationFormName" class="form-control" id="EvaluationFormName" />
+                <span asp-validation-for="EvaluationFormName" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+            <a href="~/Admin/EvaluationForm/ShowListEvaluationForm" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
     public enum LecturerGender
     {
-        Male,   // 0
-        Female   // 1
+        Male = 0,  
+        Female = 1   
     }
     [Table("Lecturers")]
     public class Lecturer

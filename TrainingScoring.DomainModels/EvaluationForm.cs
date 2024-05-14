@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrainingScoring.DomainModels.Interfaces;
 
 namespace TrainingScoring.DomainModels
 {
     [Table("EvaluationForms")]
-    public class EvaluationForm : ISoftDelete
+    public class EvaluationForm 
     {
         [Key]
-        public int EvalutionFormId { get; set; }
+        public int EvaluationFormId { get; set; }
         [Required]
-        public string EvalutionFormCode { get; set; }
+        public string EvaluationFormCode { get; set; }
 
         [Required]
         [MaxLength(150)]
@@ -23,7 +17,6 @@ namespace TrainingScoring.DomainModels
 
         [DataType(DataType.DateTime)]
         public DateTime? CreateAt { get; set; }
-        public bool IsDeleted { get; set; } = false;
         [DataType(DataType.DateTime)]
         public DateTime? DeletedAt { get; set; }
 

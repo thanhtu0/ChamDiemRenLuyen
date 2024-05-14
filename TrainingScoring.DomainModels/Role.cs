@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrainingScoring.DomainModels
 {
@@ -17,6 +12,9 @@ namespace TrainingScoring.DomainModels
         [Required]
         [MaxLength(50)]
         public string RoleName { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string RoleDescription { get; set; }
 
         // Relationship
         public ICollection<LecturerRoleAssignment> LecturerRoleAssignments { get; set; }

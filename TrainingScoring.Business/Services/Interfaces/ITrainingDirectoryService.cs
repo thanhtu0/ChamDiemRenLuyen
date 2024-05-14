@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrainingScoring.DomainModels;
+﻿using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Business.Services.Interfaces
 {
@@ -13,9 +8,15 @@ namespace TrainingScoring.Business.Services.Interfaces
         #region TrainingDirectory
         Task<List<TrainingDirectory>> GetAllTrainingDirectoriesAsync();
         Task<TrainingDirectory> GetTrainingDirectoryByIdAsync(int id);
+        Task<List<TrainingDirectory>> GetAllTrainingDirectoryByEFormId(int id);
         Task<TrainingDirectory> CreateTrainingDirectoryAsync(TrainingDirectory trainingDirectory);
         Task<TrainingDirectory> UpdateTrainingDirectoryAsync(TrainingDirectory trainingDirectory);
         Task<TrainingDirectory> DeleteTrainingDirectoryAsync(TrainingDirectory trainingDirectory);
+        // Check Order and AdjustOrder
+        Task<int> GetMaxOrderAsync();
+        Task<bool> IsOrderOrNameDuplicateAsync(int evaluationFormId, int order, string name);
+        Task AdjustOrdersAsync(int evaluationFormId, int newOrder);
+        Task AdjustOrdersAfterDeletionAsync(int evaluationFormId);
         #endregion
     }
 }
