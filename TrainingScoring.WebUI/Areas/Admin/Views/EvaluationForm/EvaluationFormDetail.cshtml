@@ -1,8 +1,6 @@
 ﻿@model TrainingScoring.WebUI.Models.EvaluationFormDetailsViewModel;
 @{
     ViewData["Title"] = "EvaluationFormDetail";
-
-    // Tách năm học và học kỳ từ EvaluationFormCode
     string[] parts = Model.EvaluationFormCode.Split('.');
     string academicYear = parts[0]; // Năm học
     string semester = parts[1]; // Học kỳ
@@ -124,19 +122,19 @@
                                                 <td colspan="2">
                                                     @if (directory.TrainingContents != null && directory.TrainingContents.Any())
                                                     {
-                                                        <a href="@Url.Action("CreateTrainingContent", "EvaluationForm", new { trainingDirectoryId = directory.TrainingDirectoryId })" class="btn btn-flat btn-primary text-start">
+                                                        <a href="@Url.Action("CreateTrainingContent", "EvaluationForm", new { trainingDirectoryId = directory.TrainingDirectoryId, evaluationFormId = directory.EvaluationFormId })" class="btn btn-flat btn-primary text-start">
                                                             <i class="fas fa-plus"></i> Nội dung đánh giá
                                                         </a>
                                                     }
                                                 </td>
                                                 <td colspan="2">
-                                                    <a href="@Url.Action("UpdateTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })"><i class="fas fa-edit text-info"></i></a>
+                                                    <a href="@Url.Action("UpdateTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId, evaluationFormId = directory.EvaluationFormId })"><i class="fas fa-edit text-info"></i></a>
                                                     <a href="javascript:void(0);" onclick="showDeleteModal('@Url.Action("DeleteTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })')" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
                                                 </td>
                                             </tr>
                                             @if (directory.TrainingContents != null && directory.TrainingContents.Any())
                                             {
-                                                foreach (var content in directory.TrainingContents)
+                                                foreach (var content in directory.TrainingContents.OrderBy(o => o.Order))
                                                 {
                                                     <tr class="training-content">
                                                         <td>@content.Order</td>
@@ -152,21 +150,39 @@
                                                         <td>
                                                             @if (content.IsProof == true)
                                                             {
-                                                                <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
+                                                                // <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
+                                                                <span>Có MC</span>
                                                             }
                                                             else
                                                             {
-                                                                <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                                // <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                                <span>Không MC</span>
                                                             }
                                                         </td>
                                                         <td colspan="2">
-                                                            <a href="#"><i class="fas fa-edit text-info"></i></a>
-                                                            <a href="#" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                            <a class="text-decoration-none" href="@Url.Action("UpdateTrainingContent", "EvaluationForm", new { id = content.TrainingContentId, evaluationFormId = directory.EvaluationFormId })">
+                                                                <i class="fas fa-edit text-info"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" onclick="showDeleteModal('@Url.Action("DeleteTrainingContent", "EvaluationForm", new { id = content.TrainingContentId, evaluationFormId = directory.EvaluationFormId })')" style="margin-left: 15px">
+                                                                <i class="fas fa-trash text-danger"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
-                                                    @if (content.TrainingDetails != null && content.TrainingDetails.Any())
+                                                    @if (content.TrainingDetails == null || !content.TrainingDetails.Any())
                                                     {
-                                                        foreach (var detail in content.TrainingDetails)
+                                                        <tr>
+                                                            <td></td>
+                                                            <td colspan="2">
+                                                                <a href="@Url.Action("CreateTrainingDetail", "EvaluationForm", new { trainingContentId = content.TrainingContentId, trainingDirectoryId = content.TrainingDirectoryId, evaluationFormId = directory.EvaluationFormId })" class="btn btn-flat btn-primary text-start">
+                                                                    <i class="fas fa-plus"></i> Chi tiết đánh giá
+                                                                </a>
+                                                            </td>
+                                                            <td colspan="2"></td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (var detail in content.TrainingDetails.OrderBy(o => o.Order))
                                                         {
                                                             <tr class="training-details">
                                                                 <td>@ToAlphabet(detail.Order)</td>
@@ -177,11 +193,13 @@
                                                                     {
                                                                         @if (detail.IsProof == true)
                                                                         {
-                                                                            <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
+                                                                            // <input type="checkbox" class="checkBox" name="is_MinhChung" checked>
+                                                                            <span>Có MC</span>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                                            // <input type="checkbox" class="checkBox" name="is_MinhChung">
+                                                                            <span>Không MC</span>
                                                                         }
                                                                     }
                                                                     else
@@ -190,8 +208,8 @@
                                                                     }
                                                                 </td>
                                                                 <td>
-                                                                    <a href="#"><i class="fas fa-edit text-info"></i></a>
-                                                                    <a href="#" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                                    <a class="text-decoration-none" href="@Url.Action("UpdateTrainingDetail", "EvaluationForm", new { id = detail.TrainingDetailId, evaluationFormId = directory.EvaluationFormId })"><i class="fas fa-edit text-info"></i></a>
+                                                                    <a href="javascript:void(0);" onclick="showDeleteModal('@Url.Action("DeleteTrainingDetail", "EvaluationForm", new { id = detail.TrainingDetailId, evaluationFormId = directory.EvaluationFormId })')" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
                                                                 </td>
                                                             </tr>
                                                         }
@@ -201,8 +219,8 @@
                                                         <tr>
                                                             <td></td>
                                                             <td colspan="5" class="text-start">
-                                                                <a href="#" class="btn btn-flat btn-primary text-start">
-                                                                    <i class="fas fa-plus"></i> Chi tiết đánh giá 
+                                                                <a href="@Url.Action("CreateTrainingDetail", "EvaluationForm", new { trainingContentId = content.TrainingContentId, trainingDirectoryId = content.TrainingDirectoryId, evaluationFormId = directory.EvaluationFormId })" class="btn btn-flat btn-primary text-start">
+                                                                    <i class="fas fa-plus"></i> Chi tiết đánh giá
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -222,13 +240,15 @@
                                                 <td>@ToRoman(directory.Order)</td>
                                                 <td>@directory.TrainingDirectoryName</td>
                                                 <td colspan="2">
-                                                    <a href="@Url.Action("CreateTrainingContent", "EvaluationForm", new { trainingDirectoryId = directory.TrainingDirectoryId })" class="btn btn-flat btn-primary text-start">
+                                                    <a href="@Url.Action("CreateTrainingContent", "EvaluationForm", new { trainingDirectoryId = directory.TrainingDirectoryId, evaluationFormId = directory.EvaluationFormId})" class="btn btn-flat btn-primary text-start">
                                                         <i class="fas fa-plus"></i> Nội dung đánh giá
                                                     </a>
                                                 </td>
                                                 <td colspan="2">
                                                     <a href="@Url.Action("UpdateTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })"><i class="fas fa-edit text-info"></i></a>
-                                                    <a href="javascript:void(0);" onclick="showDeleteModal('@Url.Action("DeleteTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId })')" style="margin-left: 15px"><i class="fas fa-trash text-danger"></i></a>
+                                                    <a href="javascript:void(0);" onclick="showDeleteModal('@Url.Action("DeleteTrainingDirectory", "EvaluationForm", new { id = directory.TrainingDirectoryId, evaluationFormId = directory.EvaluationFormId })')" style="margin-left: 15px">
+                                                        <i class="fas fa-trash text-danger"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -289,7 +309,7 @@
                                 {
                                     {
                                         <tr>
-                                            <td colspan="6" class="text-center">Chưa có nội dung đánh giá</td>
+                                            <td colspan="6" class="text-center">Chưa có danh mục đánh giá</td>
                                         </tr>
                                     }
                                 }
@@ -333,7 +353,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
+
     <script>
         function showDeleteModal(deleteUrl) {
             var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');

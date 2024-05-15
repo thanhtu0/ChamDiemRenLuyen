@@ -13,8 +13,8 @@ namespace TrainingScoring.Business.Services.Implementations
 
         private readonly ITrainingDirectoryRepository _trainingDirectoryRepository;
 
-        public TrainingDirectoryService(ILogger<TrainingDirectoryService> logger, 
-            IHttpContextAccessor httpContextAccessor, 
+        public TrainingDirectoryService(ILogger<TrainingDirectoryService> logger,
+            IHttpContextAccessor httpContextAccessor,
             ITrainingDirectoryRepository trainingDirectoryRepository)
         {
             _logger = logger;
@@ -88,18 +88,20 @@ namespace TrainingScoring.Business.Services.Implementations
             {
                 var existingDirectories = await _trainingDirectoryRepository.GetAllTrainingDirectoryByEFormId(trainingDirectory.EvaluationFormId);
 
-                // Kiểm tra trùng lặp order hoặc name
                 var isOrderDuplicate = existingDirectories.Any(td => td.Order == trainingDirectory.Order);
                 var isNameDuplicate = existingDirectories.Any(td => td.TrainingDirectoryName.Equals(trainingDirectory.TrainingDirectoryName, StringComparison.OrdinalIgnoreCase));
 
                 if (isNameDuplicate)
                 {
-                    throw new ApplicationException("Training Directory Name already exists.");
+                    throw new ApplicationException("Tên Danh mục đã tồn tại.");
                 }
 
-                if (isOrderDuplicate)
+                if (existingDirectories == null || !existingDirectories.Any())
                 {
-                    // Điều chỉnh order của các TrainingDirectory khác
+                    trainingDirectory.Order = 1;
+                }
+                else if (isOrderDuplicate)
+                {
                     foreach (var directory in existingDirectories.Where(d => d.Order >= trainingDirectory.Order))
                     {
                         directory.Order++;
@@ -107,9 +109,18 @@ namespace TrainingScoring.Business.Services.Implementations
 
                     await _trainingDirectoryRepository.UpdateRangeAsync(existingDirectories);
                 }
+                else
+                {
+                    var maxOrder = existingDirectories.Max(d => d.Order);
+                    trainingDirectory.Order = Math.Min(trainingDirectory.Order, maxOrder + 1);
+                }
 
-                // Thêm mới Training Directory
                 return await _trainingDirectoryRepository.CreateAsync(trainingDirectory);
+            }
+            catch (ApplicationException ex)
+            {
+                _logger.LogError(ex, $"Application Error: {ex.Message}");
+                throw; // Không bao bọc ngoại lệ này
             }
             catch (Exception ex)
             {
@@ -120,31 +131,6 @@ namespace TrainingScoring.Business.Services.Implementations
 
         public async Task<TrainingDirectory> UpdateTrainingDirectoryAsync(TrainingDirectory trainingDirectory)
         {
-            //try
-            //{
-            //    // Kiểm tra xem danh mục rèn luyện cần cập nhật có tồn tại trong cơ sở dữ liệu không
-            //    var existingDirectory = await _trainingDirectoryRepository.GetByIdAsync(trainingDirectory.TrainingDirectoryId);
-            //    if (existingDirectory == null)
-            //    {
-            //        throw new ArgumentException("Không tìm thấy danh mục rèn luyện cần cập nhật.");
-            //    }
-
-            //    // Cập nhật thông tin của danh mục rèn luyện
-            //    existingDirectory.Order = trainingDirectory.Order; 
-            //    existingDirectory.TrainingDirectoryName = trainingDirectory.TrainingDirectoryName;
-            //    existingDirectory.MaxScore = trainingDirectory.MaxScore;
-
-
-            //    // Lưu thay đổi vào cơ sở dữ liệu
-            //    await _trainingDirectoryRepository.UpdateAsync(existingDirectory);
-
-            //    return existingDirectory;
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError(ex, $"Lỗi khi cập nhật danh mục rèn luyện: {ex.Message}");
-            //    throw;
-            //}
             try
             {
                 // Kiểm tra xem danh mục rèn luyện cần cập nhật có tồn tại trong cơ sở dữ liệu không
@@ -157,28 +143,11 @@ namespace TrainingScoring.Business.Services.Implementations
                 // Lấy danh sách các danh mục hiện có
                 var existingDirectories = await _trainingDirectoryRepository.GetAllTrainingDirectoryByEFormId(trainingDirectory.EvaluationFormId);
 
-                // Kiểm tra tên trùng lặp
-                var isNameDuplicate = existingDirectories.Any(td => td.TrainingDirectoryName.Equals(trainingDirectory.TrainingDirectoryName, StringComparison.OrdinalIgnoreCase) && td.TrainingDirectoryId != trainingDirectory.TrainingDirectoryId);
-                if (isNameDuplicate)
-                {
-                    throw new ApplicationException("Training Directory Name already exists.");
-                }
-
-                // Kiểm tra và điều chỉnh Order nếu cần thiết
                 var isOrderDuplicate = existingDirectories.Any(td => td.Order == trainingDirectory.Order && td.TrainingDirectoryId != trainingDirectory.TrainingDirectoryId);
                 if (isOrderDuplicate)
                 {
-                    // Điều chỉnh order của các TrainingDirectory khác
-                    foreach (var directory in existingDirectories.Where(d => d.Order >= trainingDirectory.Order && d.TrainingDirectoryId != trainingDirectory.TrainingDirectoryId))
-                    {
-                        directory.Order++;
-                    }
-
-                    await _trainingDirectoryRepository.UpdateRangeAsync(existingDirectories);
-                }
-                else if (trainingDirectory.Order > existingDirectories.Max(d => d.Order))
-                {
-                    trainingDirectory.Order = existingDirectories.Max(d => d.Order) + 1;
+                    // Điều chỉnh thứ tự của các danh mục sau khi cập nhật
+                    await AdjustOrderAfterUpdateAsync(trainingDirectory.EvaluationFormId, existingDirectory.Order, trainingDirectory.Order);
                 }
 
                 // Cập nhật thông tin của danh mục rèn luyện
@@ -193,7 +162,7 @@ namespace TrainingScoring.Business.Services.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Lỗi khi cập nhật danh mục rèn luyện: {ex.Message}");
+                _logger.LogError(ex, $"Error occurred while updating training directory: {ex.Message}");
                 throw new ApplicationException("Error occurred while updating training directory", ex);
             }
         }
@@ -247,7 +216,6 @@ namespace TrainingScoring.Business.Services.Implementations
             return existingDirectories.Any(td => td.TrainingDirectoryName.Equals(trainingDirectoryName, StringComparison.OrdinalIgnoreCase) && td.TrainingDirectoryId != trainingDirectoryId);
         }
 
-
         public async Task AdjustOrdersAsync(int evaluationFormId, int newOrder)
         {
             var directories = await _trainingDirectoryRepository.GetAllTrainingDirectoryByEFormId(evaluationFormId);
@@ -258,6 +226,38 @@ namespace TrainingScoring.Business.Services.Implementations
             }
 
             await _trainingDirectoryRepository.UpdateRangeAsync(directories);
+        }
+
+        public async Task AdjustOrderAfterUpdateAsync(int evaluationFormId, int oldOrder, int newOrder)
+        {
+            try
+            {
+                var directories = await _trainingDirectoryRepository.GetAllTrainingDirectoryByEFormId(evaluationFormId);
+
+                foreach (var directory in directories)
+                {
+                    // Nếu là danh mục cần được cập nhật
+                    if (directory.Order == oldOrder)
+                    {
+                        directory.Order = newOrder;
+                    }
+                    // Nếu là danh mục có thứ tự giữa thứ tự cũ và thứ tự mới
+                    else if ((oldOrder < newOrder && directory.Order > oldOrder && directory.Order <= newOrder) ||
+                             (oldOrder > newOrder && directory.Order < oldOrder && directory.Order >= newOrder))
+                    {
+                        // Giảm hoặc tăng thứ tự đi 1 đơn vị tùy theo trường hợp
+                        directory.Order += (newOrder > oldOrder) ? -1 : 1;
+                    }
+
+                    // Lưu thay đổi vào cơ sở dữ liệu
+                    await _trainingDirectoryRepository.UpdateAsync(directory);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error occurred while adjusting order after update: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task AdjustOrdersAfterDeletionAsync(int evaluationFormId)

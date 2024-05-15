@@ -12,6 +12,10 @@ namespace TrainingScoring.Business.Services.Interfaces
         Task<TrainingDetail> CreateTrainingDetailAsync(TrainingDetail trainingDetail);
         Task<TrainingDetail> UpdateTrainingDetailAsync(TrainingDetail trainingDetail);
         Task<TrainingDetail> DeleteTrainingDetailAsync(TrainingDetail trainingDetail);
+
+        // Check Order and AdjustOrder
+        Task<int> GetMaxOrderAsync(int trainingContentId);
+        Task AdjustOrdersAfterDeletionAsync(int trainingContentId);
         #endregion
     }
 }

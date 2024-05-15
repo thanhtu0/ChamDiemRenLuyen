@@ -19,28 +19,37 @@ namespace TrainingScoring.Data.Repositories.Implementations
             return contents;
         }
 
-        public async Task<TrainingContent> CreateAsync(TrainingContent content)
+        public async Task<TrainingContent> CreateAsync(TrainingContent trainingContent)
         {
-            _context.Set<TrainingContent>().Add(content);
+            _context.Set<TrainingContent>().Add(trainingContent);
             await _context.SaveChangesAsync();
-            return content;
+            return trainingContent;
         }
 
-        public async Task UpdateRangeAsync(List<TrainingContent> contents)
+        public async Task<TrainingContent> UpdateAsync(TrainingContent trainingContent)
         {
-            _context.Set<TrainingContent>().UpdateRange(contents);
+            _context.Set<TrainingContent>().Update(trainingContent);
+            await _context.SaveChangesAsync();
+            return trainingContent;
+        }
+
+        public async Task UpdateRangeAsync(IEnumerable<TrainingContent> trainingContents)
+        {
+            _context.Set<TrainingContent>().UpdateRange(trainingContents);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(TrainingContent content)
+        public async Task<TrainingContent> DeleteAsync(TrainingContent trainingContent)
         {
-            _context.Set<TrainingContent>().Remove(content);
+            _context.Set<TrainingContent>().Remove(trainingContent);
             await _context.SaveChangesAsync();
+            return trainingContent;
         }
 
-        public async Task<int> GetMaxOrderAsync()
+        public async Task<int> GetMaxOrderAsync(int trainingDirectoryId)
         {
-            return await _context.TrainingContents.MaxAsync(td => td.Order);
+            var existingContents = await _context.TrainingContents.Where(tc => tc.TrainingDirectoryId == trainingDirectoryId).ToListAsync();
+            return existingContents.Any() ? existingContents.Max(c => c.Order) : 0;
         }
     }
 }

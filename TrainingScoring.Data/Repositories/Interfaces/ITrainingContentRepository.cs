@@ -1,4 +1,5 @@
-﻿using TrainingScoring.DomainModels;
+﻿using System.Threading.Tasks;
+using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Data.Repositories.Interfaces
 {
@@ -6,12 +7,10 @@ namespace TrainingScoring.Data.Repositories.Interfaces
     {
         Task<List<TrainingContent>> GetAllTrainingContentByDirectoryId(int id);
 
-        Task<TrainingContent> CreateAsync(TrainingContent content);
-
-        Task UpdateRangeAsync(List<TrainingContent> contents);
-
-        Task DeleteAsync(TrainingContent content);
-
-        Task<int> GetMaxOrderAsync();
+        Task<TrainingContent> CreateAsync(TrainingContent trainingContent);
+        Task<TrainingContent> UpdateAsync(TrainingContent trainingContent);
+        Task UpdateRangeAsync(IEnumerable<TrainingContent> trainingContents);
+        Task<TrainingContent> DeleteAsync(TrainingContent trainingContent);
+        Task<int> GetMaxOrderAsync(int trainingDirectoryId);
     }
 }

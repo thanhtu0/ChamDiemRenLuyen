@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using TrainingScoring.Business.Services.Interfaces;
+using TrainingScoring.Data;
 using TrainingScoring.DomainModels;
 using TrainingScoring.WebUI.Models;
 
@@ -8,6 +11,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
     [Area("Admin")]
     public class EvaluationFormController : Controller
     {
+        private readonly TrainingScoingDBContext _contenxt;
         private readonly ILogger<EvaluationFormController> _logger;
         private readonly IEvaluationFormService _evaluationFormService;
 
@@ -16,13 +20,16 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
         private readonly ITrainingDetailService _trainingDetailService;
         private readonly IAcademicYearService _academicYearService;
 
-        public EvaluationFormController(ILogger<EvaluationFormController> logger,
+        public EvaluationFormController(
+            TrainingScoingDBContext _context,
+            ILogger<EvaluationFormController> logger,
             IEvaluationFormService evaluationFormService,
             ITrainingDirectoryService trainingDirectoryService,
             ITrainingContentService trainingContentService,
             ITrainingDetailService trainingDetailService,
             IAcademicYearService academicYearService)
         {
+            _contenxt = _context;
             _logger = logger;
             _evaluationFormService = evaluationFormService;
             _trainingDirectoryService = trainingDirectoryService;
@@ -271,10 +278,9 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     var maxOrder = await _trainingDirectoryService.GetMaxOrderAsync();
-
                     if (viewModel.Order > maxOrder)
                     {
-                        viewModel.Order = maxOrder + 1; 
+                        viewModel.Order = maxOrder + 1;
                     }
 
                     var trainingDirectory = viewModel.ToTrainingDirectory();
@@ -336,7 +342,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 throw;
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> UpdateTrainingDirectory(TrainingDirectoryViewModel viewModel)
         {
@@ -344,6 +349,14 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    // Lấy thông tin của danh mục rèn luyện cần cập nhật
+                    var trainingDirectory = await _trainingDirectoryService.GetTrainingDirectoryByIdAsync(viewModel.TrainingDirectoryId);
+
+                    if (trainingDirectory == null)
+                    {
+                        return NotFound();
+                    }
+
                     // Kiểm tra tên trùng lặp
                     var isNameDuplicate = await _trainingDirectoryService.IsNameDuplicateAsync(viewModel.TrainingDirectoryId, viewModel.EvaluationFormId, viewModel.TrainingDirectoryName);
                     if (isNameDuplicate)
@@ -423,11 +436,13 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
         #endregion
 
         #region Create, Update, Delete TrainingContent
-        public IActionResult CreateTrainingContent(int trainingDirectoryId)
+        public IActionResult CreateTrainingContent(int trainingDirectoryId, int evaluationFormId)
         {
+            _logger.LogInformation($"EvaluationFormId:{evaluationFormId} TrainingDirectoryId:{trainingDirectoryId}");
             var viewModel = new TrainingContentViewModel
             {
-                TrainingDirectoryId = trainingDirectoryId
+                TrainingDirectoryId = trainingDirectoryId,
+                EvaluationFormId = evaluationFormId
             };
             return View(viewModel);
         }
@@ -435,11 +450,21 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTrainingContent(TrainingContentViewModel viewModel)
         {
+            _logger.LogInformation(
+                $"IsProof value: {viewModel.IsProof}" +
+                $"EvaluationFormId:{viewModel.EvaluationFormId} " +
+                $"TrainingDirectoryId:{viewModel.TrainingDirectoryId}" +
+                $"Order: {viewModel.Order}" +
+                $"TrainingContentName: {viewModel.TrainingContentName}" +
+                $"MaxScore: {viewModel.MaxScore}" +
+                $"TypeofScore: {viewModel.TypeofScore}"
+                );
+
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var maxOrder = await _trainingContentService.GetMaxOrderAsync();
+                    var maxOrder = await _trainingContentService.GetMaxOrderAsync(viewModel.TrainingDirectoryId);
 
                     if (viewModel.Order > maxOrder)
                     {
@@ -452,12 +477,12 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
                     if (createdTrainingContent != null)
                     {
-                        return RedirectToAction("EvaluationFormDetail", new { id = viewModel.TrainingDirectoryId });
+                        return RedirectToAction("EvaluationFormDetail", "EvaluationForm", new { id = viewModel.EvaluationFormId });
                     }
                     else
                     {
                         TempData["ErrorMessage"] = "Failed to create training content.";
-                        return RedirectToAction("CreateTrainingContent", new { trainingDirectoryId = viewModel.TrainingDirectoryId });
+                        return RedirectToAction("CreateTrainingContent", new { trainingDirectoryId = viewModel.TrainingDirectoryId, evaluationFormId = viewModel.EvaluationFormId });
                     }
                 }
                 else
@@ -469,6 +494,290 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                TempData["ErrorMessage"] = "An error occurred while creating the training content.";
+                return RedirectToAction("CreateTrainingContent", new { trainingDirectoryId = viewModel.TrainingDirectoryId, evaluationFormId = viewModel.EvaluationFormId });
+            }
+        }
+
+        public async Task<IActionResult> UpdateTrainingContent(int id, int trainingDirectoryId, int evaluationFormId)
+        {
+            try
+            {
+                _logger.LogInformation($"Fetching training content with id: {id}");
+                var trainingContent = await _trainingContentService.GetTrainingContentByIdAsync(id);
+
+                if (trainingContent == null)
+                {
+                    _logger.LogWarning($"Training content with id {id} not found.");
+                    return NotFound();
+                }
+
+                var viewModel = new TrainingContentViewModel
+                {
+                    TrainingContentId = trainingContent.TrainingContentId,
+                    TrainingDirectoryId = trainingContent.TrainingDirectoryId,
+                    TrainingContentName = trainingContent.TrainingContentName,
+                    Order = trainingContent.Order,
+                    IsProof = trainingContent.IsProof,
+                    MaxScore = trainingContent.MaxScore,
+                    TypeofScore = trainingContent.TypeofScore,
+                    CreateAt = trainingContent.CreateAt,
+                    DeletedAt = trainingContent.DeletedAt,
+                    EvaluationFormId = evaluationFormId // Sử dụng giá trị evaluationFormId được chuyển từ action
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTrainingContent(TrainingContentViewModel viewModel, int trainingDirectoryId, int evaluationFormId)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var updatedTrainingContent = await _trainingContentService.UpdateTrainingContentAsync(viewModel.ToTrainingContent());
+
+                    if (updatedTrainingContent != null)
+                    {
+                        return RedirectToAction("EvaluationFormDetail", "EvaluationForm", new { id = evaluationFormId });
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Failed to update training content.";
+                    }
+                }
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the training content.");
+                return View(viewModel);
+            }
+        }
+
+        public async Task<IActionResult> DeleteTrainingContent(int id, int trainingDirectoryId, int evaluationFormId)
+        {
+            try
+            {
+                var trainingContentToDelete = await _trainingContentService.GetTrainingContentByIdAsync(id);
+
+                if (trainingContentToDelete == null)
+                {
+                    return NotFound();
+                }
+
+                var deletedTrainingContent = await _trainingContentService.DeleteTrainingContentAsync(trainingContentToDelete);
+
+                if (deletedTrainingContent != null && deletedTrainingContent.TrainingDirectory != null)
+                {
+                    // Xóa thành công, chuyển hướng đến trang chi tiết của phiếu đánh giá
+                    return RedirectToAction("EvaluationFormDetail", new { id = evaluationFormId });
+                }
+                else
+                {
+                    // Xóa không thành công, đặt thông báo lỗi và chuyển hướng
+                    TempData["ErrorMessage"] = "Failed to delete training content.";
+                    return RedirectToAction("EvaluationFormDetail", new { id = evaluationFormId });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Create, Update, Delete TrainingDetail
+        public IActionResult CreateTrainingDetail(int trainingContentId, int trainingDirectoryId, int evaluationFormId)
+        {
+            _logger.LogInformation(
+                $"EvaluationFormId:{evaluationFormId} " +
+                $"TrainingDirectoryId:{trainingDirectoryId}" +
+                $"TrainingContentId: {trainingContentId}"
+                );
+
+            var viewModel = new TrainingDetailViewModel
+            {
+                TrainingContentId = trainingContentId,
+                TrainingDirectoryId = trainingDirectoryId,
+                EvaluationFormId = evaluationFormId,
+
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTrainingDetail(TrainingDetailViewModel viewModel)
+        {
+            _logger.LogInformation(
+                $"IsProof value: {viewModel.IsProof}" +
+                $"EvaluationFormId:{viewModel.EvaluationFormId} " +
+                $"TrainingDirectoryId:{viewModel.TrainingDirectoryId}" +
+                $"TrainingContentId:{viewModel.TrainingContentId}" +
+                $"Order: {viewModel.Order}" +
+                $"TrainingDetailName: {viewModel.TrainingDetailName}" +
+                $"MaxScore: {viewModel.MaxScore}" +
+                $"TypeofScore: {viewModel.TypeofScore}"
+                );
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var maxOrder = await _trainingDetailService.GetMaxOrderAsync(viewModel.TrainingContentId);
+
+                    if (viewModel.Order > maxOrder)
+                    {
+                        viewModel.Order = maxOrder + 1;
+                    }
+
+                    var trainingDetaiil = viewModel.ToTrainingDetail();
+
+                    var createdTrainingDetail = await _trainingDetailService.CreateTrainingDetailAsync(trainingDetaiil);
+
+                    if (createdTrainingDetail != null)
+                    {
+                        return RedirectToAction("EvaluationFormDetail", "EvaluationForm", new { id = viewModel.EvaluationFormId });
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Failed to create training content.";
+                        return RedirectToAction("CreateTrainingContent", new
+                        {
+                            trainingContentId = viewModel.TrainingContentId,
+                            trainingDirectoryId = viewModel.TrainingDirectoryId,
+                            evaluationFormId = viewModel.EvaluationFormId
+                        }
+                        );
+                    }
+                }
+                else
+                {
+                    return View(viewModel);
+                }
+            }
+            catch (ApplicationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                TempData["ErrorMessage"] = "An error occurred while creating the training content.";
+                return RedirectToAction("CreateTrainingContent", new
+                {
+                    trainingContentId = viewModel.TrainingContentId,
+                    trainingDirectoryId = viewModel.TrainingDirectoryId,
+                    evaluationFormId = viewModel.EvaluationFormId
+                });
+            }
+        }
+
+        public async Task<IActionResult> UpdateTrainingDetail(int id, int trainingContentId, int trainingDirectoryId, int evaluationFormId)
+        {
+            try
+            {
+                _logger.LogInformation($"Fetching training detail with id: {id}");
+                var trainingDetail = await _trainingDetailService.GetTrainingDetailByIdAsync(id);
+
+                if (trainingDetail == null)
+                {
+                    _logger.LogWarning($"Training detail with id {id} not found.");
+                    return NotFound();
+                }
+
+                var viewModel = new TrainingDetailViewModel
+                {
+                    TrainingDetailId = trainingDetail.TrainingDetailId,
+                    TrainingContentId = trainingDetail.TrainingContentId,
+                    TrainingDetailName = trainingDetail.TrainingDetailName,
+                    Order = trainingDetail.Order,
+                    IsProof = trainingDetail.IsProof,
+                    MaxScore = trainingDetail.MaxScore,
+                    TypeofScore = trainingDetail.TypeofScore,
+                    CreateAt = trainingDetail.CreateAt,
+                    DeletedAt = trainingDetail.DeletedAt,
+                    EvaluationFormId = evaluationFormId 
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTrainingDetail(TrainingDetailViewModel viewModel, int trainingContentId, int trainingDirectoryId, int evaluationFormId)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var updatedTrainingDetail = await _trainingDetailService.UpdateTrainingDetailAsync(viewModel.ToTrainingDetail());
+
+                    if (updatedTrainingDetail != null)
+                    {
+                        return RedirectToAction("EvaluationFormDetail", "EvaluationForm", new { id = evaluationFormId });
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Failed to update training detail.";
+                    }
+                }
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the training detail.");
+                return View(viewModel);
+            }
+        }
+
+        public async Task<IActionResult> DeleteTrainingDetail(int id, int trainingContentId, int trainingDirectoryId, int evaluationFormId)
+        {
+            try
+            {
+                var trainingDetailToDelete = await _trainingDetailService.GetTrainingDetailByIdAsync(id);
+
+                if (trainingDetailToDelete == null)
+                {
+                    return NotFound();
+                }
+
+                var deletedTrainingDetail = await _trainingDetailService.DeleteTrainingDetailAsync(trainingDetailToDelete);
+
+                if (deletedTrainingDetail != null && deletedTrainingDetail.TrainingContent != null)
+                {
+                    // Xóa thành công, chuyển hướng đến trang chi tiết của phiếu đánh giá
+                    return RedirectToAction("EvaluationFormDetail", new { id = evaluationFormId });
+                }
+                else
+                {
+                    // Xóa không thành công, đặt thông báo lỗi và chuyển hướng
+                    TempData["ErrorMessage"] = "Failed to delete training content.";
+                    return RedirectToAction("EvaluationFormDetail", new { id = evaluationFormId });
+                }
             }
             catch (Exception ex)
             {

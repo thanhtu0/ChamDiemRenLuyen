@@ -14,8 +14,8 @@ namespace TrainingScoring.Business.Services.Implementations
 
         private readonly ITrainingContentRepository _trainingContentRepository;
 
-        public TrainingContentService(ILogger<TrainingContentService> logger, 
-            IHttpContextAccessor httpContextAccessor, 
+        public TrainingContentService(ILogger<TrainingContentService> logger,
+            IHttpContextAccessor httpContextAccessor,
             ITrainingContentRepository trainingContentRepository)
         {
             _logger = logger;
@@ -86,37 +86,53 @@ namespace TrainingScoring.Business.Services.Implementations
 
         public async Task<TrainingContent> CreateTrainingContentAsync(TrainingContent trainingContent)
         {
+
             try
             {
                 var existingContents = await _trainingContentRepository.GetAllTrainingContentByDirectoryId(trainingContent.TrainingDirectoryId);
 
-                // Kiểm tra trùng lặp order hoặc name
-                var isOrderDuplicate = existingContents.Any(td => td.Order == trainingContent.Order);
-                var isNameDuplicate = existingContents.Any(td => td.TrainingContentName.Equals(trainingContent.TrainingContentName, StringComparison.OrdinalIgnoreCase));
+                var isNameDuplicate = existingContents.Any(tc => tc.TrainingContentName.Equals(trainingContent.TrainingContentName, StringComparison.OrdinalIgnoreCase));
 
                 if (isNameDuplicate)
                 {
                     throw new ApplicationException("Training Content Name already exists.");
                 }
 
-                if (isOrderDuplicate)
-                {
-                    // Điều chỉnh order của các TrainingDirectory khác
-                    foreach (var directory in existingContents.Where(d => d.Order >= trainingContent.Order))
-                    {
-                        directory.Order++;
-                    }
+                // Tìm vị trí thích hợp để chèn mới
+                int newIndex = existingContents.Count;
 
-                    await _trainingContentRepository.UpdateRangeAsync(existingContents);
+                for (int i = 0; i < existingContents.Count; i++)
+                {
+                    if (existingContents[i].Order >= trainingContent.Order)
+                    {
+                        newIndex = i;
+                        break;
+                    }
                 }
 
-                // Thêm mới Training Directory
-                return await _trainingContentRepository.CreateAsync(trainingContent);
+                // Điều chỉnh thứ tự của các training content sau newIndex
+                for (int i = newIndex; i < existingContents.Count; i++)
+                {
+                    existingContents[i].Order++;
+                }
+
+                // Thêm mới training content vào vị trí đã chọn
+                existingContents.Insert(newIndex, trainingContent);
+
+                // Cập nhật các training content vào cơ sở dữ liệu
+                await _trainingContentRepository.UpdateRangeAsync(existingContents);
+
+                return trainingContent;
+            }
+            catch (ApplicationException ex)
+            {
+                _logger.LogError(ex, $"Application Error: {ex.Message}");
+                throw; // Không bao bọc ngoại lệ này
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error: {ex.Message}");
-                throw new ApplicationException("Error occurred while creating training directory", ex);
+                throw new ApplicationException("Error occurred while creating training content", ex);
             }
         }
 
@@ -124,27 +140,56 @@ namespace TrainingScoring.Business.Services.Implementations
         {
             try
             {
-                var existingContent = await _trainingContentRepository.GetByIdAsync(trainingContent.TrainingDirectoryId);
+                var existingContent = await _trainingContentRepository.GetByIdAsync(trainingContent.TrainingContentId);
                 if (existingContent == null)
                 {
-                    throw new ArgumentException("Không tìm thấy nội dung rèn luyện cần cập nhật.");
+                    throw new ArgumentException("Training Content not found.");
                 }
 
-                existingContent.Order = trainingContent.Order;
+                var existingContents = await _trainingContentRepository.GetAllTrainingContentByDirectoryId(trainingContent.TrainingDirectoryId);
+
+                var isNameDuplicate = existingContents.Any(tc => tc.TrainingContentName.Equals(trainingContent.TrainingContentName, StringComparison.OrdinalIgnoreCase) && tc.TrainingContentId != trainingContent.TrainingContentId);
+                if (isNameDuplicate)
+                {
+                    throw new ApplicationException("Training Content Name already exists.");
+                }
+
+                // Kiểm tra xem có thay đổi thứ tự Order hay không
+                if (existingContent.Order != trainingContent.Order)
+                {
+                    // Điều chỉnh thứ tự của các nội dung đào tạo khác trong cùng một thư mục
+                    if (existingContent.Order > trainingContent.Order)
+                    {
+                        foreach (var content in existingContents.Where(tc => tc.Order >= trainingContent.Order && tc.Order < existingContent.Order))
+                        {
+                            content.Order++;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var content in existingContents.Where(tc => tc.Order <= trainingContent.Order && tc.Order > existingContent.Order))
+                        {
+                            content.Order--;
+                        }
+                    }
+                }
+
+                // Cập nhật thông tin của nội dung đào tạo
                 existingContent.TrainingContentName = trainingContent.TrainingContentName;
                 existingContent.IsProof = trainingContent.IsProof;
                 existingContent.MaxScore = trainingContent.MaxScore;
                 existingContent.TypeofScore = trainingContent.TypeofScore;
+                existingContent.CreateAt = trainingContent.CreateAt;
+                existingContent.DeletedAt = trainingContent.DeletedAt;
+                existingContent.Order = trainingContent.Order;
 
-
-                await _trainingContentRepository.UpdateAsync(existingContent);
-
-                return existingContent;
+                // Lưu thay đổi vào cơ sở dữ liệu
+                return await _trainingContentRepository.UpdateAsync(existingContent);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Lỗi khi cập nhật nội dung rèn luyện: {ex.Message}");
-                throw;
+                _logger.LogError(ex, $"Error occurred while updating training content: {ex.Message}");
+                throw new ApplicationException("Error occurred while updating training content", ex);
             }
         }
 
@@ -154,53 +199,32 @@ namespace TrainingScoring.Business.Services.Implementations
             {
                 if (trainingContent == null)
                 {
-                    throw new ArgumentNullException(nameof(trainingContent), "Nội dung rèn luyện không được để trống.");
+                    throw new ArgumentNullException(nameof(trainingContent), "Nội dung đào tạo không được để trống.");
                 }
 
-                // Kiểm tra xem danh mục rèn luyện cần xóa có tồn tại trong cơ sở dữ liệu không
-                var existingDirectory = await _trainingContentRepository.GetByIdAsync(trainingContent.TrainingDirectoryId);
-                if (existingDirectory == null)
+                // Kiểm tra xem nội dung đào tạo cần xóa có tồn tại trong cơ sở dữ liệu không
+                var existingContent = await _trainingContentRepository.GetByIdAsync(trainingContent.TrainingContentId);
+                if (existingContent == null)
                 {
-                    throw new ArgumentException("Không tìm thấy danh mục rèn luyện cần xóa.");
+                    throw new ArgumentException("Không tìm thấy nội dung đào tạo cần xóa.");
                 }
 
-                // Xóa danh mục rèn luyện khỏi cơ sở dữ liệu
-                await _trainingContentRepository.DeleteAsync(existingDirectory);
+                // Lưu trữ ID của thư mục chứa nội dung đào tạo này để sử dụng sau này
+                int directoryId = existingContent.TrainingDirectoryId;
 
-                // Điều chỉnh lại thứ tự của các danh mục còn lại
-                await AdjustOrdersAfterDeletionAsync(trainingContent.TrainingDirectoryId);
+                // Xóa nội dung đào tạo khỏi cơ sở dữ liệu
+                await _trainingContentRepository.DeleteAsync(existingContent);
 
-                return existingDirectory;
+                // Điều chỉnh lại thứ tự của các nội dung đào tạo còn lại trong cùng một thư mục
+                await AdjustOrdersAfterDeletionAsync(directoryId);
+
+                return existingContent;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Lỗi khi xóa danh mục rèn luyện: {ex.Message}");
+                _logger.LogError(ex, $"Lỗi khi xóa nội dung đào tạo: {ex.Message}");
                 throw;
             }
-        }
-
-        public async Task<int> GetMaxOrderAsync()
-        {
-            return await _trainingContentRepository.GetMaxOrderAsync();
-        }
-
-        public async Task<bool> IsOrderOrNameDuplicateAsync(int trainingDirectoryId, int order, string trainingContentName)
-        {
-            var existingContents = await _trainingContentRepository.GetAllTrainingContentByDirectoryId(trainingDirectoryId);
-
-            return existingContents.Any(td => td.Order == order || td.TrainingContentName.Equals(trainingContentName, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public async Task AdjustOrdersAsync(int trainingDirectoryId, int newOrder)
-        {
-            var contents = await _trainingContentRepository.GetAllTrainingContentByDirectoryId(trainingDirectoryId);
-
-            foreach (var content in contents.Where(d => d.Order >= newOrder))
-            {
-                content.Order++;
-            }
-
-            await _trainingContentRepository.UpdateRangeAsync(contents);
         }
 
         public async Task AdjustOrdersAfterDeletionAsync(int trainingDirectoryId)
@@ -208,13 +232,19 @@ namespace TrainingScoring.Business.Services.Implementations
             var contents = await _trainingContentRepository.GetAllTrainingContentByDirectoryId(trainingDirectoryId);
 
             int order = 1;
-            foreach (var content in contents.OrderBy(d => d.Order))
+            foreach (var content in contents.OrderBy(c => c.Order))
             {
                 content.Order = order++;
             }
 
             await _trainingContentRepository.UpdateRangeAsync(contents);
         }
+
+        public async Task<int> GetMaxOrderAsync(int trainingDirectoryId)
+        {
+            return await _trainingContentRepository.GetMaxOrderAsync(trainingDirectoryId);
+        }
+
         #endregion
     }
 }

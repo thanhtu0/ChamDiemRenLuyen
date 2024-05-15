@@ -1,9 +1,8 @@
 ﻿@model TrainingScoring.WebUI.Models.TrainingContentViewModel
 @using TrainingScoring.DomainModels
 
-
 @{
-    ViewData["Title"] = "Thêm mới Nội dung rèn luyện";
+    ViewData["Title"] = "Cập nhật Nội dung rèn luyện";
 }
 
 <div class="card mx-auto" style="max-width: 1040px;">
@@ -11,10 +10,11 @@
         <h2>@ViewData["Title"]</h2>
     </div>
     <div class="card-body">
-        <form asp-action="CreateTrainingContent">
+        <form asp-action="UpdateTrainingContent">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="EvaluationFormId" value="@Model.EvaluationFormId"/>
-            <input type="hidden" asp-for="TrainingDirectoryId" value="@Model.TrainingDirectoryId"/>
+            <input type="hidden" asp-for="EvaluationFormId" value="@Model.EvaluationFormId" />
+            <input type="hidden" asp-for="TrainingDirectoryId" value="@Model.TrainingDirectoryId" />
+            <input type="hidden" asp-for="TrainingContentId" value="@Model.TrainingContentId" />
 
             <div class="mb-3">
                 <label for="Order" class="form-label">Vị trí:</label>
@@ -35,26 +35,24 @@
             </div>
 
             <div class="mb-3 form-check">
-                <input type="checkbox" asp-for="IsProof" class="form-check-input" id="IsProof" />
+                <input asp-for="IsProof" class="form-check-input" id="IsProof" />
                 <label class="form-check-label" for="IsProof">Minh chứng</label>
             </div>
-
 
             <div class="mb-3">
                 <label for="TypeOfScore" class="form-label">Chấm theo dạng:</label>
                 <select asp-for="TypeofScore" class="form-control" id="TypeOfScore">
                     @foreach (var value in Enum.GetValues(typeof(TypeofScoreContent)))
                     {
-                        <option value="@value">@value</option> 
+                        <option value="@value">@value</option>
                     }
                 </select>
             </div>
 
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Tạo mới</button>
-                <a href="~/Admin/EvaluationForm/EvaluationFormDetail/@Model.EvaluationFormId" class="btn btn-secondary">Quay lại</a>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <a href="@Url.Action("EvaluationFormDetail", "EvaluationForm", new { id = Model.EvaluationFormId })" class="btn btn-secondary">Quay lại</a>
             </div>
         </form>
     </div>
 </div>
-
