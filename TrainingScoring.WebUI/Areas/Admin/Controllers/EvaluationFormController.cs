@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using TrainingScoring.Business.Services.Interfaces;
 using TrainingScoring.Data;
 using TrainingScoring.DomainModels;
 using TrainingScoring.WebUI.Models;
+using static TrainingScoring.WebUI.AppCodes.SecurityModels;
 
 namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{WebUserRoles.SuperAdmin}")]
     public class EvaluationFormController : Controller
     {
         private readonly TrainingScoingDBContext _contenxt;

@@ -1,4 +1,9 @@
-﻿   <!-- Navbar Start-->
+﻿@using TrainingScoring.WebUI.AppCodes;
+@using static TrainingScoring.WebUI.AppCodes.SecurityModels;
+@{
+    var user = User.GetUserData();
+}
+<!-- Navbar Start-->
 <nav class="navbar navbar-expand-md navbar-light">
     <div class="container-xxl">
         <a href="#"><img src="~/themes/assets/img/logo-small.png" alt="logo-img" class="rounded logo-img d-block" style="height: 40px;"></a>
@@ -14,6 +19,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href=""></a>
                 </li>
+
                 <!-- Student Functions -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="studentDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Chức năng sinh viên</a>
@@ -24,23 +30,32 @@
                         <li><a class="dropdown-item" href="~/Student/Seetrainingresults">Xem điểm rèn luyện</a></li>
                     </ul>
                 </li>
-                <!-- Class Committee Functions -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="committeeDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Chức năng Ban cán sự lớp</a>
-                    <ul class="dropdown-menu" aria-labelledby="committeeDropdown">
-                        <li><h5 class="dropdown-header">Chức năng của ban cán sự</h5></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="~/Classmittee/Index">Xem danh sách sinh viên Lớp</a></li>
-                        <li><a class="dropdown-item" href="~/Classmittee/Evaluatetrainingresults">Đánh giá rèn luyện cho sinh viên</a></li>
-                    </ul>
-                </li>
+                @{
+                    if (user.Roles.Contains("Classmittee"))
+                    {
+                        <!-- Class Committee Functions -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="committeeDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Chức năng Ban cán sự lớp</a>
+                            <ul class="dropdown-menu" aria-labelledby="committeeDropdown">
+                                <li><h5 class="dropdown-header">Chức năng của ban cán sự</h5></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="~/Classmittee/Index">Xem danh sách sinh viên Lớp</a></li>
+                                <li><a class="dropdown-item" href="~/Classmittee/Evaluatetrainingresults">Đánh giá rèn luyện cho sinh viên</a></li>
+                            </ul>
+                        </li>
+                    }
+                }
+
             </ul>
+
             <!-- User Info -->
             <ul class="navbar-nav col-md-2 col-12 me-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img class="img-profile rounded-circle" src="~/themes/assets/icons/profile.png">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Lưu Lê Thanh Tú</span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                            @user.DisplayName
+                        </span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><h5 class="dropdown-header">Quản lý thông tin cá nhân</h5></li>
@@ -48,10 +63,11 @@
                         <li><a class="dropdown-item" href="#!">Thông tin cá nhân</a></li>
                         <li><a class="dropdown-item" href="#!">Đổi mật khẩu</a></li>
                         <li><a class="dropdown-divider"></a></li>
-                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
+                        <li><a class="dropdown-item" asp-action="Logout" asp-controller="Account" asp-area="">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
+
         </div>
     </div>
 </nav>

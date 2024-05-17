@@ -9,12 +9,12 @@ namespace TrainingScoring.Business.Services.Implementations
 {
     public class TrainingDetailService : ITrainingDetailService
     {
-        private readonly ILogger<EvaluationFormService> _logger;
+        private readonly ILogger<TrainingDetailService> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly ITrainingDetailRepository _trainingDetailRepository;
 
-        public TrainingDetailService(ILogger<EvaluationFormService> logger, 
+        public TrainingDetailService(ILogger<TrainingDetailService> logger, 
             IHttpContextAccessor httpContextAccessor, 
             ITrainingDetailRepository trainingDetailRepository)
         {

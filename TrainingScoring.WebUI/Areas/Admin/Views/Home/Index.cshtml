@@ -1,0 +1,32 @@
+﻿@using TrainingScoring.WebUI.AppCodes;
+@using static TrainingScoring.WebUI.AppCodes.SecurityModels;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome admin</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div>
+    @{
+        var user = User.GetUserData();
+        if (user.Roles.Contains(WebUserRoles.SuperAdmin))
+        {
+            <p>SuperAdmin mới thấy nè</p>
+        }
+        if (user.Roles.Contains(WebUserRoles.School))
+        {
+            <p>School mới thấy nè</p>
+        }
+        if (user.Roles.Contains(WebUserRoles.Department))
+        {
+            <p>Department mới thấy nè</p>
+        }
+        if (user.Roles.Contains(WebUserRoles.Advisor))
+        {
+            <p>Advisor mới thấy nè</p>
+        }
+    }
+</div>

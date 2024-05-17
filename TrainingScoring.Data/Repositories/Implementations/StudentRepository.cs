@@ -1,4 +1,5 @@
-﻿using TrainingScoring.Data.Repositories.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using TrainingScoring.Data.Repositories.Interfaces;
 using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Data.Repositories.Implementations
@@ -9,6 +10,11 @@ namespace TrainingScoring.Data.Repositories.Implementations
         public StudentRepository(TrainingScoingDBContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<Student> GetStudentByCodeAsync(string studentCode)
+        {
+            return await _context.Students.FirstOrDefaultAsync(s => s.StudentCode == studentCode);
         }
     }
 }

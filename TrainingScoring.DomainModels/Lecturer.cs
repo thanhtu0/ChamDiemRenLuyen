@@ -37,6 +37,8 @@ namespace TrainingScoring.DomainModels
         [Required]
         public LecturerGender Gender { get; set; }
 
+        public string? Photo { get; set; }
+
         public string Province { get; set; }
 
         [DataType(DataType.EmailAddress)]

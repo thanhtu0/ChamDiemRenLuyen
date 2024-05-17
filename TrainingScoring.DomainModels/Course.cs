@@ -9,7 +9,7 @@ namespace TrainingScoring.DomainModels
         [Key]
         public int CourseId { get; set; }
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string CourseCode { get; set; }
 
         [Required]
@@ -17,12 +17,12 @@ namespace TrainingScoring.DomainModels
         public string CourseName { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
-        public DateTime StartYear { get; set; }
+        [MaxLength(10)]
+        public string StartYear { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
-        public DateTime EndYear { get; set; }
+        [MaxLength(10)]
+        public string EndYear { get; set; }
 
         //Relationship
         public virtual ICollection<Grade> Grades { get; set; }
