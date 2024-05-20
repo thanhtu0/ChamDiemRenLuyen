@@ -10,6 +10,8 @@
     </div>
     <div class="card-body">
         <form asp-action="UpdateTrainingDirectory">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TrainingDirectoryId" />
             <input type="hidden" asp-for="EvaluationFormId" /> 
 

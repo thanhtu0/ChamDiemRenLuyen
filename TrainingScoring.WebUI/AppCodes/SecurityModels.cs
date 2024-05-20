@@ -165,8 +165,8 @@ namespace TrainingScoring.WebUI.AppCodes
             [Display(Name = "SuperAdmin")]
             public const string SuperAdmin = "SuperAdmin";
 
-            [Display(Name = "Derpartment")]
-            public const string Department = "Derpartment";
+            [Display(Name = "Department")]
+            public const string Department = "Department";
 
             [Display(Name = "Advisor")]
             public const string Advisor = "Advisor";

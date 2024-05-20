@@ -9,8 +9,8 @@ namespace TrainingScoring.DomainModels
         [Key]
         public int ScoreDetailId { get; set; }
 
-        [Required]
         public int ScoreDetailValue { get; set; }
+        public int ScoreDetailEvalution { get; set; }
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime ScoreDetailDate { get; set; }

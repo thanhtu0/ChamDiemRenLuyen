@@ -12,5 +12,9 @@ namespace TrainingScoring.WebUI.Models
         public IEnumerable<TrainingDirectory> TrainingDirectories { get; set; }
         public IEnumerable<TrainingContent> TrainingContents { get; set; }
         public IEnumerable<TrainingDetail> TrainingDetails { get; set; }
+
+        public List<AcademicYear> DistinctAcademicYears { get; set; }
+        public List<(string, SemesterType)> DistinctSemesters { get; set; }
+        public List<SemesterType> UniqueSemesters { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using TrainingScoring.Data.Repositories.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using TrainingScoring.Data.Repositories.Interfaces;
 using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.Data.Repositories.Implementations

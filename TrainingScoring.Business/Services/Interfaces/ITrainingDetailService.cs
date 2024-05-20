@@ -16,6 +16,7 @@ namespace TrainingScoring.Business.Services.Interfaces
         // Check Order and AdjustOrder
         Task<int> GetMaxOrderAsync(int trainingContentId);
         Task AdjustOrdersAfterDeletionAsync(int trainingContentId);
+        Task<bool> IsNameDuplicateAsync(int trainingDetailId, int trainingContentId, string trainingDetailName);
         #endregion
     }
 }

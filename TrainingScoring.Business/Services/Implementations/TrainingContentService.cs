@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TrainingScoring.Business.Services.Interfaces;
 using TrainingScoring.Data.Repositories.Implementations;
@@ -32,7 +33,7 @@ namespace TrainingScoring.Business.Services.Implementations
                 var trainingContentRepository = await _trainingContentRepository.GetAllAsync();
                 if (trainingContentRepository == null)
                 {
-                    throw new Exception("Không có Nội dung rèn luyện cả!");
+                    throw new Exception("Không có Nội dung rèn luyện nào cả!");
                 }
 
                 return trainingContentRepository;
@@ -52,7 +53,7 @@ namespace TrainingScoring.Business.Services.Implementations
 
                 if (trainingContentRepository == null)
                 {
-                    throw new Exception("Không có Nội dung rèn luyện");
+                    throw new Exception("Không có Nội dung rèn luyện cần tìm");
                 }
 
                 return trainingContentRepository;
@@ -95,10 +96,9 @@ namespace TrainingScoring.Business.Services.Implementations
 
                 if (isNameDuplicate)
                 {
-                    throw new ApplicationException("Training Content Name already exists.");
+                    throw new ApplicationException("Nội dung rèn luyện đã tồn tại. Vui lòng nhập lại");
                 }
 
-                // Tìm vị trí thích hợp để chèn mới
                 int newIndex = existingContents.Count;
 
                 for (int i = 0; i < existingContents.Count; i++)
@@ -110,16 +110,13 @@ namespace TrainingScoring.Business.Services.Implementations
                     }
                 }
 
-                // Điều chỉnh thứ tự của các training content sau newIndex
                 for (int i = newIndex; i < existingContents.Count; i++)
                 {
                     existingContents[i].Order++;
                 }
 
-                // Thêm mới training content vào vị trí đã chọn
                 existingContents.Insert(newIndex, trainingContent);
 
-                // Cập nhật các training content vào cơ sở dữ liệu
                 await _trainingContentRepository.UpdateRangeAsync(existingContents);
 
                 return trainingContent;
@@ -127,7 +124,7 @@ namespace TrainingScoring.Business.Services.Implementations
             catch (ApplicationException ex)
             {
                 _logger.LogError(ex, $"Application Error: {ex.Message}");
-                throw; // Không bao bọc ngoại lệ này
+                throw; 
             }
             catch (Exception ex)
             {
@@ -143,7 +140,7 @@ namespace TrainingScoring.Business.Services.Implementations
                 var existingContent = await _trainingContentRepository.GetByIdAsync(trainingContent.TrainingContentId);
                 if (existingContent == null)
                 {
-                    throw new ArgumentException("Training Content not found.");
+                    throw new ArgumentException("Không tìm thấy nội dung rèn luyện.");
                 }
 
                 var existingContents = await _trainingContentRepository.GetAllTrainingContentByDirectoryId(trainingContent.TrainingDirectoryId);
@@ -151,13 +148,11 @@ namespace TrainingScoring.Business.Services.Implementations
                 var isNameDuplicate = existingContents.Any(tc => tc.TrainingContentName.Equals(trainingContent.TrainingContentName, StringComparison.OrdinalIgnoreCase) && tc.TrainingContentId != trainingContent.TrainingContentId);
                 if (isNameDuplicate)
                 {
-                    throw new ApplicationException("Training Content Name already exists.");
+                    throw new ApplicationException("Nội dung rèn luyện đã tồn tại.");
                 }
 
-                // Kiểm tra xem có thay đổi thứ tự Order hay không
                 if (existingContent.Order != trainingContent.Order)
                 {
-                    // Điều chỉnh thứ tự của các nội dung đào tạo khác trong cùng một thư mục
                     if (existingContent.Order > trainingContent.Order)
                     {
                         foreach (var content in existingContents.Where(tc => tc.Order >= trainingContent.Order && tc.Order < existingContent.Order))
@@ -174,7 +169,6 @@ namespace TrainingScoring.Business.Services.Implementations
                     }
                 }
 
-                // Cập nhật thông tin của nội dung đào tạo
                 existingContent.TrainingContentName = trainingContent.TrainingContentName;
                 existingContent.IsProof = trainingContent.IsProof;
                 existingContent.MaxScore = trainingContent.MaxScore;
@@ -183,7 +177,6 @@ namespace TrainingScoring.Business.Services.Implementations
                 existingContent.DeletedAt = trainingContent.DeletedAt;
                 existingContent.Order = trainingContent.Order;
 
-                // Lưu thay đổi vào cơ sở dữ liệu
                 return await _trainingContentRepository.UpdateAsync(existingContent);
             }
             catch (Exception ex)
@@ -202,20 +195,16 @@ namespace TrainingScoring.Business.Services.Implementations
                     throw new ArgumentNullException(nameof(trainingContent), "Nội dung đào tạo không được để trống.");
                 }
 
-                // Kiểm tra xem nội dung đào tạo cần xóa có tồn tại trong cơ sở dữ liệu không
                 var existingContent = await _trainingContentRepository.GetByIdAsync(trainingContent.TrainingContentId);
                 if (existingContent == null)
                 {
                     throw new ArgumentException("Không tìm thấy nội dung đào tạo cần xóa.");
                 }
 
-                // Lưu trữ ID của thư mục chứa nội dung đào tạo này để sử dụng sau này
                 int directoryId = existingContent.TrainingDirectoryId;
 
-                // Xóa nội dung đào tạo khỏi cơ sở dữ liệu
                 await _trainingContentRepository.DeleteAsync(existingContent);
 
-                // Điều chỉnh lại thứ tự của các nội dung đào tạo còn lại trong cùng một thư mục
                 await AdjustOrdersAfterDeletionAsync(directoryId);
 
                 return existingContent;
@@ -243,6 +232,12 @@ namespace TrainingScoring.Business.Services.Implementations
         public async Task<int> GetMaxOrderAsync(int trainingDirectoryId)
         {
             return await _trainingContentRepository.GetMaxOrderAsync(trainingDirectoryId);
+        }
+
+        public async Task<bool> IsNameDuplicateAsync(int trainingContentId, int trainingDirectoryId, string trainingContentName)
+        {
+            var existingContents = await _trainingContentRepository.GetAllTrainingContentByDirectoryId(trainingDirectoryId);
+            return existingContents.Any(tc => tc.TrainingContentName.Equals(trainingContentName, StringComparison.OrdinalIgnoreCase) && tc.TrainingContentId != trainingContentId);
         }
 
         #endregion

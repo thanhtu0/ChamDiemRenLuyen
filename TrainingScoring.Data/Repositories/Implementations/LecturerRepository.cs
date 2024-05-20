@@ -32,5 +32,10 @@ namespace TrainingScoring.Data.Repositories.Implementations
 
             return getRole.ToList();
         }
+
+        public async Task<Lecturer> GetLecturerByCodeAsync(string lecturerCode)
+        {
+            return await _context.Lecturers.FirstOrDefaultAsync(s => s.LecturerCode == lecturerCode);
+        }
     }
 }

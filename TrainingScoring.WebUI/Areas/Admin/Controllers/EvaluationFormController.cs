@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
 using TrainingScoring.Business.Services.Interfaces;
 using TrainingScoring.Data;
 using TrainingScoring.DomainModels;
@@ -40,6 +38,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             _trainingDetailService = trainingDetailService;
             _academicYearService = academicYearService;
         }
+
         /// <summary>
         /// Show EvaluationForms
         /// </summary>
@@ -110,12 +109,21 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> CreateEvaluationForm()
         {
             var academicYears = await _academicYearService.GetAllAcademicYearsAsync();
+            var distinctAcademicYears = academicYears.GroupBy(ay => ay.AcademicYearName)
+                                              .Select(group => group.First())
+                                              .ToList();
+            var distinctSemesters = academicYears.Select(ay => (ay.AcademicYearName, ay.Semester))
+                                     .Distinct()
+                                     .ToList();
+            var uniqueSemesters = academicYears.Select(ay => ay.Semester).Distinct().ToList();
             var viewModel = new EvaluationFormDetailsViewModel
             {
-                AcademicYears = academicYears
+                AcademicYears = academicYears,
+                DistinctAcademicYears = distinctAcademicYears,
+                DistinctSemesters = distinctSemesters,
+                UniqueSemesters = uniqueSemesters
             };
 
-            // Kiểm tra xem có thông báo lỗi từ TempData không
             if (TempData["ErrorMessage"] != null)
             {
                 ModelState.AddModelError(string.Empty, TempData["ErrorMessage"].ToString());
@@ -123,7 +131,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
             return View(viewModel);
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateEvaluationForm(EvaluationForm evaluationForm)
         {
@@ -131,7 +138,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Kiểm tra xem phiếu đánh giá đã tồn tại hay không
                     var existingFormWithSameCode = await _evaluationFormService.GetByCodeAsync(evaluationForm.EvaluationFormCode);
                     if (existingFormWithSameCode != null)
                     {
@@ -139,26 +145,28 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                         return RedirectToAction("CreateEvaluationForm");
                     }
 
-                    // Gọi service để tạo mới một phiếu đánh giá
+                    var existingFormWithSameName = await _evaluationFormService.GetByNameAsync(evaluationForm.EvaluationFormName);
+                    if (existingFormWithSameName != null)
+                    {
+                        TempData["ErrorMessage"] = "Phiếu đánh giá đã tồn tại với tên tương tự. Vui lòng thử lại với tên khác.";
+                        return RedirectToAction("CreateEvaluationForm");
+                    }
+
                     var createdEvaluationForm = await _evaluationFormService.CreateEvaluationFormAsync(evaluationForm);
 
-                    // Kiểm tra xem phiếu đánh giá đã được tạo thành công chưa
                     if (createdEvaluationForm != null)
                     {
-                        // Chuyển hướng đến action hiển thị danh sách các phiếu đánh giá
                         return RedirectToAction("ShowListEvaluationForm");
                     }
                     else
                     {
-                        // Xử lý trường hợp tạo mới không thành công
                         TempData["ErrorMessage"] = "Failed to create evaluation form.";
                         return RedirectToAction("CreateEvaluationForm");
                     }
                 }
                 else
                 {
-                    // Xử lý trường hợp dữ liệu nhập vào không hợp lệ
-                    return View(evaluationForm); // Hiển thị lại view với dữ liệu đã nhập và thông báo lỗi
+                    return View(evaluationForm); 
                 }
             }
             catch (Exception ex)
@@ -167,6 +175,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 throw;
             }
         }
+
         /// <summary>
         /// Update EvaluationForms
         /// </summary>
@@ -196,7 +205,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 throw;
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> UpdateEvaluationForm(EvaluationForm evaluationForm)
         {
@@ -272,7 +280,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             };
             return View(viewModel);
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateTrainingDirectory(TrainingDirectoryViewModel viewModel)
         {
@@ -334,7 +341,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                     EvaluationFormId = trainingDirectory.EvaluationFormId,
                     TrainingDirectoryName = trainingDirectory.TrainingDirectoryName,
                     Order = trainingDirectory.Order,
-                    MaxScore = trainingDirectory.MaxScore // Thêm MaxScore vào nếu cần
+                    MaxScore = trainingDirectory.MaxScore
                 };
 
                 return View(viewModel);
@@ -352,7 +359,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Lấy thông tin của danh mục rèn luyện cần cập nhật
                     var trainingDirectory = await _trainingDirectoryService.GetTrainingDirectoryByIdAsync(viewModel.TrainingDirectoryId);
 
                     if (trainingDirectory == null)
@@ -360,18 +366,15 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                         return NotFound();
                     }
 
-                    // Kiểm tra tên trùng lặp
                     var isNameDuplicate = await _trainingDirectoryService.IsNameDuplicateAsync(viewModel.TrainingDirectoryId, viewModel.EvaluationFormId, viewModel.TrainingDirectoryName);
                     if (isNameDuplicate)
                     {
-                        ModelState.AddModelError("TrainingDirectoryName", "Training Directory Name already exists.");
+                        ModelState.AddModelError("TrainingDirectoryName", "Tên danh mục đã tồn tại. Vui lòng nhập lại tên danh mục.");
                         return View(viewModel);
                     }
 
-                    // Lấy giá trị MaxOrder hiện tại
                     var maxOrder = await _trainingDirectoryService.GetMaxOrderAsync();
 
-                    // Điều chỉnh Order nếu cần thiết
                     if (viewModel.Order > maxOrder)
                     {
                         viewModel.Order = maxOrder + 1;
@@ -389,7 +392,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                     }
                 }
 
-                // Nếu dữ liệu không hợp lệ hoặc cập nhật không thành công, hiển thị lại view với view model hiện tại và lỗi
                 return View(viewModel);
             }
             catch (ApplicationException ex)
@@ -420,12 +422,10 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
                 if (deletedTrainingDirectory != null)
                 {
-                    // Chuyển hướng người dùng đến trang chi tiết của phiếu đánh giá
                     return RedirectToAction("EvaluationFormDetail", new { id = deletedTrainingDirectory.EvaluationFormId });
                 }
                 else
                 {
-                    // Xử lý khi xóa không thành công
                     TempData["ErrorMessage"] = "Failed to delete training directory.";
                     return RedirectToAction("EvaluationFormDetail", new { id = trainingDirectoryToDelete.EvaluationFormId });
                 }
@@ -449,7 +449,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             };
             return View(viewModel);
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateTrainingContent(TrainingContentViewModel viewModel)
         {
@@ -530,7 +529,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                     TypeofScore = trainingContent.TypeofScore,
                     CreateAt = trainingContent.CreateAt,
                     DeletedAt = trainingContent.DeletedAt,
-                    EvaluationFormId = evaluationFormId // Sử dụng giá trị evaluationFormId được chuyển từ action
+                    EvaluationFormId = evaluationFormId 
                 };
 
                 return View(viewModel);
@@ -541,16 +540,27 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 throw;
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> UpdateTrainingContent(TrainingContentViewModel viewModel, int trainingDirectoryId, int evaluationFormId)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (ModelState.IsValid) 
                 {
-                    var updatedTrainingContent = await _trainingContentService.UpdateTrainingContentAsync(viewModel.ToTrainingContent());
+                    var existingContent = await _trainingContentService.GetTrainingContentByIdAsync(viewModel.TrainingContentId);
+                    if (existingContent == null)
+                    {
+                        return NotFound();
+                    }
 
+                    var isNameDuplicate = await _trainingContentService.IsNameDuplicateAsync(viewModel.TrainingContentId, viewModel.TrainingDirectoryId, viewModel.TrainingContentName);
+                    if (isNameDuplicate)
+                    {
+                        ModelState.AddModelError("TrainingContentName", "Tên nội dung rèn luyện đã tồn tại. Vui lòng nhập lại.");
+                        return View(viewModel);
+                    }
+
+                    var updatedTrainingContent = await _trainingContentService.UpdateTrainingContentAsync(viewModel.ToTrainingContent());
                     if (updatedTrainingContent != null)
                     {
                         return RedirectToAction("EvaluationFormDetail", "EvaluationForm", new { id = evaluationFormId });
@@ -563,6 +573,11 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
                 return View(viewModel);
             }
+            catch (ApplicationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(viewModel);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Error: {ex.Message}");
@@ -570,7 +585,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 return View(viewModel);
             }
         }
-
         public async Task<IActionResult> DeleteTrainingContent(int id, int trainingDirectoryId, int evaluationFormId)
         {
             try
@@ -602,7 +616,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 throw;
             }
         }
-
         #endregion
 
         #region Create, Update, Delete TrainingDetail
@@ -623,7 +636,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             };
             return View(viewModel);
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateTrainingDetail(TrainingDetailViewModel viewModel)
         {
@@ -716,7 +728,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                     TypeofScore = trainingDetail.TypeofScore,
                     CreateAt = trainingDetail.CreateAt,
                     DeletedAt = trainingDetail.DeletedAt,
-                    EvaluationFormId = evaluationFormId 
+                    EvaluationFormId = evaluationFormId
                 };
 
                 return View(viewModel);
@@ -727,7 +739,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 throw;
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> UpdateTrainingDetail(TrainingDetailViewModel viewModel, int trainingContentId, int trainingDirectoryId, int evaluationFormId)
         {
@@ -735,8 +746,20 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var updatedTrainingDetail = await _trainingDetailService.UpdateTrainingDetailAsync(viewModel.ToTrainingDetail());
+                    var existingDetail = await _trainingDetailService.GetTrainingDetailByIdAsync(viewModel.TrainingDetailId);
+                    if (existingDetail == null)
+                    {
+                        return NotFound();
+                    }
 
+                    var isNameDuplicate = await _trainingDetailService.IsNameDuplicateAsync(viewModel.TrainingDetailId, trainingContentId, viewModel.TrainingDetailName);
+                    if (isNameDuplicate)
+                    {
+                        ModelState.AddModelError("TrainingDetailName", "Tên chi tiết rèn luyện đã tồn tại. Vui lòng nhập lại.");
+                        return View(viewModel);
+                    }
+
+                    var updatedTrainingDetail = await _trainingDetailService.UpdateTrainingDetailAsync(viewModel.ToTrainingDetail());
                     if (updatedTrainingDetail != null)
                     {
                         return RedirectToAction("EvaluationFormDetail", "EvaluationForm", new { id = evaluationFormId });
@@ -749,6 +772,11 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
                 return View(viewModel);
             }
+            catch (ApplicationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(viewModel);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Error: {ex.Message}");
@@ -756,6 +784,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
                 return View(viewModel);
             }
         }
+
 
         public async Task<IActionResult> DeleteTrainingDetail(int id, int trainingContentId, int trainingDirectoryId, int evaluationFormId)
         {

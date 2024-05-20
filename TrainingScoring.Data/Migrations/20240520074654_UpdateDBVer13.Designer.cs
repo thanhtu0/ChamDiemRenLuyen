@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingScoring.Data;
 
@@ -11,9 +12,10 @@ using TrainingScoring.Data;
 namespace TrainingScoring.Data.Migrations
 {
     [DbContext(typeof(TrainingScoingDBContext))]
-    partial class TrainingScoingDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240520074654_UpdateDBVer13")]
+    partial class UpdateDBVer13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,6 +252,10 @@ namespace TrainingScoring.Data.Migrations
                         .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Workplaceunit")

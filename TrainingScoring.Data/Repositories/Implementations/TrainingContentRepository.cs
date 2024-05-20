@@ -51,5 +51,15 @@ namespace TrainingScoring.Data.Repositories.Implementations
             var existingContents = await _context.TrainingContents.Where(tc => tc.TrainingDirectoryId == trainingDirectoryId).ToListAsync();
             return existingContents.Any() ? existingContents.Max(c => c.Order) : 0;
         }
+
+        public async Task<bool> IsNameDuplicateAsync(int trainingContentId, int trainingDirectoryId, string trainingContentName)
+        {
+            var contents = await _context.TrainingContents
+                .Where(tc => tc.TrainingDirectoryId == trainingDirectoryId && tc.TrainingContentId != trainingContentId)
+                .ToListAsync();
+
+            return contents.Any(tc => tc.TrainingContentName.Equals(trainingContentName, StringComparison.OrdinalIgnoreCase));
+        }
+
     }
 }

@@ -50,5 +50,13 @@ namespace TrainingScoring.Data.Repositories.Implementations
             return existingDetails.Any() ? existingDetails.Max(c => c.Order) : 0;
         }
 
+        public async Task<bool> IsNameDuplicateAsync(int trainingDetailId, int trainingContentId, string trainingDetailName)
+        {
+            var contents = await _context.TrainingDetails
+                .Where(tc => tc.TrainingContentId == trainingContentId && tc.TrainingDetailId != trainingDetailId)
+                .ToListAsync();
+
+            return contents.Any(tc => tc.TrainingDetailName.Equals(trainingDetailName, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }

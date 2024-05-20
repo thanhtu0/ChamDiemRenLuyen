@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using TrainingScoring.Business.Services.Interfaces;
+using TrainingScoring.Data.Repositories.Implementations;
 using TrainingScoring.Data.Repositories.Interfaces;
 using TrainingScoring.DomainModels;
 
@@ -76,6 +77,16 @@ namespace TrainingScoring.Business.Services.Implementations
         public async Task<Lecturer> GetLecturerAsync(string code)
         {
             return await _lecturerRepository.GetLecturerAsync(code);
+        }
+
+        public async Task<Student> GetStudentByCodeAsync(string studentCode)
+        {
+            return await _studentRepository.GetStudentByCodeAsync(studentCode);
+        }
+
+        public async Task<Lecturer> GetLecturerByCodeAsync(string lecturerCode)
+        {
+            return await _lecturerRepository.GetLecturerByCodeAsync(lecturerCode);
         }
     }
 }

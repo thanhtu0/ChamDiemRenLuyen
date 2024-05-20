@@ -21,8 +21,8 @@ namespace TrainingScoring.DomainModels
         public DateTime? DeletedAt { get; set; }
 
         // Relationship
-        public int AcademicYearId { get; set; } // Foreign key referencing AcademicYearId in the associated table
-        public AcademicYear AcademicYear { get; set; } // Navigation property representing the associated AcademicYear
+        public int AcademicYearId { get; set; } 
+        public AcademicYear AcademicYear { get; set; } 
 
         public ICollection<TrainingDirectory> TrainingDirectories { get; set; }
         public ICollection<Score> Scores { get; set; }

@@ -6,7 +6,7 @@ namespace TrainingScoring.DomainModels
     public enum TypeofScoreDetail
     {
         Radio = 0,
-        CheckeBox = 1,
+        CheckedBox = 1,
         Input = 2
     }
 

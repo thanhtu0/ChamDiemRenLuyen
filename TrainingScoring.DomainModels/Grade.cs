@@ -16,9 +16,6 @@ namespace TrainingScoring.DomainModels
         [MaxLength(50)]
         public string GradeName { get; set; }
 
-        [Required]
-        public int NumberOfPupils { get; set; }
-
         // Relationship with Department
         public int DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]

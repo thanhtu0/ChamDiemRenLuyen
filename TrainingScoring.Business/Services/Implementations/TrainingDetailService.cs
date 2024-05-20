@@ -51,7 +51,7 @@ namespace TrainingScoring.Business.Services.Implementations
 
                 if (trainingDetailRepository == null)
                 {
-                    throw new Exception("Không có chi tiết rèn luyện");
+                    throw new Exception("Không có chi tiết rèn luyện cần tìm");
                 }
 
                 return trainingDetailRepository;
@@ -71,7 +71,7 @@ namespace TrainingScoring.Business.Services.Implementations
 
                 if (trainingDetails == null || !trainingDetails.Any())
                 {
-                    throw new Exception("Không có nội dung rèn luyện nào cho danh mục này");
+                    throw new Exception("Không có chi tiết rèn luyện nào cho nội dung này");
                 }
 
                 return trainingDetails;
@@ -93,10 +93,9 @@ namespace TrainingScoring.Business.Services.Implementations
 
                 if (isNameDuplicate)
                 {
-                    throw new ApplicationException("Training Detail Name already exists.");
+                    throw new ApplicationException("Chi tiết rèn luyện đã tồn tại.Vui lòng nhập lại.");
                 }
 
-                // Tìm vị trí thích hợp để chèn mới
                 int newIndex = existingDetails.Count;
 
                 for (int i = 0; i < existingDetails.Count; i++)
@@ -108,16 +107,13 @@ namespace TrainingScoring.Business.Services.Implementations
                     }
                 }
 
-                // Điều chỉnh thứ tự của các training content sau newIndex
                 for (int i = newIndex; i < existingDetails.Count; i++)
                 {
                     existingDetails[i].Order++;
                 }
 
-                // Thêm mới training content vào vị trí đã chọn
                 existingDetails.Insert(newIndex, trainingDetail);
 
-                // Cập nhật các training content vào cơ sở dữ liệu
                 await _trainingDetailRepository.UpdateRangeAsync(existingDetails);
 
                 return trainingDetail;
@@ -125,7 +121,7 @@ namespace TrainingScoring.Business.Services.Implementations
             catch (ApplicationException ex)
             {
                 _logger.LogError(ex, $"Application Error: {ex.Message}");
-                throw; // Không bao bọc ngoại lệ này
+                throw; 
             }
             catch (Exception ex)
             {
@@ -141,7 +137,7 @@ namespace TrainingScoring.Business.Services.Implementations
                 var existingDetail = await _trainingDetailRepository.GetByIdAsync(trainingDetail.TrainingDetailId);
                 if (existingDetail == null)
                 {
-                    throw new ArgumentException("Training Detail not found.");
+                    throw new ArgumentException("Không có chi tiết rèn luyện.");
                 }
 
                 var existingDetails = await _trainingDetailRepository.GetAllTrainingDetailByContentId(trainingDetail.TrainingContentId);
@@ -149,13 +145,11 @@ namespace TrainingScoring.Business.Services.Implementations
                 var isNameDuplicate = existingDetails.Any(tc => tc.TrainingDetailName.Equals(trainingDetail.TrainingDetailName, StringComparison.OrdinalIgnoreCase) && tc.TrainingDetailId != trainingDetail.TrainingDetailId);
                 if (isNameDuplicate)
                 {
-                    throw new ApplicationException("Training Content Name already exists.");
+                    throw new ApplicationException("Chi tiết rèn luyện đẫ tồn tại.");
                 }
 
-                // Kiểm tra xem có thay đổi thứ tự Order hay không
                 if (existingDetail.Order != trainingDetail.Order)
                 {
-                    // Điều chỉnh thứ tự của các nội dung đào tạo khác trong cùng một thư mục
                     if (existingDetail.Order > trainingDetail.Order)
                     {
                         foreach (var detail in existingDetails.Where(td => td.Order >= trainingDetail.Order && td.Order < existingDetail.Order))
@@ -172,7 +166,6 @@ namespace TrainingScoring.Business.Services.Implementations
                     }
                 }
 
-                // Cập nhật thông tin của nội dung đào tạo
                 existingDetail.TrainingDetailName = trainingDetail.TrainingDetailName;
                 existingDetail.IsProof = trainingDetail.IsProof;
                 existingDetail.MaxScore = trainingDetail.MaxScore;
@@ -181,7 +174,6 @@ namespace TrainingScoring.Business.Services.Implementations
                 existingDetail.DeletedAt = trainingDetail.DeletedAt;
                 existingDetail.Order = trainingDetail.Order;
 
-                // Lưu thay đổi vào cơ sở dữ liệu
                 return await _trainingDetailRepository.UpdateAsync(existingDetail);
             }
             catch (Exception ex)
@@ -200,20 +192,16 @@ namespace TrainingScoring.Business.Services.Implementations
                     throw new ArgumentNullException(nameof(trainingDetail), "Chi tiết rèn luyện không được để trống.");
                 }
 
-                // Kiểm tra xem nội dung đào tạo cần xóa có tồn tại trong cơ sở dữ liệu không
                 var existinDetail = await _trainingDetailRepository.GetByIdAsync(trainingDetail.TrainingDetailId);
                 if (existinDetail == null)
                 {
                     throw new ArgumentException("Không tìm thấy chi tiêt rèn luyện cần xóa.");
                 }
 
-                // Lưu trữ ID của thư mục chứa nội dung đào tạo này để sử dụng sau này
                 int contentId = existinDetail.TrainingContentId;
 
-                // Xóa nội dung đào tạo khỏi cơ sở dữ liệu
                 await _trainingDetailRepository.DeleteAsync(existinDetail);
 
-                // Điều chỉnh lại thứ tự của các nội dung đào tạo còn lại trong cùng một thư mục
                 await AdjustOrdersAfterDeletionAsync(contentId);
 
                 return existinDetail;
@@ -241,6 +229,12 @@ namespace TrainingScoring.Business.Services.Implementations
         public async Task<int> GetMaxOrderAsync(int trainingContentId)
         {
             return await _trainingDetailRepository.GetMaxOrderAsync(trainingContentId);
+        }
+
+        public async Task<bool> IsNameDuplicateAsync(int trainingDetailId, int trainingContentId, string trainingDetailName)
+        {
+            var existingContents = await _trainingDetailRepository.GetAllTrainingDetailByContentId(trainingContentId);
+            return existingContents.Any(tc => tc.TrainingDetailName.Equals(trainingDetailName, StringComparison.OrdinalIgnoreCase) && tc.TrainingDetailId != trainingDetailId);
         }
         #endregion
     }

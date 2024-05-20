@@ -1,15 +1,23 @@
 ﻿@model TrainingScoring.WebUI.Models.EvaluationFormDetailsViewModel
+@using TrainingScoring.DomainModels
 
 @{
     ViewData["Title"] = "Thêm mới Phiếu đánh giá";
 }
-
 
 <div class="card">
     <div class="card-header border-bottom-1 border-primary">
         <h2>Thêm mới Phiếu đánh giá rèn luyện</h2>
     </div>
     <div class="card-body">
+        <div class="row alert alert-warning alert-dismissible fade show" role="alert">
+            <ul>
+                <span class="fw-bold">Lưu ý:</span>
+                <li class="ms-5">Thưc hiện thêm mới Phiếu đánh giá phải chọn đúng Năm học và Học kỳ tương ứng.</li>
+                <li class="ms-5">Mã phiếu được thêm theo dạng Năm học.Học kỳ. Ví dụ 2021-2022.1</li>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         @if (ViewData.ModelState.ContainsKey(string.Empty))
         {
             <div class="alert alert-danger">
@@ -19,32 +27,65 @@
         <form asp-action="CreateEvaluationForm" method="post">
             <div class="mb-3">
                 <label for="EvaluationFormCode" class="form-label">Mã phiếu:</label>
-                <input asp-for="EvaluationFormCode" class="form-control" id="EvaluationFormCode" />
+                <input asp-for="EvaluationFormCode" class="form-control" id="EvaluationFormCode" required />
                 <span asp-validation-for="EvaluationFormCode" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label for="EvaluationFormName" class="form-label">Tên phiếu:</label>
-                <input asp-for="EvaluationFormName" class="form-control" id="EvaluationFormName" />
+                <input asp-for="EvaluationFormName" class="form-control" id="EvaluationFormName" required />
                 <span asp-validation-for="EvaluationFormName" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label for="AcademicYearId" class="form-label">Năm học / Học kỳ</label>
-                <div class="input-group">
-                    <span class="input-group-text" id="academicYearAddon">
-                        <i class="far fa-calendar"></i>
-                    </span>
-                    <select asp-for="AcademicYearId" class="form-select" id="AcademicYearId" aria-describedby="academicYearAddon">
-                        <option value="">Chọn năm học / học kỳ</option>
-                        @foreach (var academicYear in Model.AcademicYears.OrderBy(ay => ay.SemesterCode))
-                        {
-                            <option value="@academicYear.AcademicYearId">@academicYear.SemesterCode</option>
-                        }
-                    </select>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="AcademicYearId" class="form-label">Năm học:</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="academicYearAddon">
+                                <i class="far fa-calendar"></i>
+                            </span>
+                            <select asp-for="AcademicYearId" class="form-select" id="AcademicYearId" aria-describedby="academicYearAddon">
+                                <option value="">-- Chọn năm học --</option>
+                                @foreach (var academicYear in Model.DistinctAcademicYears.OrderBy(ay => ay.SemesterCode))
+                                {
+                                    <option value="@academicYear.AcademicYearId">@academicYear.AcademicYearName</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="AcademicYearId" class="text-danger"></span>
+                    </div>
                 </div>
-                <span asp-validation-for="AcademicYearId" class="text-danger"></span>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="SemesterCode" class="form-label">Học kỳ:</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="semesterAddon">
+                                <i class="far fa-calendar"></i>
+                            </span>
+                            <select asp-for="AcademicYearId" class="form-select" id="AcademicYearId" aria-describedby="semesterAddon">
+                                <option value="">-- Chọn học kỳ --</option>
+                                @foreach (var semester in Model.UniqueSemesters)
+                                {
+                                    if (semester == SemesterType.First)
+                                    {
+                                        <option value="@semester">Học kỳ 1</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@semester">Học kỳ 2</option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                        <span asp-validation-for="AcademicYearId" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
+
 
             <button type="submit" class="btn btn-primary">
                 Lưu phiếu đánh giá

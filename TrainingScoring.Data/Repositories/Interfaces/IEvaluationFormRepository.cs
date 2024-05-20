@@ -7,7 +7,6 @@ namespace TrainingScoring.Data.Repositories.Interfaces
         Task<EvaluationForm> CreateAsync(EvaluationForm evaluationForm);
         Task<EvaluationForm> GetByCodeAsync(string code);
         Task<EvaluationForm> GetByNameAsync(string name);
-
     }
 
 }

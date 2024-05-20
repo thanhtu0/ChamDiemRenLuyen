@@ -29,6 +29,12 @@ namespace TrainingScoring.DomainModels
         [DataType(DataType.Password)]
         [MaxLength(50)]
         public string Password { get; set; }
+        [MaxLength(11)]
+        public string Phone { get; set; }
+        public string MobiePhone { get; set; }
+        public string Workplaceunit { get; set; }
+        public string Lecturerclassification { get; set; }
+        public string Contactaddress { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
@@ -38,9 +44,6 @@ namespace TrainingScoring.DomainModels
         public LecturerGender Gender { get; set; }
 
         public string? Photo { get; set; }
-
-        public string Province { get; set; }
-
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 

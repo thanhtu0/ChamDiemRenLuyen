@@ -13,7 +13,7 @@ namespace TrainingScoring.Business.Services.Interfaces
         Task<EvaluationForm> DeleteEvaluationFormAsync(EvaluationForm evaluationForm);
         Task<bool> IsEvaluationFormExists(int id);
         Task<EvaluationForm> GetByCodeAsync(string code);
-
+        Task<EvaluationForm> GetByNameAsync(string name);
         #endregion
     }
 }

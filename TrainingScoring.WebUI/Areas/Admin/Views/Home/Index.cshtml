@@ -12,21 +12,25 @@
 <div>
     @{
         var user = User.GetUserData();
-        if (user.Roles.Contains(WebUserRoles.SuperAdmin))
+
+        if (user.Roles.Contains(WebUserRoles.Advisor))
         {
-            <p>SuperAdmin mới thấy nè</p>
+            <p>Advisor mới thấy nè</p>
         }
-        if (user.Roles.Contains(WebUserRoles.School))
-        {
-            <p>School mới thấy nè</p>
-        }
+
         if (user.Roles.Contains(WebUserRoles.Department))
         {
             <p>Department mới thấy nè</p>
         }
-        if (user.Roles.Contains(WebUserRoles.Advisor))
+
+        if (user.Roles.Contains(WebUserRoles.School))
         {
-            <p>Advisor mới thấy nè</p>
+            <p>School mới thấy nè</p>
+        }
+
+        if (user.Roles.Contains(WebUserRoles.SuperAdmin))
+        {
+            <p>SuperAdmin mới thấy nè</p>
         }
     }
 </div>

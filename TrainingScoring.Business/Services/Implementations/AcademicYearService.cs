@@ -52,7 +52,7 @@ namespace TrainingScoring.Business.Services.Implementations
 
                 if (academicYearRepository == null)
                 {
-                    throw new Exception("Phiếu đánh giá điểm rèn luyện hiện không có!");
+                    throw new Exception("Năm học hiện không có!");
                 }
 
                 return academicYearRepository;

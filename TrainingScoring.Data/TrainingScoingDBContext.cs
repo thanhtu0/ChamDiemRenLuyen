@@ -42,7 +42,7 @@ namespace TrainingScoring.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Define composite primary key for UserRole entity
+            // Define composite primary key for GradeLecturerAssignment entity
             modelBuilder.Entity<GradeLecturerAssignment>()
                 .HasKey(glr => new { glr.LecturerId, glr.GradeId });
 
@@ -50,9 +50,9 @@ namespace TrainingScoring.Data
                 .HasOne(gla => gla.Lecturer) 
                 .WithMany(l => l.GradeLecturerAssignments)
                 .HasForeignKey(gla => gla.LecturerId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // Define composite primary key for UserRole entity
+            // Define composite primary key for LecturerRoleAssignment entity
             modelBuilder.Entity<LecturerRoleAssignment>()
                 .HasKey(llr => new { llr.LecturerId, llr.RoleId });
 

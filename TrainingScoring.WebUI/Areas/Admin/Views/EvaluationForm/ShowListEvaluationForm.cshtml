@@ -43,7 +43,7 @@
                     </th>
                     </thead>
                     <tbody>
-                        @foreach (var evaluationForm in Model.EvaluationForms.OrderBy(ef => ef.EvaluationFormCode))
+                        @foreach (var evaluationForm in Model.EvaluationForms.OrderByDescending(ef => ef.EvaluationFormCode))
                         {
                             <tr>
                                 <td>@evaluationForm.EvaluationFormCode</td>

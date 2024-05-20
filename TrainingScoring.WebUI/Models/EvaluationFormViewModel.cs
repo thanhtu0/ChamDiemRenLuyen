@@ -1,5 +1,4 @@
-﻿
-using TrainingScoring.DomainModels;
+﻿using TrainingScoring.DomainModels;
 
 namespace TrainingScoring.WebUI.Models
 {

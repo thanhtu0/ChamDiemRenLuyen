@@ -12,5 +12,8 @@ namespace TrainingScoring.Business.Services.Interfaces
         Task<List<string>> GetUserRolesAsync(string code);
         Task<Student> GetStudentAsync(string code);
         Task<Lecturer> GetLecturerAsync(string code);
+
+        Task<Student> GetStudentByCodeAsync(string studentCode);
+        Task<Lecturer> GetLecturerByCodeAsync(string lecturerCode);
     }
 }

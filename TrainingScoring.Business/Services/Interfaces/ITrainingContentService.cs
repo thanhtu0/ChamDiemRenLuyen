@@ -13,8 +13,9 @@ namespace TrainingScoring.Business.Services.Interfaces
         Task<TrainingContent> UpdateTrainingContentAsync(TrainingContent trainingContent);
         Task<TrainingContent> DeleteTrainingContentAsync(TrainingContent trainingContent);
         // Check Order and AdjustOrder
-        Task<int> GetMaxOrderAsync(int trainingDirectoryId);//
+        Task<int> GetMaxOrderAsync(int trainingDirectoryId);
         Task AdjustOrdersAfterDeletionAsync(int trainingDirectoryId);
+        Task<bool> IsNameDuplicateAsync(int trainingContentId, int trainingDirectoryId, string trainingContentName);
         #endregion
     }
 }

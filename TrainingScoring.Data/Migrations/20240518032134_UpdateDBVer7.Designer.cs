@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingScoring.Data;
 
@@ -11,9 +12,10 @@ using TrainingScoring.Data;
 namespace TrainingScoring.Data.Migrations
 {
     [DbContext(typeof(TrainingScoingDBContext))]
-    partial class TrainingScoingDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240518032134_UpdateDBVer7")]
+    partial class UpdateDBVer7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,6 +166,9 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<int>("MajorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("NumberOfPupils")
+                        .HasColumnType("int");
+
                     b.HasKey("GradeId");
 
                     b.HasIndex("CourseId");
@@ -198,10 +203,6 @@ namespace TrainingScoring.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LecturerId"), 1L, 1);
 
-                    b.Property<string>("Contactaddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -231,28 +232,19 @@ namespace TrainingScoring.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("Lecturerclassification")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MobiePhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
+                    b.Property<int>("Phone")
                         .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Workplaceunit")
+                    b.Property<string>("Province")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -432,9 +424,6 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<DateTime>("ScoreDetailDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ScoreDetailEvalution")
-                        .HasColumnType("int");
-
                     b.Property<int>("ScoreDetailValue")
                         .HasColumnType("int");
 
@@ -469,21 +458,10 @@ namespace TrainingScoring.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"), 1L, 1);
 
-                    b.Property<string>("CitizenIdentificationNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateofIssueofCitizenIdentificationCard")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ethnicity")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -499,10 +477,6 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<int>("GradeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Hometown")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IsClassmittee")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -512,36 +486,19 @@ namespace TrainingScoring.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Permanentaddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
+                    b.Property<int>("Phone")
                         .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PlaceOfBirth")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Province")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Religion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

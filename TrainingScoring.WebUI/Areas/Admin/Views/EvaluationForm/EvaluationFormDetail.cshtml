@@ -2,20 +2,19 @@
 @{
     ViewData["Title"] = "EvaluationFormDetail";
     string[] parts = Model.EvaluationFormCode.Split('.');
-    string academicYear = parts[0]; // Năm học
-    string semester = parts[1]; // Học kỳ
+    string academicYear = parts[0];
+    string semester = parts[1];
 }
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Quản lý phiếu đánh giá rèn luyện</title>
     <style>
         th:nth-child(1),
         th:nth-child(2),
         th:nth-child(3),
+        th:nth-child(4),
         td:nth-child(1),
         td:nth-child(3),
         td:nth-child(4),
@@ -74,7 +73,8 @@
                     <table class="table table-bordered">
                         <thead class="training-title table-dark training-title">
                         <th colspan="2" style="width: 65%;">Nội dung đánh giá</th>
-                        <th colspan="2" style="width: 17.5%;">Điểm rèn luyện / minh chứng</th>
+                        <th style="width: 7.5%;">Điểm RL</th>
+                        <th style="width: 10%;">Minh chứng</th>
                         <th colspan="2" style="width: 17.5%;">
                             <a href="@Url.Action("CreateTrainingDirectory", "EvaluationForm", new { evaluationFormId = Model.EvaluationFormId })" class="btn btn-flat btn-primary text-start">
                                 <i class="fas fa-plus"></i> Danh mục
@@ -262,13 +262,30 @@
                                         }
                                     }
                                     <tr class="training-total">
-                                        <td colspan="2" class="fw-bold text-end">Tổng điểm: (I + II +III +IV + V):0-100đ</td>
+                                        <td colspan="2" class="fw-bold text-end">
+                                            Tổng điểm: (
+                                            @{
+                                                var romanNumbers = new List<string>();
+                                                foreach (var directory in Model.TrainingDirectories.OrderBy(o => o.Order))
+                                                {
+                                                    romanNumbers.Add(ToRoman(directory.Order));
+                                                }
+                                                <text>@string.Join(" + ", romanNumbers)</text>
+                                            }
+                                            ):
+                                            0-100đ
+                                        </td>
                                         <td colspan="2" class="text-center">
                                             @{
                                                 double totalDirectoryMaxScore = 0;
                                                 foreach (var directory in Model.TrainingDirectories)
                                                 {
                                                     totalDirectoryMaxScore += directory.MaxScore;
+                                                }
+                                                // Đảm bảo tổng điểm không vượt quá 100
+                                                if (totalDirectoryMaxScore > 100)
+                                                {
+                                                    totalDirectoryMaxScore = 100;
                                                 }
                                                 @totalDirectoryMaxScore
                                             }
@@ -327,7 +344,7 @@
                 <div class="row justify-content-center justify-content-lg-end">
                     <div class="col-auto">
                         <div class="text-center">
-                            <a href="~/Admin/EvaluationForm/ShowListEvaluationForm" class="btn btn-primary btn-icon-split">
+                            <a href="~/Admin/EvaluationForm/ShowListEvaluationForm" class="btn btn-secondary btn-icon-split">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-arrow-left"></i>
                                 </span>
@@ -357,7 +374,6 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <script>
         function showDeleteModal(deleteUrl) {

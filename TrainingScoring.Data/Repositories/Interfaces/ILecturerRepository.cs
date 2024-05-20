@@ -6,5 +6,6 @@ namespace TrainingScoring.Data.Repositories.Interfaces
     {
         Task<List<string>> GetUserRolesAsync(string lecturerCode); 
         Task<Lecturer> GetLecturerAsync(string lecturerCode);
+        Task<Lecturer> GetLecturerByCodeAsync(string studentCode);
     }
 }

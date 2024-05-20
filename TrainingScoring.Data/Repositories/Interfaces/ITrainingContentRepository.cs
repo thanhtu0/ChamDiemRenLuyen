@@ -12,5 +12,6 @@ namespace TrainingScoring.Data.Repositories.Interfaces
         Task UpdateRangeAsync(IEnumerable<TrainingContent> trainingContents);
         Task<TrainingContent> DeleteAsync(TrainingContent trainingContent);
         Task<int> GetMaxOrderAsync(int trainingDirectoryId);
+        Task<bool> IsNameDuplicateAsync(int trainingContentId, int trainingDirectoryId, string trainingContentName);
     }
 }

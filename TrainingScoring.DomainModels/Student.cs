@@ -33,15 +33,24 @@ namespace TrainingScoring.DomainModels
         public string LastName { get; set; }
         [Required]
         public Classmittee IsClassmittee { get; set; }
-        [Required]
+        [Required]  
         [DataType(DataType.Password)]
         [MaxLength(50)]
         public string Password { get; set; }
-
+        [MaxLength(11)]
+        public string Phone { get; set; }
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime DateOfBirth { get; set; }
-
+        public string PlaceOfBirth { get; set; }
+        public string Hometown { get; set; }
+        public string Permanentaddress { get; set; }
+        public string CitizenIdentificationNumber { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime DateofIssueofCitizenIdentificationCard { get; set; }
+        public string Ethnicity { get; set; }
+        public string Religion { get; set; }
+        public string Nationality { get; set; }
         [Required]
         public StudentGender Gender { get; set; }
 

@@ -15,13 +15,13 @@
 
             <div class="mb-3">
                 <label for="Order" class="form-label">Vị trí:</label>
-                <input asp-for="Order" class="form-control" id="Order" />
-                <span asp-validation-for="Order" class="text-danger"></span>
+                <input asp-for="Order" class="form-control" id="Order" required />
+                <span asp-validation-for="Order" class="text-danger" ></span>
             </div>
 
             <div class="mb-3">
                 <label for="TrainingDirectoryName" class="form-label">Tên Danh mục rèn luyện:</label>
-                <input asp-for="TrainingDirectoryName" class="form-control" id="TrainingDirectoryName" />
+                <input asp-for="TrainingDirectoryName" class="form-control" id="TrainingDirectoryName" required />
                 <span asp-validation-for="TrainingDirectoryName" class="text-danger"></span>
             </div>
 
