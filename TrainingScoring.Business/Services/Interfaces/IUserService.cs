@@ -6,7 +6,6 @@ namespace TrainingScoring.Business.Services.Interfaces
     {
    
         Task<string> LoginAsync(string code, string password);
-        Task<bool> ChangePasswordAsync(string code, string oldPassword, string newPassword, string confirmNewPassword);
         Task<List<Role>> GetAllUserRolesAsync();
         // get user role name
         Task<List<string>> GetUserRolesAsync(string code);
@@ -15,5 +14,6 @@ namespace TrainingScoring.Business.Services.Interfaces
 
         Task<Student> GetStudentByCodeAsync(string studentCode);
         Task<Lecturer> GetLecturerByCodeAsync(string lecturerCode);
+        Task<string> ChangePasswordAsync(string code, string oldPassword, string newPassword);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using TrainingScoring.Business.Services.Interfaces;
-using TrainingScoring.Data.Repositories.Implementations;
 using TrainingScoring.Data.Repositories.Interfaces;
 using TrainingScoring.DomainModels;
 
@@ -18,8 +17,6 @@ namespace TrainingScoring.Business.Services.Implementations
         private readonly IStudentRepository _studentRepository;
         private readonly ILecturerRepository _lecturerRepository;
 
-       
-
         public UserService(ILogger<UserService> logger, IHttpContextAccessor httpContextAccessor, IUserAccountRepository userAccountRepository, IRoleRepository roleRepository, IStudentRepository studentRepository, ILecturerRepository lecturerRepository)
         {
             _logger = logger;
@@ -35,10 +32,11 @@ namespace TrainingScoring.Business.Services.Implementations
             try
             {
                 var user = await _userAccountRepository.LoginAsync(code, password);
-                _logger.LogInformation($"user code service: {user}");
+                _logger.LogInformation($"User code service: {user}");
                 if (user == null)
                 {
-                    throw new Exception();
+                    _logger.LogWarning("Login failed: Invalid username or password.");
+                    return null;
                 }
                 return user;
             }
@@ -47,11 +45,6 @@ namespace TrainingScoring.Business.Services.Implementations
                 _logger.LogError(ex, $"Error: {ex.Message}");
                 throw new ApplicationException("Error occurred while login failed", ex);
             }
-        }
-
-        public async Task<bool> ChangePasswordAsync(string code, string oldPassword, string newPassword, string confirmNewPassword)
-        {
-            return await _userAccountRepository.ChangePasswordAsync(code, oldPassword, newPassword, confirmNewPassword);
         }
 
         public async Task<List<Role>> GetAllUserRolesAsync()
@@ -87,6 +80,31 @@ namespace TrainingScoring.Business.Services.Implementations
         public async Task<Lecturer> GetLecturerByCodeAsync(string lecturerCode)
         {
             return await _lecturerRepository.GetLecturerByCodeAsync(lecturerCode);
+        }
+        public async Task<string> ChangePasswordAsync(string code, string oldPassword, string newPassword)
+        {
+            try
+            {
+                var user = await _userAccountRepository.LoginAsync(code, oldPassword);
+                if (user == null)
+                {
+                    _logger.LogWarning("Change password failed: Invalid old password.");
+                    return "invalid_old_password";
+                }
+                if (oldPassword == newPassword)
+                {
+                    _logger.LogWarning("Change password failed: New password matches old password.");
+                    return "new_password_same_as_old";
+                }
+
+                var result = await _userAccountRepository.ChangePasswordAsync(code, newPassword);
+                return result ? "success" : "error";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error: {ex.Message}");
+                throw new ApplicationException("Error occurred while changing password", ex);
+            }
         }
     }
 }

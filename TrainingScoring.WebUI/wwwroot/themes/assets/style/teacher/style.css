@@ -1,0 +1,73 @@
+:root {
+    /* Header Colors */
+    --header-start-text-color: #072b4a; /* Title text color for the header */
+    --backgroundcolor-header-end-color: #006eb7; /* Background color for the end of the header */
+    --header-end-text-color: #f0f8ff; /* Text color for the end of the header */
+
+    /* Navbar Colors */
+    --navbar-background-color: #b9e2fe; /* Background color for the navbar */
+    --navbar-text-color: #072b4a; /* Text color for the navbar */
+    --navbar-border-color: #015fa3; /* Border color for the navbar */
+
+    /*Semester Colors */
+    --semester-background-color: #f0f8ff; /* Background color for the semester */
+    --semester-text-color: #AA4465;  /* Text color for the semester*/
+
+    /*selectSemester Colors */
+    --selectSemester-background-color: #f0f8ff; /*Background color for the selectsemester */
+    --selectSemester-header-text-color: #072b4a;
+}
+
+/* CSS Header */
+@media (max-width: 765px) {
+    .header-end .border-end {
+        border-right: none!important;
+    }
+
+    .header-end img {
+        height: 100px !important;
+    }
+}
+
+.header-title {
+    color: var(--header-start-text-color);
+}
+
+.header-end {
+    background-color: var(--backgroundcolor-header-end-color);
+    color: var(--header-end-text-color);
+}
+
+/* CSS Navbar */
+.navbar {
+    background-color: var(--navbar-background-color);
+    color: var(--navbar-text-color);
+}
+
+.navbar-nav > li.dropdown:not(:last-child) > .nav-link {
+    border-right: 1px solid var(--navbar-border-color);
+    padding-right: 10px;
+}
+
+/* CSS Semester */
+.highlighted-section {
+    background-color: var(--semester-background-color);
+}
+
+.semester {
+    text-decoration: none;
+    color: var(--semester-text-color);
+}
+
+.semester:hover {
+    text-decoration: none;
+    color: var(--semester-text-color);
+}
+
+/* CSS selectSemester */
+.selectsemester {
+    color: var(--selectSemester-header-text-color);
+}
+
+
+/* CSS footer */

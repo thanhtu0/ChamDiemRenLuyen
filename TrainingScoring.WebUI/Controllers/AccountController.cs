@@ -40,8 +40,13 @@ namespace TrainingScoring.WebUI.Controllers
                 return View(model);
             }
 
-
             var user = await _userService.LoginAsync(model.Code, model.Password);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Thông tin đăng nhập không chính xác.");
+                return View(model);
+            }
+
             _logger.LogInformation($"user code service - controller: {user}");
             var userRoles = await _userService.GetUserRolesAsync(user);
             _logger.LogInformation($"user role service2222: {userRoles}");
@@ -74,11 +79,10 @@ namespace TrainingScoring.WebUI.Controllers
                 await HttpContext.SignInAsync(userData.CreatePrincipal());
 
                 return RedirectToAction("Index", "Home", new { area = "Admin" });
-               
             }
             else
             {
-                // khong co role la STudent
+                // không có role là Student
                 var student = await _userService.GetStudentAsync(user);
 
                 WebUserData userData = new WebUserData()
@@ -107,7 +111,5 @@ namespace TrainingScoring.WebUI.Controllers
 
             return RedirectToAction("Login");
         }
-
-
     }
 }

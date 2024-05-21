@@ -1,27 +1,43 @@
-﻿<!DOCTYPE html>
+﻿@model TrainingScoring.WebUI.Models.LoginViewModel
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In Form</title>
+    <title>Student Login</title>
     <link rel="stylesheet" href="~/themes/assets/style/login.css">
 </head>
 <body>
     <div class="login-container">
         <div class="login-header">
-            <img src="/assets/img/Logo-ko-nen.png" alt="Your Logo">
+            <img src="~/themes/assets/img/Logo-ko-nen.png" alt="Your Logo">
             <h2>Phần mềm đánh giá <br> điểm rèn luyện</h2>
         </div>
         <div class="login-box">
             <h2>Đăng nhập</h2>
-            <form id="login-form">
+            <form asp-action="Login" method="post" class="login-form">
                 <div class="user-box">
-                    <input type="text" name="student_id" autocomplete="username" required="">
+                    <input asp-for="Code" autocomplete="username" required>
                     <label>Mã đăng nhập</label>
                 </div>
                 <div class="user-box">
-                    <input type="password" name="password" autocomplete="current-password" required="">
+                    <input asp-for="Password" type="password" autocomplete="current-password" required>
                     <label>Mật khẩu</label>
+                </div>
+
+                <div class="error-submit">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="error-summary">
+                            <p class="error" style="color:red;">Thông tin đăng nhập không chính xác!. </p>
+                        </div>
+                    }
                 </div>
                 <div class="button-form">
                     <button type="submit" id="submit">Đăng nhập</button>

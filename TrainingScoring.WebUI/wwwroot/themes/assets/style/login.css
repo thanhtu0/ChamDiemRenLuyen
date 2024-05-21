@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --background-gradient-star: #36b2fa; /*Start background color */
     --background-gradient-end: #065186; /* End background color */
     --text-color: #0b446f; /* Text color */
@@ -8,6 +8,7 @@
     --button-background-color: #e0f0fe; /* Button background color */
     --button-border-color: #015fa3; /* Button border color */
     --button-border-hover: #0b446f; /* Button border hover */
+    --error-color: #e74c3c;
 }
 
 * {
@@ -39,19 +40,19 @@ body {
     margin-bottom: 20px;
 }
 
-.login-header img {
-    width: 100px;
-    height: auto;
-}
+    .login-header img {
+        width: 100px;
+        height: auto;
+    }
 
-.login-header h2 {
-    margin: 10px 0;
-    color: var(--header-text-color);
-    font-size: 32px;
-    text-transform: uppercase;
-    font-weight: bolder;
-    line-height: 1.5;
-}
+    .login-header h2 {
+        margin: 10px 0;
+        color: var(--header-text-color);
+        font-size: 32px;
+        text-transform: uppercase;
+        font-weight: bolder;
+        line-height: 1.5;
+    }
 
 .login-box {
     background: #F0F1F4;
@@ -61,44 +62,44 @@ body {
     width: 400px;
 }
 
-.login-box h2 {
-    margin: 0 0 30px;
-    color: var(--text-color);
-    font-size: 36px;
-    text-align: center;
-}
+    .login-box h2 {
+        margin: 0 0 30px;
+        color: var(--text-color);
+        font-size: 36px;
+        text-align: center;
+    }
 
-.login-box .user-box input {
-    position: relative;
-    width: 100%;
-    padding: 10px 0;
-    font-size: 16px;
-    color: var(--text-color);
-    margin-bottom: 30px;
-    border: none;
-    border-bottom: 1px solid var(--button-border-color);
-    outline: none;
-    background: transparent;
-}
+    .login-box .user-box input {
+        position: relative;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 16px;
+        color: var(--text-color);
+        margin-bottom: 30px;
+        border: none;
+        border-bottom: 1px solid var(--button-border-color);
+        outline: none;
+        background: transparent;
+    }
 
-.login-box .user-box label {
-    position: relative;
-    left: 0;
-    top: -60px;
-    padding: 10px 0;
-    font-size: 16px;
-    color: var(--text-color);
-    pointer-events: none;
-    transition: .5s;
-}
+    .login-box .user-box label {
+        position: relative;
+        left: 0;
+        top: -60px;
+        padding: 10px 0;
+        font-size: 16px;
+        color: var(--text-color);
+        pointer-events: none;
+        transition: .5s;
+    }
 
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
-    top: -85px;
-    left: 0;
-    color: var(--input-border-color);
-    font-size: 12px;
-}
+    .login-box .user-box input:focus ~ label,
+    .login-box .user-box input:valid ~ label {
+        top: -85px;
+        left: 0;
+        color: var(--input-border-color);
+        font-size: 12px;
+    }
 
 #submit {
     padding: 10px 20px;
@@ -131,17 +132,34 @@ body {
     color: var(--button-background-color);
 }
 
+.error-summary {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.error {
+    color: var(--error-color);
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+
+
 @media only screen and (max-width: 739px) {
-.login-box {
-    width: 80%; 
-}
-.login-header img {
-    width: 80px; 
-}
-.login-header h2 {
-    font-size: 24px; 
-}
-.button-form {
-    width: 100%; 
-}
+    .login-box {
+        width: 80%;
+    }
+
+    .login-header img {
+        width: 80px;
+    }
+
+    .login-header h2 {
+        font-size: 24px;
+    }
+
+    .button-form {
+        width: 100%;
+    }
 }
