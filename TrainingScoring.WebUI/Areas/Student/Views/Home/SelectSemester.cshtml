@@ -1,0 +1,61 @@
+﻿@model SemesterSelectionViewModel
+@{
+    ViewData["Title"] = "SelectSemester";
+}
+
+<div class="container-fluid">
+    <div class="card-header">
+        <h3 class="fw-bold">Chọn học kỳ tác nghiệp</h3>
+    </div>
+    <div class="card-body">
+        <div class="row alert alert-warning alert-dismissible fade show" role="alert">
+            <ul>
+                <span class="fw-bold">Lưu ý:</span>
+                <li class="ms-5">Bạn phải chọn đúng học kỳ trước khi thực hiện đánh giá rèn luyện.</li>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <h5>Ngành học: <b>@Model.AcademicYears.FirstOrDefault()?.Major</b></h5>
+        <div class="row">
+            <form asp-action="SelectSemester" method="post">
+                <table class="table table-hover">
+                    <thead>
+                    <th></th>
+                    <th>Học kỳ</th>
+                    <th>Năm học</th>
+                    <th>Lớp sinh hoạt</th>
+                    <th>Khóa học</th>
+                    </thead>
+                    <tbody>
+                        @foreach (var academicYear in Model.AcademicYears.OrderByDescending(ay => ay.SemesterCode))
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <input type="radio" name="SelectedAcademicYearId" value="@academicYear.AcademicYearId" @(academicYear.AcademicYearId == Model.SelectedAcademicYearId ? "checked" : "") />
+                                </td>
+                                <td>@(academicYear.Semester == "First" ? "Học kỳ 1" : "Học kỳ 2")</td>
+                                <td>@academicYear.AcademicYearName</td>
+                                <td>@academicYear.Grade</td>
+                                <td>@academicYear.Course</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="row justify-content-center justify-content-lg-end">
+                    <div class="col-auto">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-icon-split mx-1">
+                                <span class="text">Tác nghiệp với Học kỳ đã chọn</span>
+                            </button>
+                            <a href="@Url.Action("Index", "Home", new { area = "Student" })" class="btn btn-secondary btn-icon-split mx-1">
+                                <span class="text">Quay lại</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

@@ -2,26 +2,23 @@
 @{
     ViewData["Title"] = "Profile";
 }
-
 <div class="container-fluid">
     <div class="card-header">
         <div class="card-title fw-bold text-uppercase"><h2>Quản lý thông tin cá nhân</h2></div>
     </div>
     <div class="card-body">
         <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <strong>Nhắc nhở: </strong> Các thông tin về tài khoản cá nhân của sinh viên được quản lý bởi trang tín chỉ.
+            <strong>Lưu ý: </strong> 
+            <ul>
+                <li>Các thông tin về tài khoản cá nhân của sinh viên được quản lý bởi trang tín chỉ.</li>
+                <li>Nếu bạn thấy có sự sai xót về thông tin cá nhân. Vui lòng thay đổi tại trang tín chỉ.</li>
+            </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-
         <fieldset>
             <legend class="text-secondary row align-items-center">
                 <div class="col-8">
                     <h4 class="mb-0">Thông tin cá nhân</h4>
-                </div>
-                <div class="col-4 text-end">
-                    <a href="#" class="text-decoration-none">
-                        <i class="fas fa-edit" style="font-size: 20px;"></i>
-                    </a>
                 </div>
             </legend>
             <hr>
@@ -59,7 +56,7 @@
 
                 <div class="col-sm-6">
                     <div class="col-sm-12">
-                        <div class="float-end" style="width: 250px; height:145px; position:relative; z-index:999; padding-left:10px; background:#ffffff; margin-right: 75px;">
+                        <div class="float-end " style="width: 250px; height:145px; position:relative; z-index:999; padding-left:10px; background:#ffffff; margin-right: 75px;">
                             <label for="filePhoto" style="cursor:pointer" title="Click để thay đổi ảnh">
                                 <img id="studentPhoto" src="@Url.Content("~/themes/assets/img/Photo.jpg")" class="img-thumbnail" style="width:140px; height:162.4px;" alt="User Photo">
                             </label>
@@ -69,7 +66,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -121,7 +117,7 @@
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label text-end fw-bold">Số điện thoại:</label>
                 <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">+84 @Model.Phone</p>
+                    <p class="form-control-plaintext border-bottom border-2">@Model.Phone</p>
                 </div>
                 <label class="col-sm-2 col-form-label text-end fw-bold">Email:</label>
                 <div class="col-sm-4">
@@ -129,23 +125,17 @@
                 </div>
             </div>
         </fieldset>
-
         <fieldset>
             <legend class="text-secondary row align-items-center">
                 <div class="col-8">
-                    <h4 class="mb-0">Thông tin về quê quán, hộ khẩu thường trú</h4>
-                </div>
-                <div class="col-4 text-end">
-                    <a href="#" class="text-decoration-none">
-                        <i class="fas fa-edit" style="font-size: 20px;"></i>
-                    </a>
+                    <h4 class="mb-0 ">Thông tin về quê quán, hộ khẩu thường trú</h4>
                 </div>
             </legend>
             <hr>
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label text-end"><b>Quê Quán:</b></label>
                 <div class="col-sm-8">
-                    <p class="form-control-plaintext border-bottomborder-2">@Model.Hometown</p>
+                    <p class="form-control-plaintext border-bottom border-2">@Model.Hometown</p>
                 </div>
             </div>
             <div class="mb-3 row">

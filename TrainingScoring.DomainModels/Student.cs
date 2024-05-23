@@ -35,7 +35,6 @@ namespace TrainingScoring.DomainModels
         public Classmittee IsClassmittee { get; set; }
         [Required]  
         [DataType(DataType.Password)]
-        [MaxLength(50)]
         public string Password { get; set; }
         [MaxLength(11)]
         public string Phone { get; set; }

@@ -1,5 +1,6 @@
-﻿
+﻿using System.ComponentModel;
 using TrainingScoring.DomainModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace TrainingScoring.WebUI.Models
 {
@@ -9,7 +10,11 @@ namespace TrainingScoring.WebUI.Models
         public int TrainingDirectoryId { get; set; }
         public int TrainingContentId { get; set; }
         public int TrainingDetailId { get; set; }
+        [DisplayName("Vị trí")]
+        [Required(ErrorMessage = "{0} bắt buộc khác 0")]
         public int Order { get; set; }
+        [DisplayName("Tên chi tiết rèn luyện")]
+        [Required(ErrorMessage = "{0} bắt buộc phải có")]
         public string TrainingDetailName { get; set; }
         public bool IsProof { get; set; }
         public int MaxScore { get; set; }

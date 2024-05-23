@@ -120,7 +120,7 @@ namespace TrainingScoring.Business.Services.Implementations
             catch (ApplicationException ex)
             {
                 _logger.LogError(ex, $"Application Error: {ex.Message}");
-                throw; // Không bao bọc ngoại lệ này
+                throw;  
             }
             catch (Exception ex)
             {
