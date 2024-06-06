@@ -25,15 +25,13 @@ namespace TrainingScoring.Data.Repositories.Implementations
         public async Task<int> CreateAsync(T entity)
         {
             _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity.GetType().GetProperty("Id")?.GetValue(entity) as int? ?? 0;
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<int> UpdateAsync(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return entity.GetType().GetProperty("Id")?.GetValue(entity) as int? ?? 0;
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<int> DeleteAsync(T entity)

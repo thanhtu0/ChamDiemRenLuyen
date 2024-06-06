@@ -5,32 +5,32 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome admin</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p class="display-6">Chào mừng quý thầy cô đến với trang web đánh giá điểm rèn luyện sinh viên</p>
 </div>
 
 <div>
+    <h4>Quyền sử dụng mà tài khoản thầy cô hiện có là:</h4>
     @{
         var user = User.GetUserData();
 
         if (user.Roles.Contains(WebUserRoles.Advisor))
         {
-            <p>Advisor mới thấy nè</p>
+            <p>Giáo viên cố vấn</p>
         }
 
         if (user.Roles.Contains(WebUserRoles.Department))
         {
-            <p>Department mới thấy nè</p>
+            <p>Hội đồng đánh giá cấp Khoa</p>
         }
 
         if (user.Roles.Contains(WebUserRoles.School))
         {
-            <p>School mới thấy nè</p>
+            <p>Hội đồng đánh giá cấp Trường</p>
         }
 
         if (user.Roles.Contains(WebUserRoles.SuperAdmin))
         {
-            <p>SuperAdmin mới thấy nè</p>
+            <p>Phòng đào tạo / Quản trị hệ thống</p>
         }
     }
 </div>

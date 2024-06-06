@@ -1,0 +1,353 @@
+﻿
+@{
+    ViewData["Title"] = "GradeListDepartment";
+}
+<head>
+    <style>
+        th:nth-child(1),
+        th:nth-child(2),
+        td:nth-child(1),
+        td:nth-child(2) {
+            text-align: center;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            text-align: center;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            text-align: center;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            text-align: center;
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            text-align: center;
+        }
+
+        td:nth-child(9) {
+            text-align: center;
+        }
+
+        td:nth-child(10) {
+            text-align: center;
+        }
+
+        .checkBox {
+            transform: scale(1);
+        }
+
+        .form-control-sm {
+            transform: scale(1);
+            text-align: center;
+            margin: auto;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .card-header {
+            text-transform: uppercase;
+        }
+
+        .footer {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <h6 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
+                        <i class="fas fa-regular fa-address-book"></i>
+                        <span>Danh sách lớp thuộc Khoa</span>
+                    </h6>
+                    <div class="card-body" style="color: #072b4a;">
+                        <h6>Lớp sinh hoạt: Kỹ thuật phần mềm (đặc thù) </h6>
+                        <ul class="list-group mt-3">
+                            <a href="#">
+                            <li class="list-group-item">CNNK_44A - Công nghệ thông tin K44A</li></a>
+                            <a href="#">
+                            <li class="list-group-item active">KTPM_K44 - Kỹ thuật phần mềm K44</li></a>
+                            <a href="#">
+                            <li class="list-group-item">KTPM_K43 - Kỹ thuật phần mềm K43</li></a>
+                            <a href="#">
+                            <li class="list-group-item">CNNK_44B - Công nghệ thông tin K44B</li></a>
+                            <a href="#">
+                            <li class="list-group-item">CNNK_44C - Công nghệ thông tin K44C</li></a>
+                        </ul>
+                        <div class="d-flex justify-content-center mt-3">
+                            <button class="btn btn-success">Nạp điểm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card">
+                    <h5 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
+                        <i class="fas fa-solid fa-pen"></i>
+                        <span>Danh sách sinh viên kèm đánh giá rèn luyện của KHOA</span>
+                    </h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-full" style="color: #072b4a;">
+                                <thead>
+                                    <tr>
+                                        <th class="align-middle"><input type="checkbox" id="checkAll"></th>
+                                        <th class="align-middle">STT</th>
+                                        <th class="align-middle">Mã SV</th>
+                                        <th class="align-middle" width="20%">Tên sinh viên</th>
+                                        <th class="align-middle">Trạng thái</th>
+                                        <th class="align-middle">Điểm SV</th>
+                                        <th class="align-middle">Điểm BCS</th>
+                                        <th class="align-middle">Điểm GVCV</th>
+                                        <th class="align-middle">Điểm HĐ Khoa</th>
+                                        <th class="align-middle">Điểm HĐ Trường</th>
+                                        <th width="12.5%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-middle">
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>1</td>
+                                        <td>20T1080055</td>
+                                        <td>Lưu Lê Thanh Tú</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>99</td>
+                                        <td class="diem-BCS">99</td>
+                                        <td class="diem-GVCV">99</td>
+                                        <td class="diem-HDKHOA">99</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>2</td>
+                                        <td>20T1080056</td>
+                                        <td>Nguyễn Xuân Tân Lộc</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>90</td>
+                                        <td class="diem-BCS">90</td>
+                                        <td class="diem-GVCV">90</td>
+                                        <td class="diem-HDKHOA">90</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>3</td>
+                                        <td>20T1080023</td>
+                                        <td>Đỗ Quốc Ân</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>88</td>
+                                        <td class="diem-BCS">88</td>
+                                        <td class="diem-GVCV">88</td>
+                                        <td class="diem-HDKHOA">88</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>4</td>
+                                        <td>20T1080060</td>
+                                        <td>Lương Quang Anh</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>87</td>
+                                        <td class="diem-BCS">87</td>
+                                        <td class="diem-GVCV">87</td>
+                                        <td class="diem-HDKHOA">87</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>5</td>
+                                        <td>20T1080024</td>
+                                        <td>Ngô Tài Anh</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>85</td>
+                                        <td class="diem-BCS">85</td>
+                                        <td class="diem-GVCV">85</td>
+                                        <td class="diem-HDKHOA">85</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>6</td>
+                                        <td>20T1080010</td>
+                                        <td>Hoàng Thị Minh Châu</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>83</td>
+                                        <td class="diem-BCS">83</td>
+                                        <td class="diem-GVCV">83</td>
+                                        <td class="diem-HDKHOA">83</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>7</td>
+                                        <td>20T1080025</td>
+                                        <td>Nguyễn Ngọc Chính</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>82</td>
+                                        <td class="diem-BCS">82</td>
+                                        <td class="diem-GVCV">82</td>
+                                        <td class="diem-HDKHOA">82</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>8</td>
+                                        <td>20T1080026</td>
+                                        <td>Đoàn Hữu Chương</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>81</td>
+                                        <td class="diem-BCS">81</td>
+                                        <td class="diem-GVCV">81</td>
+                                        <td class="diem-HDKHOA">81</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>9</td>
+                                        <td>20T1080027</td>
+                                        <td>Nguyễn Tiến Đạt</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>80</td>
+                                        <td class="diem-BCS">80</td>
+                                        <td class="diem-GVCV">80</td>
+                                        <td class="diem-HDKHOA">80</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>10</td>
+                                        <td>20T1080061</td>
+                                        <td>Nguyễn Đỗ Nguyên Đô</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>78</td>
+                                        <td class="diem-BCS">78</td>
+                                        <td class="diem-GVCV">78</td>
+                                        <td class="diem-HDKHOA">78</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>11</td>
+                                        <td>20T1080029</td>
+                                        <td>Nguyễn Mạnh Dũng</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>77</td>
+                                        <td class="diem-BCS">77</td>
+                                        <td class="diem-GVCV">77</td>
+                                        <td class="diem-HDKHOA">77</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>12</td>
+                                        <td>20T1080030</td>
+                                        <td>Nguyễn Quang Hà</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>76</td>
+                                        <td class="diem-BCS">76</td>
+                                        <td class="diem-GVCV">76</td>
+                                        <td class="diem-HDKHOA">76</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>13</td>
+                                        <td>20T1080031</td>
+                                        <td>Nguyễn Anh Hào</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>75</td>
+                                        <td class="diem-BCS">75</td>
+                                        <td class="diem-GVCV">75</td>
+                                        <td class="diem-HDKHOA">75</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="checkBox"></th>
+                                        <td>14</td>
+                                        <td>20T1080062</td>
+                                        <td>Nguyễn Đức Nguyên Hạo</td>
+                                        <td><span class="badge badge-success text-success">Đã nạp</span></td>
+                                        <td>74</td>
+                                        <td class="diem-BCS">74</td>
+                                        <td class="diem-GVCV">74</td>
+                                        <td class="diem-HDKHOA">74</td>
+                                        <td class="diem-HDTRUONG"></td>
+                                        <td><a asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center justify-content-lg-end mt-3">
+            <div class="col-auto">
+                <div class="text-center">
+                    <a href="#" id="duyetBtn" class="btn btn-primary btn-icon-split mx-1">
+                        <span class="text">Duyệt</span>
+                    </a>
+                    <a asp-action="DepartmentList" asp-controller="School" asp-area="Admin" class="btn btn-secondary btn-icon-split mx-1">
+                        <span class="text">Quay lại</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('checkAll').addEventListener('change', function (event) {
+            var checkboxes = document.querySelectorAll('.checkBox');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = event.target.checked;
+            });
+        });
+
+        document.getElementById('duyetBtn').addEventListener('click', function () {
+            var rows = document.querySelectorAll('tbody tr');
+            rows.forEach(function (row) {
+                var checkbox = row.querySelector('.checkBox');
+                var diemBCS = row.querySelector('.diem-BCS');
+                var diemGVCV = row.querySelector('.diem-GVCV');
+                var diemHDKhoa = row.querySelector('.diem-HDKHOA');
+                var diemHDTruong = row.querySelector('.diem-HDTRUONG');
+
+                if (checkbox.checked) {
+                    var diemKhoa = parseInt(diemBCS.textContent);
+                    diemGVCV.textContent = diemKhoa;
+                    diemHDKhoa.textContent = diemKhoa;
+                    diemHDTruong.textContent = diemKhoa; 
+                }
+            });
+        });
+    </script>
+
+</body>
+

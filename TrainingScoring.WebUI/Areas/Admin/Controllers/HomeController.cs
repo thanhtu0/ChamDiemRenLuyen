@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TrainingScoring.Business.Services.Interfaces;
 using TrainingScoring.Data;
 using TrainingScoring.WebUI.Models;
 using static TrainingScoring.WebUI.AppCodes.SecurityModels;
+using static TrainingScoring.WebUI.Areas.Student.Controllers.HomeController;
 
 namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 {
@@ -12,16 +14,16 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
     public class HomeController : Controller
     {
-        private readonly TrainingScoingDBContext _contenxt;
+        private readonly TrainingScoingDBContext _context;
         private readonly ILogger<EvaluationFormController> _logger;
         private readonly IUserService _userService;
 
         public HomeController(
-            TrainingScoingDBContext contenxt,
+            TrainingScoingDBContext context,
             ILogger<EvaluationFormController> logger,
             IUserService userService)
         {
-            _contenxt = contenxt;
+            _context = context;
             _logger = logger;
             _userService = userService;
         }
@@ -41,6 +43,7 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             return View(lecturer);
         }
 
+        #region  ChangePassword
         public IActionResult ChangePassword()
         {
             return View();
@@ -82,7 +85,6 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
 
             return View(model);
         }
-
-
+        #endregion
     }
 }

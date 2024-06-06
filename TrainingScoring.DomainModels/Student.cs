@@ -65,5 +65,8 @@ namespace TrainingScoring.DomainModels
         public virtual Grade Grade { get; set; }
         //
         public ICollection<Score> Scores { get; set; }
+        public ICollection<StudentScoreContent> StudentScoreContents { get; set; }
+        public ICollection<StudentScoreDetail> StudentScoreDetails { get; set; }
+
     }
 }

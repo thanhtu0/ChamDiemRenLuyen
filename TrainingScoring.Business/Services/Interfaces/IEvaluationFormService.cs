@@ -14,6 +14,7 @@ namespace TrainingScoring.Business.Services.Interfaces
         Task<bool> IsEvaluationFormExists(int id);
         Task<EvaluationForm> GetByCodeAsync(string code);
         Task<EvaluationForm> GetByNameAsync(string name);
+        Task<EvaluationForm> GetEvaluationFormsByAcademicYearIdAsync(int academicYearId);
         #endregion
     }
 }

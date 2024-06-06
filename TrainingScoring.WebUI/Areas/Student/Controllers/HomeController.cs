@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using TrainingScoring.Business.Services.Interfaces;
 using TrainingScoring.Data;
-using TrainingScoring.DomainModels;
-using TrainingScoring.WebUI.Areas.Admin.Controllers;
+using TrainingScoring.WebUI.AppCodes;
 using TrainingScoring.WebUI.Models;
 using static TrainingScoring.WebUI.AppCodes.SecurityModels;
 
@@ -16,12 +14,12 @@ namespace TrainingScoring.WebUI.Areas.Student.Controllers
     public class HomeController : Controller
     {
         private readonly TrainingScoingDBContext _context;
-        private readonly ILogger<EvaluationFormController> _logger;
+        private readonly ILogger<StudentFormController> _logger;
         private readonly IUserService _userService;
 
         public HomeController(
             TrainingScoingDBContext context,
-            ILogger<EvaluationFormController> logger,
+            ILogger<StudentFormController> logger,
             IUserService userService)
         {
             _context = context;
@@ -31,10 +29,18 @@ namespace TrainingScoring.WebUI.Areas.Student.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await SetStudentViewData();
+            var selectedSemester = HttpContext.Session.GetString("SelectedSemester");
+            var selectedAcademicYear = HttpContext.Session.GetString("SelectedAcademicYearName");
 
+            if (string.IsNullOrEmpty(selectedSemester) || string.IsNullOrEmpty(selectedAcademicYear))
+            {
+                return RedirectToAction("SelectSemester");
+            }
+
+            await SetStudentViewData();
             return View();
         }
+
         /// <summary>
         /// Show Information Student
         /// </summary>

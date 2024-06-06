@@ -26,8 +26,7 @@ namespace TrainingScoring.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<ProcessDetail> ProcessDetails { get; set; }
         public DbSet<ScoringProcess> ScoringProcesses { get; set; }
-        public DbSet<ScoreDetail> Scores { get; set; }
-        public DbSet<Score> StudentScores { get; set; }
+        public DbSet<Score> Scores { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<EvaluationForm> EvaluationForms { get; set; }
         public DbSet<TrainingDirectory> TrainingDirectories { get; set; }
@@ -37,6 +36,8 @@ namespace TrainingScoring.Data
         public DbSet<TrainingContentProof> TrainingContentProofs { get; set; }
         public DbSet<TrainingDetailProof> TraniningDetailProofs { get; set; }
         public DbSet<GradeLecturerAssignment> GradeLecturerAssignments { get; set; }
+        public DbSet<StudentScoreContent> StudentScoreContents { get; set; }
+        public DbSet<StudentScoreDetail>  StudentScoreDetails { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -63,6 +64,14 @@ namespace TrainingScoring.Data
             // Define composite primary key for TraniningDetailProof entity
             modelBuilder.Entity<TrainingDetailProof>()
                 .HasKey(tdp => new { tdp.TrainingDetailId, tdp.ProofId });
+
+            // Define composite primary key for TraniningDetailProof entity
+            modelBuilder.Entity<StudentScoreContent>()
+                .HasKey(ssc => new { ssc.TrainingContentId, ssc.StudentId });
+
+            // Define composite primary key for TraniningDetailProof entity
+            modelBuilder.Entity<StudentScoreDetail>()
+                .HasKey(ssc => new { ssc.TrainingDetailId, ssc.StudentId });
 
             // Configure relationship between Score and EvaluationForm entities
             modelBuilder.Entity<Score>()
@@ -112,6 +121,13 @@ namespace TrainingScoring.Data
                     .HasConversion(
                      v => v.ToString(),
                      v => (TypeofScoreDetail)Enum.Parse(typeof(TypeofScoreDetail), v));
+
+            // StatusScore (enum)
+            modelBuilder.Entity<Score>()
+                    .Property(s => s.Status)
+                    .HasConversion(
+                     v => v.ToString(),
+                     v => (Status)Enum.Parse(typeof(Status), v));
         }
     }
 }

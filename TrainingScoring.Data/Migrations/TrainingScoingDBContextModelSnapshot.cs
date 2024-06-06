@@ -397,13 +397,18 @@ namespace TrainingScoring.Data.Migrations
                     b.Property<int>("ProcessId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ScoreDetailId")
-                        .HasColumnType("int");
+                    b.Property<string>("Ranking")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ScoringProcessProcessId")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalScore")
                         .HasColumnType("int");
 
                     b.HasKey("ScoreId");
@@ -412,35 +417,11 @@ namespace TrainingScoring.Data.Migrations
 
                     b.HasIndex("EvalutionFormId");
 
-                    b.HasIndex("ScoreDetailId");
-
-                    b.HasIndex("ScoringProcessProcessId");
+                    b.HasIndex("ProcessId");
 
                     b.HasIndex("StudentId");
 
                     b.ToTable("Scores");
-                });
-
-            modelBuilder.Entity("TrainingScoring.DomainModels.ScoreDetail", b =>
-                {
-                    b.Property<int>("ScoreDetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScoreDetailId"), 1L, 1);
-
-                    b.Property<DateTime>("ScoreDetailDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ScoreDetailEvalution")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ScoreDetailValue")
-                        .HasColumnType("int");
-
-                    b.HasKey("ScoreDetailId");
-
-                    b.ToTable("ScoreDetails");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.ScoringProcess", b =>
@@ -554,6 +535,48 @@ namespace TrainingScoring.Data.Migrations
                     b.HasIndex("GradeId");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("TrainingScoring.DomainModels.StudentScoreContent", b =>
+                {
+                    b.Property<int>("TrainingContentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsChecked")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainingContentId", "StudentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentScoreContents");
+                });
+
+            modelBuilder.Entity("TrainingScoring.DomainModels.StudentScoreDetail", b =>
+                {
+                    b.Property<int>("TrainingDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsChecked")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainingDetailId", "StudentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentScoreDetails");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.TrainingContent", b =>
@@ -846,15 +869,9 @@ namespace TrainingScoring.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("TrainingScoring.DomainModels.ScoreDetail", "ScoreDetail")
+                    b.HasOne("TrainingScoring.DomainModels.ScoringProcess", "Process")
                         .WithMany("Scores")
-                        .HasForeignKey("ScoreDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingScoring.DomainModels.ScoringProcess", "ScoringProcess")
-                        .WithMany("Scores")
-                        .HasForeignKey("ScoringProcessProcessId")
+                        .HasForeignKey("ProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -868,9 +885,7 @@ namespace TrainingScoring.Data.Migrations
 
                     b.Navigation("EvaluationForm");
 
-                    b.Navigation("ScoreDetail");
-
-                    b.Navigation("ScoringProcess");
+                    b.Navigation("Process");
 
                     b.Navigation("Student");
                 });
@@ -884,6 +899,44 @@ namespace TrainingScoring.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Grade");
+                });
+
+            modelBuilder.Entity("TrainingScoring.DomainModels.StudentScoreContent", b =>
+                {
+                    b.HasOne("TrainingScoring.DomainModels.Student", "Student")
+                        .WithMany("StudentScoreContents")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrainingScoring.DomainModels.TrainingContent", "TrainingContent")
+                        .WithMany("StudentScoreContents")
+                        .HasForeignKey("TrainingContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("TrainingContent");
+                });
+
+            modelBuilder.Entity("TrainingScoring.DomainModels.StudentScoreDetail", b =>
+                {
+                    b.HasOne("TrainingScoring.DomainModels.Student", "Student")
+                        .WithMany("StudentScoreDetails")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrainingScoring.DomainModels.TrainingDetail", "TrainingDetail")
+                        .WithMany("StudentScoreDetails")
+                        .HasForeignKey("TrainingDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("TrainingDetail");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.TrainingContent", b =>
@@ -1020,11 +1073,6 @@ namespace TrainingScoring.Data.Migrations
                     b.Navigation("ProcessDetail");
                 });
 
-            modelBuilder.Entity("TrainingScoring.DomainModels.ScoreDetail", b =>
-                {
-                    b.Navigation("Scores");
-                });
-
             modelBuilder.Entity("TrainingScoring.DomainModels.ScoringProcess", b =>
                 {
                     b.Navigation("ProcessDetail");
@@ -1035,10 +1083,16 @@ namespace TrainingScoring.Data.Migrations
             modelBuilder.Entity("TrainingScoring.DomainModels.Student", b =>
                 {
                     b.Navigation("Scores");
+
+                    b.Navigation("StudentScoreContents");
+
+                    b.Navigation("StudentScoreDetails");
                 });
 
             modelBuilder.Entity("TrainingScoring.DomainModels.TrainingContent", b =>
                 {
+                    b.Navigation("StudentScoreContents");
+
                     b.Navigation("TrainingContentProofs");
 
                     b.Navigation("TrainingDetails");
@@ -1046,6 +1100,8 @@ namespace TrainingScoring.Data.Migrations
 
             modelBuilder.Entity("TrainingScoring.DomainModels.TrainingDetail", b =>
                 {
+                    b.Navigation("StudentScoreDetails");
+
                     b.Navigation("TraniningDetailProofs");
                 });
 

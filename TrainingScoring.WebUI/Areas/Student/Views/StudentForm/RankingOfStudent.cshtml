@@ -1,0 +1,41 @@
+﻿@model SemesterSelectionViewModel
+@{
+    ViewData["Title"] = "RankingOfStudent";
+}
+
+<div class="container-fluid">
+    <div class="card-header fw-bold text-uppercase">Kết quả đánh giá rèn luyện</div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="align-middle" style="background-color: #b9e2fe; color: ##072b4a;">
+                    <tr>
+                        <th scope="col">Học kỳ, năm học</th>
+                        <th scope="col">Lớp sinh hoạt</th>
+                        <th scope="col">Giáo viên CVHT/CN</th>
+                        <th scope="col" class="text-center">Điểm RL</th>
+                        <th scope="col" class="text-center">Xếp loại</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var academicYear in Model.AcademicYears.OrderByDescending(ay => ay.SemesterCode))
+                    {
+                        <tr>
+                            <td>@(academicYear.Semester == "First" ? "Học kỳ 1" : "Học kỳ 2"), năm học @academicYear.AcademicYearName</td>
+                            <td>@academicYear.Grade</td>
+                            <td>
+                                @foreach (var lecturerName in academicYear.LecturerNames)
+                                {
+                                    <div>@lecturerName</div>
+                                }
+                            </td>
+                            <td class="text-center">@academicYear.Score</td>
+                            <td class="text-center">@academicYear.Ranking</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

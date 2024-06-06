@@ -1,0 +1,638 @@
+﻿@{
+    ViewData["Title"] = "PointOfStudent";
+}
+
+<head>
+    <style>
+        th:nth-child(1),
+        td:nth-child(1) {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        td:nth-child(2) {
+            vertical-align: middle;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        td:nth-child(5) {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        td:nth-child(6) {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        tr.bold-row td,
+        tr.bold-row th {
+            font-weight: bold;
+        }
+
+        tr.training-title td,
+        tr.training-title th {
+            background-color: #36b2fa;
+        }
+
+        tr.training-list td,
+        tr.training-list th {
+            background-color: #7ccbfd;
+        }
+
+        tr.training-content td,
+        tr.training-content th {
+            background-color: #b9e2fe;
+        }
+
+        tr.training-details td,
+        tr.training-details th {
+            background-color: #e0f0fe;
+        }
+
+        tr.training-total td,
+        tr.training-total th {
+            background-color: rgba(7, 43, 74, 0.5);
+        }
+
+        .checkBox {
+            transform: scale(1.5);
+        }
+
+        .form-control-sm {
+            transform: scale(1);
+            text-align: center;
+            margin: auto;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen với độ mờ */
+            z-index: 999; /* Lớp overlay cao hơn */
+            display: none; /* Ẩn ban đầu */
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+        }
+
+            .modal img {
+                max-width: 90%;
+                max-height: 90%;
+            }
+
+        .btn-warning {
+            position: relative;
+            padding: 11px 16px;
+            font-size: 15px;
+            line-height: 1.5;
+            border-radius: 3px;
+            color: #fff;
+            border: 0;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+            .btn-warning input[type="file"] {
+                cursor: pointer;
+                position: absolute;
+                left: 0%;
+                top: 0%;
+                transform: scale(5);
+                opacity: 0;
+            }
+
+            .btn-warning:hover {
+                background-color: #d9a400;
+            }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .card-header {
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <h5 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
+                        <i class="fas fa-regular fa-address-book"></i>
+                        <span>Danh sách sinh viên</span>
+                    </h5>
+                    <div class="card-body" style="color: #072b4a;">
+                        <h5 class="fw-bold">Lớp: Kỹ thuật phần mềm (đặc thù)</h5>
+                        <ul class="list-group mt-4">
+                            <a href="#">
+                                <li class="list-group-item" style="background-color: #7ccbfd;">
+                                    20T1080055 - Lưu Lê Thanh Tú
+                                </li>
+                            </a>
+                            @foreach (var student in Model)
+                            {
+                                <a href="#">
+                                <li class="list-group-item">
+                                        @student.StudentCode - @student.FirstName @student.LastName
+                                </li>
+                                </a>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card">
+                    <h5 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
+                        <i class="fas fa-solid fa-pen"></i>
+                        <span>Phiếu đánh giá rèn luyện sinh viên 20T1080055 Học kỳ 2 Năm học 2023-2024</span>
+                    </h5>
+
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <input type="checkbox" id="syncCheckbox" class="mr-2">
+                            <label for="syncCheckbox" class="mb-0 ps-1 pe-3">Đồng bộ điểm</label>
+                            <button id="approveButton" class="btn btn-primary">Duyệt</button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="color: #072b4a;">
+                                <thead>
+                                    <tr class="training-title">
+                                        <th class="text-center align-middle" colspan="3"> Nội dung đánh giá</th>
+                                        <th class="text-center align-middle">SV <br> đánh giá</th>
+                                        <th class="text-center align-middle">Minh chứng</th>
+                                        <th class="text-center align-middle">BCS đánh giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bold-row training-list">
+                                        <td>I</td>
+                                        <td colspan="2">Đánh giá về ý thức trong học tập (Tổng điểm 0-20đ)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>1</td>
+                                        <td colspan="2">Kết quả học tập: (Chọn 1 tiêu chí phù hợp)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>a</td>
+                                        <td>Có điểm TBCHK từ 3.6 đến 4.00</td>
+                                        <td>+11đ</td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP_BCS"></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>b</td>
+                                        <td>Có điểm TBCHK từ 3.2 đến cận 3.6</td>
+                                        <td>+9đ</td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP" disabled></td>
+                                        <td></td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP_BCS"></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>c</td>
+                                        <td>Có điểm TBCHK từ 2.5 đến cận 3.2</td>
+                                        <td>+7đ</td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP" disabled></td>
+                                        <td></td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP_BCS"></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>d</td>
+                                        <td>Có điểm TBCHK từ 2.0 đến cận 2.5</td>
+                                        <td>+5đ</td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP" disabled></td>
+                                        <td></td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP_BCS"></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>e</td>
+                                        <td>Có điểm TBCHK từ 1.2 đến cận 2.0</td>
+                                        <td>+3đ</td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP" disabled></td>
+                                        <td></td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP_BCS"></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>f</td>
+                                        <td>Có điểm TBCHK < 1.2</td>
+                                        <td>+0đ</td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP" disabled></td>
+                                        <td></td>
+                                        <td><input type="radio" class="checkBox" name="KQ_HOC_TAP_BCS"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>2</td>
+                                        <td colspan="2">Hoạt động nghiên cứu khoa học, thi Olympic (Tổng điểm 0-5đ)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>a</td>
+                                        <td>Thành viên đề tài nghiên cứu khoa học, đội Olympic cấp trường trở lên (không tính tiểu luận, đồ án môn học …).</td>
+                                        <td>+5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>b</td>
+                                        <td>Đạt giải tại các cuộc thi về nghiên cứu khoa học từ cấp Khoa trở lên.</td>
+                                        <td>+5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>3</td>
+                                        <td colspan="2">Ý thức học tập</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>a</td>
+                                        <td>Tham gia học đầy đủ tất cả các môn.</td>
+                                        <td>+3đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>b</td>
+                                        <td>Có thái độ học tập tích cực, đóng góp xây dựng bài trong học tập.</td>
+                                        <td>+3đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>4</td>
+                                        <td>Sinh viên khuyết tật, mồ côi, gia đình hộ nghèo, cận nghèo, người dân tộc, thiểu số có kết quả học từ 2.5 trở lên.</td>
+                                        <td>+5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>5</td>
+                                        <td>Có kết quả học tập học kỳ sau cao hơn học kỳ trước (Sinh viên năm 1, học kỳ I được cộng 3đ)	</td>
+                                        <td>+3đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>6</td>
+                                        <td colspan="2">Thực hiện nội quy, quy chế học tập</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>a</td>
+                                        <td>Vi phạm quy chế thi bị khiển trách.</td>
+                                        <td>-4đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" /></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>b</td>
+                                        <td>Vi phạm quy chế thi bị cảnh cáo.</td>
+                                        <td>-6đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" /></td>
+                                    </tr>
+                                    <tr class="training-details">
+                                        <td>c</td>
+                                        <td>Vi phạm quy chế bị đình chỉ thi học phần</td>
+                                        <td>-10đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" /></td>
+                                    </tr>
+                                    <tr class="bold-row training-content">
+                                        <td></td>
+                                        <td colspan="2" style="text-align: right;">Tổng</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <!-- TODO:Danh mục 2 -->
+                                    <tr class="bold-row training-list">
+                                        <td>II</td>
+                                        <td colspan="2">Đánh giá về ý thức chấp hành nội quy, quy chế, quy định trong nhà trường (tổng điểm 0-25đ).</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>1</td>
+                                        <td>Thực hiện tốt các vản bản chỉ đạo của các cấp được thực hiện trong trường</td>
+                                        <td>+4đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>2</td>
+                                        <td>Được chứng nhận hoàn thành Tuần sinh hoạt công dân -HSSV</td>
+                                        <td>+5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>3</td>
+                                        <td>Thực hiện tốt nội quy về bảo vệ tài sản và phòng chống lãng phí của nhà trường.</td>
+                                        <td>+4đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>4</td>
+                                        <td>Đeo bảng tên do Nhà trường quy định khi đến trường và tham dự thi học kỳ</td>
+                                        <td>+4đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>5</td>
+                                        <td>Thực hiện khai báo đầy đủ/ kịp thời thông tin nội, ngoại trú theo quy định</td>
+                                        <td>+4đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>6</td>
+                                        <td>Khai báo đầy đủ/ kịp thời thông tin cá nhân theo quy định của nhà trường</td>
+                                        <td>+4đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>7</td>
+                                        <td>Vắng 01 buổi sinh hoạt lớp; vắng 01 buổi sinh hoạt công dân (không có lý do); bị ghi tên do không có trang phục đúng quy định; vi phạm nội quy của TTTT – Thư viện; không đóng đoàn phí; hội phí; bảo hiểm bắt buộc.</td>
+                                        <td>-5đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" /></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>8</td>
+                                        <td>Vi phạm nội quy nhà trường bị lập biên bản.</td>
+                                        <td>-10đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" /></td>
+                                    </tr>
+                                    <tr class="bold-row training-content">
+                                        <td></td>
+                                        <td colspan="2" style="text-align: right;">Tổng</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <!-- TODO: Danh mục 3 -->
+                                    <tr class="bold-row training-list">
+                                        <td>III</td>
+                                        <td colspan="2">Đánh giá về ý thức và kết quả tham gia các hoạt động chính trị xã hội, văn hóa, văn nghệ, thể thao, phòng chống tội phạm và các tệ nạn xã hội (Tổng điểm 0-20đ)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>1</td>
+                                        <td>Tham gia các hoạt động của khoa, trường tổ chức (không quá 15đ).</td>
+                                        <td>+3đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="15" min="0" max="15" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="0" max="15" name="Point" /></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>2</td>
+                                        <td>Là thành viên tích cực CLB đội nhóm của khoa, trường.</td>
+                                        <td>5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>3</td>
+                                        <td>Có ý thức tuyên truyền, phòng, chống tội phạm và các tệ nạn xã hội.</td>
+                                        <td>5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>4</td>
+                                        <td>Là thành viên đội tuyển văn hóa, văn nghệ, thể thao cấp: lớp, khoa, trường trở lên.</td>
+                                        <td>5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>5</td>
+                                        <td>Tham gia Mùa hè xanh, Tiếp sức mùa thi, đại giải trong các cuộc thi văn nghệ, thể thao và phòng, chống tệ nạn xã hội (cấp khoa trở lên).Tham gia Mùa hè xanh, Tiếp sức mùa thi, đại giải trong các cuộc thi văn nghệ, thể thao và phòng, chống tệ nạn xã hội (cấp khoa trở lên).</td>
+                                        <td>10đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>6</td>
+                                        <td>Có trong danh sách điều động nhưng không tham gia.</td>
+                                        <td>-5đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" /></td>
+                                    </tr>
+                                    <tr class="bold-row training-content">
+                                        <td></td>
+                                        <td colspan="2" style="text-align: right;">Tổng:</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <!-- TODO: Danh mục IV -->
+                                    <tr class="bold-row training-list">
+                                        <td>IV</td>
+                                        <td colspan="2">Đánh giá về ý thức công dân trong quan hệ cộng đồng (Tổng điểm 0-25đ)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>1</td>
+                                        <td>Có lối sống lành mạnh, có tinh thần chia sẻ, giúp đỡ bạn bè, người gặp khó khăn, hoạn nạn; tôn trọng, lễ phép với thầy giáo, cô giáo, nhân viên nhà trường.</td>
+                                        <td>+10đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>2</td>
+                                        <td>Chấp hành tốt và tham gia tuyên truyền các chủ trương của Đảng, chính sách, pháp luật của Nhà nước trong cộng đồng.</td>
+                                        <td>+5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>3</td>
+                                        <td>Tham gia hiến máu nhân đạo; giữ gìn an toàn giao thông; bảo vệ môi trường; tham gia các công tác phòng, chống dịch bệnh, tình nguyện, nhân đạo, lao động công ích từ cấp khoa trở lên và địa phương (có minh chứng).</td>
+                                        <td>+3đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="15" min="0" max="30" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="0" max="30" name="Point" /></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>4</td>
+                                        <td>Vi phạm pháp luật có phản ánh từ cơ quan chức năng (chưa đến mức truy cứu trách nhiệm hình sự).</td>
+                                        <td>-10đ/lần</td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" readonly disabled /></td>
+                                        <td></td>
+                                        <td><input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" /></td>
+                                    </tr>
+                                    <tr class="bold-row training-content">
+                                        <td></td>
+                                        <td colspan="2" style="text-align: right;">Tổng:</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <!-- TOTO: Danh mục V -->
+                                    <tr class="bold-row training-list">
+                                        <td>V</td>
+                                        <td colspan="2">Đánh giá ý thức, kết quả tham gia phụ trách lớp, các đoàn thể, tổ chức khác trong nhà trường hoặc các thành tích đặc biệt trong học tập, rèn luyện của người học trong trường. (Tổng điểm 0-10đ)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>1</td>
+                                        <td>Là thành viên tham gia hỗ trợ tích cực vào các hoạt động của lớp, khoa, trường.</td>
+                                        <td>+5đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>2</td>
+                                        <td>Là đoàn viên ưu tú, đối tượng Đảng.</td>
+                                        <td>+2đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>3</td>
+                                        <td>Người đạt được các thành tích đặc biệt trong học tập và rèn luyện (bằng khen, giấy khen, …)</td>
+                                        <td>+2đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>4</td>
+                                        <td>Là Ban cán sự lớp, ủy viên BCH Đoàn, Hội sinh viên lớp, khoal Ban chủ nhiệm CLB đội nhóm hoàn thành nhiệm vụ.</td>
+                                        <td>+2đ</td>
+                                        <td><input type="checkbox" class="checkBox SV" checked disabled></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="training-content">
+                                        <td>5</td>
+                                        <td>Là UV BCH Đoàn TN, UV BCH Hội sinh viên cấp trường trở lên.</td>
+                                        <td>+2đ</td>
+                                        <td><input type="checkbox" class="checkBox SV"></td>
+                                        <td></td>
+                                        <td><input type="checkbox" class="checkBox"></td>
+                                    </tr>
+                                    <tr class="bold-row training-content">
+                                        <td></td>
+                                        <td colspan="2" style="text-align: right;">Tổng:</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="bold-row training-total">
+                                        <td colspan="3">Tổng điểm: (I + II +III +IV + V): 0-100đ</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="bold-row training-total">
+                                        <td colspan="3">Xếp loại:</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center justify-content-lg-end mt-3 mb-3">
+            <div class="col-auto">
+                <div class="text-center">
+                    <a href="#" class="btn btn-primary btn-icon-split mx-1">
+                        <span class="text">Lưu điểm</span>
+                    </a>
+                    <a href="#" class="btn btn-secondary btn-icon-split mx-1">
+                        <span class="text">Sửa điểm</span>
+                    </a>
+                    <a href="./StudentList.html" class="btn btn-info btn-icon-split mx-1">
+                        <span class="text">Quay lại</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

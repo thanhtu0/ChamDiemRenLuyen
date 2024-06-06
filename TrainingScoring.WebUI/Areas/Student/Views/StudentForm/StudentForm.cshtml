@@ -1,0 +1,421 @@
+﻿@model TrainingScoring.WebUI.Models.StudentFormViewModel;
+@{
+    ViewData["Title"] = "StudentForm";
+    double sumScore = 0;
+    string ToRoman(int number)
+    {
+        if ((number < 0) || (number > 3999))
+            throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
+        if (number < 1) return string.Empty;
+        if (number >= 1000) return "M" + ToRoman(number - 1000);
+        if (number >= 900) return "CM" + ToRoman(number - 900);
+        if (number >= 500) return "D" + ToRoman(number - 500);
+        if (number >= 400) return "CD" + ToRoman(number - 400);
+        if (number >= 100) return "C" + ToRoman(number - 100);
+        if (number >= 90) return "XC" + ToRoman(number - 90);
+        if (number >= 50) return "L" + ToRoman(number - 50);
+        if (number >= 40) return "XL" + ToRoman(number - 40);
+        if (number >= 10) return "X" + ToRoman(number - 10);
+        if (number >= 9) return "IX" + ToRoman(number - 9);
+        if (number >= 5) return "V" + ToRoman(number - 5);
+        if (number >= 4) return "IV" + ToRoman(number - 4);
+        if (number >= 1) return "I" + ToRoman(number - 1);
+        throw new ArgumentOutOfRangeException("something bad happened");
+    }
+    char ToAlphabet(int number)
+    {
+        if (number < 1 || number > 26)
+            throw new ArgumentOutOfRangeException("number", "Phải là một số từ 1 đến 26.");
+
+        return (char)('a' + number - 1);
+    }
+}
+<head>
+    <style>
+        th:nth-child(1),
+        td:nth-child(1) {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td:nth-child(2) {
+            vertical-align: middle;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td:nth-child(5) {
+            width: 15%;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        tr.bold-row td,
+        tr.bold-row th {
+            font-weight: bold;
+        }
+
+        tr.training-title td,
+        tr.training-title th {
+            background-color: #36b2fa;
+        }
+
+        tr.training-directory td,
+        tr.training-directory th {
+            background-color: #7ccbfd;
+        }
+
+        tr.training-content td,
+        tr.training-content th {
+            background-color: #b9e2fe;
+        }
+
+        tr.training-details td,
+        tr.training-details th {
+            background-color: #e0f0fe;
+        }
+
+        tr.training-total td,
+        tr.training-total th {
+            background-color: rgba(7, 43, 74, 0.5);
+        }
+
+        .checkBox {
+            transform: scale(1.5);
+        }
+
+        .form-control-sm {
+            transform: scale(1);
+            text-align: center;
+            margin: auto;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen với độ mờ */
+            z-index: 999; /* Lớp overlay cao hơn */
+            display: none; /* Ẩn ban đầu */
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Lớp modal cao hơn */
+            display: none; /* Ẩn ban đầu */
+        }
+
+            .modal img {
+                max-width: 90%;
+                max-height: 90%;
+            }
+
+        .btn-warningg {
+            position: relative;
+            padding: 11px 16px;
+            font-size: 15px;
+            line-height: 1.5;
+            border-radius: 3px;
+            background-color: #072b4a;
+            color: #f0f8ff;
+            border: 0;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+            .btn-warningg input[type="file"] {
+                cursor: pointer;
+                position: absolute;
+                left: 0%;
+                top: 0%;
+                transform: scale(5);
+                opacity: 0;
+            }
+
+            .btn-warningg:hover {
+                background-color: #0b446f;
+                color: #e0f0fe;
+            }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="car shadow">
+            <div class="card-header mb-3 fw-bold text-uppercase">
+                @if (Model != null)
+                {
+                    <div>
+                        Phiếu đánh giá rèn luyện Học kỳ @ViewBag.SelectedSemester Năm học @ViewBag.SelectedAcademicYear
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        Không có phiếu đánh giá rèn luyện cho học kỳ và năm học đã chọn.
+                    </div>
+                }
+            </div>
+            <form asp-action="">
+                <div class="card-body">
+                    <div class="row alert alert-info alert-dismissible fade show mx-1" role="alert">
+                        <ul>
+                            <span class="fw-bold">Lưu ý:</span>
+                            <li class="ms-5">Sinh viên phải thực hiện lưu và nạp điểm đúng thời gian quy định.</li>
+                            <li class="ms-5">
+                                Quá thời gian đánh giá, sinh viên không được chỉnh sửa điểm rèn luyện.
+                            </li>
+                            <li class="ms-5">
+                                Nếu quá thời gian đánh giá, điểm rèn luyện của sinh viên trong học kỳ đó sẽ bằng 0.
+                            </li>
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="training-title">
+                                    <th class="text-center align-middle" colspan="3"><h2>Nội dung đánh giá</h2></th>
+                                    <th class="text-center">SV <br> đánh giá</th>
+                                    <th class="text-center align-middle">Minh chứng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.TrainingDirectories != null && Model.TrainingDirectories.Any())
+                                {
+                                    @foreach (var directory in Model.TrainingDirectories.OrderBy(o => o.Order))
+                                    {
+                                        if (directory.TrainingContents != null && directory.TrainingContents.Any())
+                                        {
+                                            <tr class="bold-row training-directory align-middle">
+                                                <td>@ToRoman(directory.Order)</td>
+                                                <td colspan="4">@directory.TrainingDirectoryName</td>
+                                            </tr>
+                                            @if (directory.TrainingContents != null && directory.TrainingContents.Any())
+                                            {
+                                                foreach (var content in directory.TrainingContents.OrderBy(o => o.Order))
+                                                {
+                                                    <tr class="training-content align-middle">
+                                                        <td>@content.Order</td>
+                                                        <td>@content.TrainingContentName</td>
+                                                        @if (content.TrainingDetails == null)
+                                                        {
+                                                            <td>@content.MaxScore</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                        <td>
+                                                            @if (content.TrainingDetails == null || !content.TrainingDetails.Any())
+                                                            {
+                                                                @if (content.TypeofScore == TrainingScoring.DomainModels.TypeofScoreContent.Radio)
+                                                                {
+                                                                    <input type="radio" class="checkBox">
+                                                                    <input asp-for="@Model.StudentScoreContents" type="hidden" />
+                                                                }
+                                                                else if (content.TypeofScore == TrainingScoring.DomainModels.TypeofScoreContent.CheckedBox)
+                                                                {
+                                                                    <input type="checkbox" class="checkBox">
+                                                                    <input asp-for="@Model.StudentScoreContents" type="hidden" />
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input asp-for="@Model.StudentScoreContents" class="form-control form-control-sm checkBox" />
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" name="KQ_HOC_TAP">
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (content.TrainingDetails == null || !content.TrainingDetails.Any())
+                                                            {
+                                                                @if (content.IsProof == true)
+                                                                {
+                                                                    <button type="button" class="btn btn-warningg">
+                                                                        <i class="fas fa-upload"></i>Thêm minh chứng
+                                                                        <input type="file">
+                                                                    </button>
+                                                                }
+                                                                else
+                                                                {
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" name="IsProof">
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                    @if (content.TrainingDetails == null || !content.TrainingDetails.Any())
+                                                    {
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (var detail in content.TrainingDetails.OrderBy(o => o.Order))
+                                                        {
+                                                            <tr class="training-details">
+                                                                <td>@ToAlphabet(detail.Order)</td>
+                                                                <td>@detail.TrainingDetailName</td>
+                                                                <td>@detail.MaxScore</td>
+                                                                <td>
+                                                                    @if (detail.TypeofScore == TrainingScoring.DomainModels.TypeofScoreDetail.Radio)
+                                                                    {
+                                                                        <input type="radio" class="checkBox" name="KQ_HOC_TAP">
+                                                                    }
+                                                                    else if (detail.TypeofScore == TrainingScoring.DomainModels.TypeofScoreDetail.CheckedBox)
+                                                                    {
+                                                                        <input type="checkbox" class="checkBox">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="form-control form-control-sm checkBox" type="number" value="0" min="-50" max="0" name="Point" />
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @if (content.IsProof == true)
+                                                                    {
+                                                                        @if (detail.IsProof == true)
+                                                                        {
+                                                                            <button type="button" class="btn btn-warningg">
+                                                                                <i class="fas fa-upload"></i>Thêm minh chứng
+                                                                                <input type="file">
+                                                                            </button>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        <tr>
+                                            <td></td>
+                                            <td class="fw-bold text-end">Tổng:</td>
+                                            <td colspan="2">@directory.MaxScore</td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                    }
+                                    <tr class="training-total">
+                                        <td colspan="2" class="fw-bold align-middle text-end">
+                                            Tổng điểm: (
+                                            @{
+                                                var romanNumbers = new List<string>();
+                                                foreach (var directory in Model.TrainingDirectories.OrderBy(o => o.Order))
+                                                {
+                                                    romanNumbers.Add(ToRoman(directory.Order));
+                                                }
+                                                <text>@string.Join(" + ", romanNumbers)</text>
+                                            }
+                                            ):
+                                            0-100đ
+                                        </td>
+                                        <td colspan="2" class="align-middle text-center">
+                                            @{
+                                                double totalDirectoryMaxScore = 0;
+                                                foreach (var directory in Model.TrainingDirectories)
+                                                {
+                                                    totalDirectoryMaxScore += directory.MaxScore;
+                                                }
+                                                if (totalDirectoryMaxScore > 100)
+                                                {
+                                                    totalDirectoryMaxScore = 100;
+                                                }
+                                                @totalDirectoryMaxScore
+                                            }
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr class="training-total">
+                                        <td colspan="2" class="fw-bold align-middle text-end">Xếp loại:</td>
+                                        <td colspan="2" class="align-middle text-center">
+                                            @{
+                                                string classification = "";
+                                                if (totalDirectoryMaxScore >= 90 && totalDirectoryMaxScore <= 100)
+                                                {
+                                                    classification = "Xuất sắc";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 80 && totalDirectoryMaxScore <= 89)
+                                                {
+                                                    classification = "Tốt";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 65 && totalDirectoryMaxScore <= 79)
+                                                {
+                                                    classification = "Khá";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 50 && totalDirectoryMaxScore <= 64)
+                                                {
+                                                    classification = "Trung bình";
+                                                }
+                                                else if (totalDirectoryMaxScore >= 35 && totalDirectoryMaxScore <= 49)
+                                                {
+                                                    classification = "Yếu";
+                                                }
+                                                else if (totalDirectoryMaxScore < 35)
+                                                {
+                                                    classification = "Kém";
+                                                }
+                                                @classification
+                                            }
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center bg-danger">Hiện tại hệ thống chưa cập nhật Phiếu đánh giá rèn luyện. Sinh viên trở lại khi có thông báo của Giáo viên cố vấn.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-center justify-content-lg-end">
+                        <div class="col-auto">
+                            <div class="text-center">
+                                <a href="#" class="btn btn-primary btn-icon-split mx-1">
+                                    <span class="text">Lưu điểm</span>
+                                </a>
+                                <a href="#" class="btn btn-secondary btn-icon-split mx-1">
+                                    <span class="text">Sửa điểm</span>
+                                </a>
+                                <a href="#" class="btn btn-success btn-icon-split mx-1">
+                                    <span class="text">Nạp điểm</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+

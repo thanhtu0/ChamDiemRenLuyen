@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "StudentOfClass";
+    int stt = 1;
+}
+
+<div class="container-fluid">
+    <div class="row mt-2">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header mb-3 fw-bold text-uppercase">
+                    <div>Danh sách sinh viên đánh giá rèn luyện lớp sinh hoạt</div>
+                </div>
+
+                <div class="row alert alert-warning alert-dismissible fade show mx-3" role="alert">
+                    <strong>Lưu ý:</strong>
+                    <ul>
+                        <li>
+                            Hãy chắc chắn rằng đã tiến hành chấm điểm cho tất cả các sinh viên.
+                        </li>
+                        <li>
+                            Hãy kiểm tra lại trước khi nạp cho giáo viên cố vấn.
+                        </li>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
+                                    <th class="text-center" width="15%" style="vertical-align: middle;">Mã sinh viên</th>
+                                    <th width="35%" style="vertical-align: middle;">Họ và tên</th>
+                                    <th class="text-center" width="12.5%" style="vertical-align: middle;">Trạng thái</th>
+                                    <th class="text-center" width="10%" style="vertical-align: middle;">Điểm SV</th>
+                                    <th class="text-center" width="10%" style="vertical-align: middle;">Điểm BCS</th>
+                                    <th class="text-center" width="12.5%" style="vertical-align: middle;">
+                                        <a href="#" class="btn btn-success btn-icon-split mx-1">
+                                            <span class="text">Nạp điểm</span>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var student in Model)
+                                {
+                                    <tr>
+                                        <td class="text-center">@stt</td>
+                                        <td class="text-center">@student.StudentCode</td>
+                                        <td>@student.FirstName @student.LastName</td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td> 
+                                        <td class="text-center">
+                                            85
+                                        </td>
+                                        <td class="text-center">
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="PointOfStudent" asp-controller="Classmittee" asp-area="Student" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    stt++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

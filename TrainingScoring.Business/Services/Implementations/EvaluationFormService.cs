@@ -4,6 +4,7 @@ using TrainingScoring.Data.Repositories.Interfaces;
 using TrainingScoring.DomainModels;
 using Microsoft.AspNetCore.Http;
 using TrainingScoring.Data.Repositories.Implementations;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrainingScoring.Business.Services.Implementations
 {
@@ -173,6 +174,18 @@ namespace TrainingScoring.Business.Services.Implementations
         {
             var existingForm = await _evaluationFormRepository.GetByIdAsync(id);
             return existingForm != null;
+        }
+        public async Task<EvaluationForm> GetEvaluationFormsByAcademicYearIdAsync(int academicYearId)
+        {
+            try
+            {
+                return await _evaluationFormRepository.GetEvaluationFormsByAcademicYearIdAsync(academicYearId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error: {ex.Message}");
+                throw;
+            }
         }
         #endregion
     }

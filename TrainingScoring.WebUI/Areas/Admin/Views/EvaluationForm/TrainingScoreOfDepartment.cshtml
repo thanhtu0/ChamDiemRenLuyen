@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "TrainingScoreOfDepartment";
+}
+<head>
+    <style>
+        a {
+            text-decoration: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col">
+                <form>
+                    <div class="col-md-6 mb-3">
+                        <label for="departmentSelect" class="form-label">Chọn Khoa:</label>
+                        <select class="form-select" id="departmentSelect">
+                            <option selected>Khoa công nghệ thông tin</option>
+                            <option>Khoa Báo chí - Truyền thông</option>
+                            <option>Khoa Địa lý - Địa chất</option>
+                            <option>Khoa Hóa học</option>
+                            <option>Khoa Kiến trúc</option>
+                            <option>Khoa Lịch sử</option>
+                            <option>Khoa Lý luận chính trị</option>
+                            <option>Khoa Môi trường</option>
+                            <option>Khoa Ngữ văn</option>
+                            <option>Khoa Sinh học</option>
+                            <option>Khoa Toán học</option>
+                            <option>Khoa Vật lý</option>
+                            <option>Khoa Điện tử - Viễn thông</option>
+                            <option>Khoa Công tác xã hội</option>
+                            <option>Khoa Điện, Điện tử và Công nghệ vật liệu</option>
+                            <option>Khoa Xã hội học và Công tác xã hội</option>
+                            <option>Khoa Xã hội học</option>
+                        </select>
+                    </div>
+                </form>
+                <div class="card shadow">
+                    <div class="card-header mb-3 fw-bold text-uppercase">
+                        <div>Danh sách các lớp thuộc Khoa công nghệ thông tin</div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
+                                        <th class="text-center" width="15%" style="vertical-align: middle;">Mã lớp</th>
+                                        <th style="vertical-align: middle;">Tên lớp</th>
+                                        <th style="vertical-align: middle;">Số lượng</th>
+                                        <th class="text-center" style="vertical-align: middle;" width="7.5%">Xuất sắc</th>
+                                        <th class="text-center" style="vertical-align: middle;" width="7.5%">Tốt</th>
+                                        <th class="text-center" style="vertical-align: middle;" width="7.5%">Khá</th>
+                                        <th class="text-center" style="vertical-align: middle;" width="7.5%">Trung bình</th>
+                                        <th class="text-center" style="vertical-align: middle;" width="7.5%">Yếu</th>
+                                        <th class="text-center" style="vertical-align: middle;" width="7.5%">Kém</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" style="vertical-align: middle;">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>CNTT K44 A</td>
+                                        <td>Công nghệ thông tin K44A</td>
+                                        <td>44</td>
+                                        <td>20</td>
+                                        <td>20</td>
+                                        <td>4</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td><a asp-action="TrainingScoreOfGrade" asp-controller="EvaluationForm" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>CNTT K44 B</td>
+                                        <td>Công nghệ thông tin K44B</td>
+                                        <td>40</td>
+                                        <td>15</td>
+                                        <td>20</td>
+                                        <td>5</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td><a asp-action="TrainingScoreOfGrade" asp-controller="EvaluationForm" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>KTPM K44</td>
+                                        <td>Kỹ thuật phần mềm K44</td>
+                                        <td>45</td>
+                                        <td>10</td>
+                                        <td>19</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>11</td>
+                                        <td><a asp-action="TrainingScoreOfGrade" asp-controller="EvaluationForm" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>CNTT K45 A</td>
+                                        <td>Công nghệ thông tin K45A</td>
+                                        <td>40</td>
+                                        <td>20</td>
+                                        <td>20</td>
+                                        <td>5</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td><a asp-action="TrainingScoreOfGrade" asp-controller="EvaluationForm" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>KTPM K45</td>
+                                        <td>Kỹ thuật phần mềm K45</td>
+                                        <td>40</td>
+                                        <td>20</td>
+                                        <td>15</td>
+                                        <td>5</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td><a asp-action="TrainingScoreOfGrade" asp-controller="EvaluationForm" asp-area="Admin" class="text-info">Xem chi tiết</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

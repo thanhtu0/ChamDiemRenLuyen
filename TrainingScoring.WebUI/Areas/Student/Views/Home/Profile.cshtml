@@ -1,149 +1,156 @@
-﻿@model TrainingScoring.DomainModels.Student
-@{
-    ViewData["Title"] = "Profile";
-}
-<div class="container-fluid">
-    <div class="card-header">
-        <div class="card-title fw-bold text-uppercase"><h2>Quản lý thông tin cá nhân</h2></div>
-    </div>
-    <div class="card-body">
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <strong>Lưu ý: </strong> 
-            <ul>
-                <li>Các thông tin về tài khoản cá nhân của sinh viên được quản lý bởi trang tín chỉ.</li>
-                <li>Nếu bạn thấy có sự sai xót về thông tin cá nhân. Vui lòng thay đổi tại trang tín chỉ.</li>
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+﻿    @model TrainingScoring.DomainModels.Student
+    @{
+        ViewData["Title"] = "Profile";
+    }
+    <div class="container-fluid">
+        <div class="card-header">
+            <div class="card-title fw-bold text-uppercase"><h2>Quản lý thông tin cá nhân</h2></div>
         </div>
-        <fieldset>
-            <legend class="text-secondary row align-items-center">
-                <div class="col-8">
-                    <h4 class="mb-0">Thông tin cá nhân</h4>
-                </div>
-            </legend>
-            <hr>
+        <div class="card-body">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Lưu ý: </strong> 
+                <ul>
+                    <li>Các thông tin về tài khoản cá nhân của sinh viên được quản lý bởi trang tín chỉ.</li>
+                    <li>Nếu bạn thấy có sự sai xót về thông tin cá nhân. Vui lòng thay đổi tại trang tín chỉ.</li>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <fieldset>
+                <legend class="text-secondary row align-items-center">
+                    <div class="col-8">
+                        <h4 class="mb-0">Thông tin cá nhân</h4>
+                    </div>
+                </legend>
+                <hr>
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="mb-3 row">
-                        <label for="studentId" class="col-sm-4 col-form-label text-end fw-bold">Mã sinh viên:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext border-bottom border-2">@Model.StudentCode</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label for="studentId" class="col-sm-4 col-form-label text-end fw-bold">Mã sinh viên:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext border-bottom border-2">@Model.StudentCode</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="fullName" class="col-sm-4 col-form-label text-end fw-bold">Họ và tên:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext border-bottom border-2">@Model.FirstName @Model.LastName</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="gender" class="col-sm-4 col-form-label text-end fw-bold">Giới tính:</label>
+                            <div class="col-sm-8">
+                                @if (Model.Gender == 0)
+                                {
+                                    <p class="form-control-plaintext border-bottom">Nam</p>
+                                }
+                                else
+                                {
+                                    <p class="form-control-plaintext border-bottom">Nữ</p>
+                                }
+                            </div>
                         </div>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label for="fullName" class="col-sm-4 col-form-label text-end fw-bold">Họ và tên:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext border-bottom border-2">@Model.FirstName @Model.LastName</p>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="gender" class="col-sm-4 col-form-label text-end fw-bold">Giới tính:</label>
-                        <div class="col-sm-8">
-                            @if (Model.Gender == 0)
-                            {
-                                <p class="form-control-plaintext border-bottom">Nam</p>
-                            }
-                            else
-                            {
-                                <p class="form-control-plaintext border-bottom">Nữ</p>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="col-sm-12">
-                        <div class="float-end " style="width: 250px; height:145px; position:relative; z-index:999; padding-left:10px; background:#ffffff; margin-right: 75px;">
-                            <label for="filePhoto" style="cursor:pointer" title="Click để thay đổi ảnh">
-                                <img id="studentPhoto" src="@Url.Content("~/themes/assets/img/Photo.jpg")" class="img-thumbnail" style="width:140px; height:162.4px;" alt="User Photo">
-                            </label>
-                            <form id="formUploadPhoto">
-                                <input name="__RequestVerificationToken" type="hidden" value="lvxpEp0wJcut83KG41zsNFWYxUral54t4gfydK6gdaWeYJobWcOSF_4SU_BRY5d9GaCeXtSZLoArHRhOSPujxXfpsCCLAE86V8cBaEM4O4lAFqEZmvpDooDGYh0VnaYdkR9lEmTku6kB3kSHOEjvPff8BLqXuP0QISwDwv8-DMQMFT42sxDEUmSxf9i68cZmTfZS5AAyWrwbiXPDw5aHh_nf2fo1">
-                                <input type="file" name="filePhoto" id="filePhoto" accept="image/x-png,image/gif,image/jpeg" style="position:absolute;left:0;top:0;opacity:0;">
-                            </form>
+                    <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <div class="float-end " style="width: 250px; height:145px; position:relative; z-index:999; padding-left:10px; background:#ffffff; margin-right: 75px;">
+                                <label for="filePhoto" style="cursor:pointer" title="Click để thay đổi ảnh">
+                                @if (Model.Photo != null)
+                                {
+                                    <img id="studentPhoto" src="~/images/student/@Model.Photo" class="img-thumbnail" style="width:140px; height:162.4px;" alt="User Photo">
+                                }
+                                else
+                                {
+                                    <img id="studentPhoto" src="~/themes/assets/img/Photo.jpg" class="img-thumbnail" style="width:140px; height:162.4px;" alt="Default Photo">
+                                }
+                                </label>
+                                <form id="formUploadPhoto">
+                                    <input name="__RequestVerificationToken" type="hidden" value="lvxpEp0wJcut83KG41zsNFWYxUral54t4gfydK6gdaWeYJobWcOSF_4SU_BRY5d9GaCeXtSZLoArHRhOSPujxXfpsCCLAE86V8cBaEM4O4lAFqEZmvpDooDGYh0VnaYdkR9lEmTku6kB3kSHOEjvPff8BLqXuP0QISwDwv8-DMQMFT42sxDEUmSxf9i68cZmTfZS5AAyWrwbiXPDw5aHh_nf2fo1">
+                                    <input type="file" name="filePhoto" id="filePhoto" accept="image/x-png,image/gif,image/jpeg" style="position:absolute;left:0;top:0;opacity:0;">
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label text-end fw-bold">Ngày sinh:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Ngày sinh:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Nơi sinh:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.PlaceOfBirth</p>
+                    </div>
                 </div>
-                <label class="col-sm-2 col-form-label text-end fw-bold">Nơi sinh:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.PlaceOfBirth</p>
-                </div>
-            </div>
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label text-end fw-bold">Địa chỉ:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Province</p>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Địa chỉ:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Province</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Quốc tịch:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Nationality</p>
+                    </div>
                 </div>
-                <label class="col-sm-2 col-form-label text-end fw-bold">Quốc tịch:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Nationality</p>
-                </div>
-            </div>
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label text-end fw-bold">Dân tộc:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Ethnicity</p>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Dân tộc:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Ethnicity</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Tôn giáo:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Religion</p>
+                    </div>
                 </div>
-                <label class="col-sm-2 col-form-label text-end fw-bold">Tôn giáo:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Religion</p>
-                </div>
-            </div>
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label text-end fw-bold">Số CCCD:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.CitizenIdentificationNumber</p>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Số CCCD:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.CitizenIdentificationNumber</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Ngày cấp:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.DateofIssueofCitizenIdentificationCard.ToString("dd/MM/yyyy")</p>
+                    </div>
                 </div>
-                <label class="col-sm-2 col-form-label text-end fw-bold">Ngày cấp:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.DateofIssueofCitizenIdentificationCard.ToString("dd/MM/yyyy")</p>
-                </div>
-            </div>
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label text-end fw-bold">Số điện thoại:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Phone</p>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Số điện thoại:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Phone</p>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-end fw-bold">Email:</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Email</p>
+                    </div>
                 </div>
-                <label class="col-sm-2 col-form-label text-end fw-bold">Email:</label>
-                <div class="col-sm-4">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Email</p>
+            </fieldset>
+            <fieldset>
+                <legend class="text-secondary row align-items-center">
+                    <div class="col-8">
+                        <h4 class="mb-0 ">Thông tin về quê quán, hộ khẩu thường trú</h4>
+                    </div>
+                </legend>
+                <hr>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end"><b>Quê Quán:</b></label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Hometown</p>
+                    </div>
                 </div>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend class="text-secondary row align-items-center">
-                <div class="col-8">
-                    <h4 class="mb-0 ">Thông tin về quê quán, hộ khẩu thường trú</h4>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label text-end"><b>Hộ khẩu thường trú:</b></label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext border-bottom border-2">@Model.Permanentaddress</p>
+                    </div>
                 </div>
-            </legend>
-            <hr>
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label text-end"><b>Quê Quán:</b></label>
-                <div class="col-sm-8">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Hometown</p>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label text-end"><b>Hộ khẩu thường trú:</b></label>
-                <div class="col-sm-8">
-                    <p class="form-control-plaintext border-bottom border-2">@Model.Permanentaddress</p>
-                </div>
-            </div>
-        </fieldset>
+            </fieldset>
+        </div>
     </div>
-</div>

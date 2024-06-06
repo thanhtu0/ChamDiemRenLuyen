@@ -5,20 +5,20 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome student</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p class="display-6">Chào mừng bạn đến với trang web đánh giá điểm rèn luyện sinh viên</p>
 </div>
 
 <div>
+    <h4>Quyền sử dụng mà tài khoản bạn hiện có là:</h4>
     @{
         var user = User.GetUserData();
         if (user.Roles.Contains(WebUserRoles.Classmittee))
         {
-            <p>BCS mới thấy nè</p>
+            <p>Ban cán sự</p>
         }
         if (user.Roles.Contains(WebUserRoles.Student))
         {
-            <p>Student mới thấy nè</p>
+            <p>Sinh viên</p>
         }
     }
 </div>

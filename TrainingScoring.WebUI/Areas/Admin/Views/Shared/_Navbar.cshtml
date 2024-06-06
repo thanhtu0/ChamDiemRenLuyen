@@ -28,10 +28,9 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><h5 class="dropdown-header">Chức năng của Giáo viên Cố vấn</h5></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Quản lý ban cán sự lớp cố vấn.</a></li>
-                                <li><a class="dropdown-item" href="#">Danh sách các lớp cố vấn</a></li>
-                                <li><a class="dropdown-item" href="#">Đánh giá rèn luyện cho sinh viên</a></li>
-                                <li><a class="dropdown-item" href="#">Xem kết quả rèn luyện sinh viên</a></li>
+                                <li><a class="dropdown-item" asp-action="SetClassmittee" asp-controller="Advisor" asp-area="Admin">Quản lý ban cán sự lớp cố vấn.</a></li>
+                                <li><a class="dropdown-item" asp-action="StudentListAdvisor" asp-controller="Advisor" asp-area="Admin">Danh sách các lớp cố vấn</a></li>
+                                <li><a class="dropdown-item" asp-action="StudentPointAdvisor" asp-controller="Advisor" asp-area="Admin">Đánh giá rèn luyện cho sinh viên</a></li>
                             </ul>
                         </li>
                     }
@@ -46,9 +45,8 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><h5 class="dropdown-header">Chức năng dành cho Giáo viên cấp Khoa</h5></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="./Department Council/Mark Training Point/StudentList.html">Danh sách các lớp thuộc Khoa</a></li>
-                                <li><a class="dropdown-item" href="./Department Council/Mark Training Point/StudentPoint.html">Đánh giá rèn luyện cho sinh viên</a></li>
-                                <li><a class="dropdown-item" href="./Department Council/See Training Point/index.html">Xem kết quả rèn luyện sinh viên</a></li>
+                                <li><a class="dropdown-item" asp-action="StudentListDepartment" asp-controller="Department" asp-area="Admin">Danh sách các lớp thuộc Khoa</a></li>
+                                <li><a class="dropdown-item" asp-action="StudentPointDepartment" asp-controller="Department" asp-area="Admin">Đánh giá rèn luyện cho sinh viên</a></li>
                             </ul>
                         </li>
                     }
@@ -63,9 +61,9 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><h5 class="dropdown-header">Chức năng dành cho Giáo viên cấp Trường</h5></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="./School Council/Mark Training Point/GradeList.html">Danh sách các Khoa</a></li>
-                                <li><a class="dropdown-item" href="./School Council/Mark Training Point/GradePoint.html">Danh sách các Lớp thuộc Khoa</a></li>
-                                <li><a class="dropdown-item" href="./School Council/Mark Training Point/StudentPoint.html">Đánh giá rèn luyện sinh viên</a></li>
+                                <li><a class="dropdown-item" asp-action="DepartmentList" asp-controller="School" asp-area="Admin">Danh sách các Khoa</a></li>
+                                <li><a class="dropdown-item" asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin">Danh sách các Lớp thuộc Khoa</a></li>
+                                <li><a class="dropdown-item" asp-action="StudentPointDepartment" asp-controller="School" asp-area="Admin">Đánh giá rèn luyện sinh viên</a></li>
                             </ul>
                         </li>
                     }
@@ -81,11 +79,8 @@
                                 <li><h5 class="dropdown-header">Chức năng dành cho quản trị hệ thống</h5></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" asp-action="ShowListEvaluationForm" asp-controller="EvaluationForm" asp-area="Admin">Quản lý Phiếu đánh giá</a></li>
-                                <li><a class="dropdown-item" href="#!">Quản lý Điểm rèn luyện sinh viên</a></li>
-                                <li><a class="dropdown-item disabled" href="#!">Quản lý Giáo viên cố vấn</a></li>
-                                <li><a class="dropdown-item disabled" href="#!">Quản lý Lớp sinh hoạt</a></li>
-                                <li><a class="dropdown-item disabled" href="#!">Quản lý Sinh viên</a></li>
-
+                                <li><a class="dropdown-item" asp-action="TrainingScoreOfDepartment" asp-controller="EvaluationForm" asp-area="Admin">Thống kê đểm rèn luyện sinh viên theo Khoa</a></li>
+                                <li><a class="dropdown-item" asp-action="TrainingScoreOfGrade" asp-controller="EvaluationForm" asp-area="Admin">Thống kê đểm rèn luyện sinh viên theo Lớp</a></li>
                             </ul>
                         </li>
                     }

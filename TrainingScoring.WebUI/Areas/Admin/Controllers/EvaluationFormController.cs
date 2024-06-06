@@ -818,5 +818,17 @@ namespace TrainingScoring.WebUI.Areas.Admin.Controllers
             }
         }
         #endregion
+
+        #region Statistics TrainingScore
+        public IActionResult TrainingScoreOfDepartment()
+        {
+            return View();
+        }
+
+        public IActionResult TrainingScoreOfGrade()
+        {
+            return View();
+        }
+        #endregion
     }
 }

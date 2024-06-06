@@ -1,0 +1,284 @@
+﻿@{
+    ViewData["Title"] = "DepartmentList";
+    int stt = 1;
+}
+<head>
+    <style>
+        td:nth-child(1),
+        td:nth-child(2),
+        td:nth-child(4) {
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header mb-3 fw-bold text-uppercase">
+                        <div>Danh sách sinh viên đánh giá rèn luyện lớp sinh hoạt</div>
+                    </div>
+
+                    <div class="row alert alert-warning alert-dismissible fade show mx-3" role="alert">
+                        <strong>Lưu ý:</strong>
+                        <ul>
+                            <li>
+                                Hãy chắc chắn rằng đã tiến hành chấm điểm cho tất cả các sinh viên.
+                            </li>
+                            <li>
+                                Hãy kiểm tra lại trước khi xác nhận điểm cho sinh viên.
+                            </li>
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
+                                        <th class="text-center" width="15%" style="vertical-align: middle;">Mã Khoa</th>
+                                        <th width="35%" style="vertical-align: middle;">Tên khoa</th>
+                                        <th class="text-center" width="12.5%" style="vertical-align: middle;">Trạng thái</th>
+                                        <th class="text-center" width="12.5%" style="vertical-align: middle;">
+                                            <a href="#" class="btn btn-success btn-icon-split mx-1">
+                                                <span class="text">Xác nhận</span>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>300800</td>
+                                        <td>Khoa Báo chí - Truyền thông</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>300900</td>
+                                        <td>Khoa Địa lý - Địa chất</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>301000</td>
+                                        <td>Khoa Công nghệ thông tin</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>301100</td>
+                                        <td>Khoa Hóa học</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>301200</td>
+                                        <td>Khoa Kiến trúc</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>301300</td>
+                                        <td>Khoa Lịch sử</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>301400</td>
+                                        <td>Khoa Lý luận chính trị</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>301500</td>
+                                        <td>Khoa Môi trường</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>301600</td>
+                                        <td>Khoa Ngữ văn</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>301500</td>
+                                        <td>Khoa Sinh học</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>301800</td>
+                                        <td>Khoa Toán học</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>301900</td>
+                                        <td>Khoa Vật lý</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>301903</td>
+                                        <td>Khoa Điện tử - Viễn thông</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>301904</td>
+                                        <td>Khoa Công tác xã hội</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>15</td>
+                                        <td>301905</td>
+                                        <td>Khoa Điện, Điện tử và Công nghệ vật liệu</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>16</td>
+                                        <td>301906</td>
+                                        <td>Khoa Xã hội học và Công tác xã hội</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>17</td>
+                                        <td>302000</td>
+                                        <td>Khoa Xã hội học</td>
+                                        <td>
+                                            <span class="badge badge-success text-success">Đã nạp</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="GradeListDepartment" asp-controller="School" asp-area="Admin" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

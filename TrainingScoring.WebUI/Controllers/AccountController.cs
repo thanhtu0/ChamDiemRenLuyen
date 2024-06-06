@@ -48,8 +48,11 @@ namespace TrainingScoring.WebUI.Controllers
             }
 
             _logger.LogInformation($"user code service - controller: {user}");
+
             var userRoles = await _userService.GetUserRolesAsync(user);
+
             _logger.LogInformation($"user role service2222: {userRoles}");
+
             List<string> roleForLecturer = new List<string>();
             foreach (var rr in userRoles)
             {

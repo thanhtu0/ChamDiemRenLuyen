@@ -1,0 +1,206 @@
+﻿@{
+    ViewData["Title"] = "SetClassmittee";
+}
+
+<head>
+    <style>
+        th:nth-child(1),
+        th:nth-child(2),
+        td:nth-child(1),
+        td:nth-child(2) {
+            text-align: center;
+        }
+
+        .checkBox {
+            transform: scale(1);
+        }
+
+        .form-control-sm {
+            transform: scale(1);
+            text-align: center;
+            margin: auto;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .card-header {
+            text-transform: uppercase;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <h5 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
+                        <i class="fas fa-regular fa-address-book"></i>
+                        <span>Danh sách lớp cố vấn</span>
+                    </h5>
+                    <div class="card-body" style="color: #072b4a;">
+                        <h6>Lớp sinh hoạt: Kỹ thuật phần mềm (đặc thù) </h6>
+                        <ul class="list-group mt-3">
+                            <a href="#">
+                            <li class="list-group-item">CNNK_44A - Công nghệ thông tin K44A</li>
+                            </a>
+                            <a href="#">
+                            <li class="list-group-item active">KTPM_K44 - Kỹ thuật phần mềm K44</li>
+                            </a>
+                            <a href="#">
+                            <li class="list-group-item">KTPM_K43 - Kỹ thuật phần mềm K43</li>
+                            </a>
+                            <a href="#">
+                            <li class="list-group-item">CNNK_44B - Công nghệ thông tin K44B</li>
+                            </a>
+                            <a href="#">
+                            <li class="list-group-item">CNNK_44C - Công nghệ thông tin K44C</li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card">
+                    <h5 class="card-header fw-bold" style="background-color: #36b2fa; color: #f0f8ff;">
+                        <i class="fas fa-solid fa-pen"></i>
+                        <span>Danh sách ban cán sự các lớp cố vấn</span>
+                    </h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-full" style="color: #072b4a;">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã sinh viên</th>
+                                        <th>Tên sinh viên</th>
+                                        <th>Chức vụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>20T1080055</td>
+                                        <td>Lưu Lê Thanh Tú</td>
+                                        <td>Bí thư</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>20T1080056</td>
+                                        <td>Trần Thanh Tú</td>
+                                        <td>Lớp trưởng</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>20T1080056</td>
+                                        <td>Nguyễn thị Thu Ni</td>
+                                        <td>Lớp</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center justify-content-lg-end mt-3">
+            <div class="col-auto">
+                <div class="text-center">
+                    <a href="#" id="duyetBtn" class="btn btn-primary btn-icon-split mx-1">
+                        <span class="text">Duyệt</span>
+                    </a>
+                    <button type="button" class="btn btn-info btn-icon-split mx-1" id="changeCouncilBtn">
+                        <span class="text">Thay đổi ban cán sự</span>
+                    </button>
+                    <a href="#" class="btn btn-secondary btn-icon-split mx-1">
+                        <span class="text">Quay lại</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="footer"></section>
+    <div class="modal fade" id="changeCouncilModal" tabindex="-1" aria-labelledby="changeCouncilModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeCouncilModalLabel">Thay đổi ban cán sự</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã sinh viên</th>
+                                <th>Tên sinh viên</th>
+                                <th>Chức vụ hiện tại</th>
+                                <th>Thay đổi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>20T1080055</td>
+                                <td>Lưu Lê Thanh Tú</td>
+                                <td>Bí thư</td>
+                                <td>
+                                    <select class="form-select form-select-sm">
+                                        <option value="20T1080056">Trần Thanh Tú</option>
+                                        <option value="20T1080057">Nguyễn thị Thu Ni</option>
+                                        <option value="20T1080033">Nguyễn Xuân Tân Lộc</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>20T1080055</td>
+                                <td>Trần Thanh Tú</td>
+                                <td>Lớp trưởng</td>
+                                <td>
+                                    <select class="form-select form-select-sm">
+                                        <option value="20T1080056">Lưu Lê Thanh Tú</option>
+                                        <option value="20T1080057">Nguyễn thị Thu Ni</option>
+                                        <option value="20T1080033">Nguyễn Xuân Tân Lộc</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>20T1080055</td>
+                                <td>Nguyễn Thị Thu Ni</td>
+                                <td>Lớp phó</td>
+                                <td>
+                                    <select class="form-select form-select-sm">
+                                        <option value="20T1080056">Trần Thanh Tú</option>
+                                        <option value="20T1080057">Lưu Lê Thanh Tú</option>
+                                        <option value="20T1080033">Nguyễn Xuân Tân Lộc</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('changeCouncilBtn').addEventListener('click', function () {
+            var myModal = new bootstrap.Modal(document.getElementById('changeCouncilModal'));
+            myModal.show();
+        });
+    </script>
+</body>

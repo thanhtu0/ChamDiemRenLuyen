@@ -2,9 +2,11 @@
 {
     public class SemesterViewModel
     {
-        public string Course { get; set; }
-        public string Major { get; set; }
-        public string AcademicYearName { get; set; }
-        public string Semester { get; set; }
+        public List<SemesterOption> Semesters { get; set; }
+        public class SemesterOption
+        {
+            public string AcademicYear { get; set; }
+            public int Semester { get; set; }
+        }
     }
 }

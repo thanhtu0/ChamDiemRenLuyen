@@ -31,8 +31,10 @@ namespace TrainingScoring.DomainModels
 
         //Relationship
         public ICollection<TrainingContentProof> TrainingContentProofs { get; set; }
+        public ICollection<StudentScoreContent> StudentScoreContents { get; set; }
         public ICollection<TrainingDetail> TrainingDetails { get; set; }
         public int TrainingDirectoryId { get; set; }
         public TrainingDirectory TrainingDirectory { get; set; }
+
     }
 }

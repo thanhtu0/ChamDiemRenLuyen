@@ -14,6 +14,9 @@
             public string Major { get; set; }
             public string Grade { get; set; }
             public string SemesterCode { get; set; }
+            public List<string> LecturerNames { get; set; }
+            public int? Score { get; set; }
+            public string Ranking { get; set; }
         }
     }
 }

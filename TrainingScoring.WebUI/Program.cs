@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using TrainingScoring.DomainModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using TrainingScoring.Data.Repositories.Implementation;
+using TrainingScoring.WebUI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddScoped<ILogger<TrainingDirectoryService>, Logger<TrainingDir
 builder.Services.AddScoped<ILogger<TrainingContentService>, Logger<TrainingContentService>>();
 builder.Services.AddScoped<ILogger<TrainingDetailService>, Logger<TrainingDetailService>>();
 builder.Services.AddScoped<ILogger<UserService>, Logger<UserService>>();
+builder.Services.AddScoped<ILogger<StudentScoreService>, Logger<StudentScoreService>>();
 
 builder.Services.AddTransient<IEvaluationFormService, EvaluationFormService>();
 builder.Services.AddTransient<ITrainingDirectoryService, TrainingDirectoryService>();
@@ -38,6 +40,7 @@ builder.Services.AddTransient<ITrainingContentService, TrainingContentService>()
 builder.Services.AddTransient<ITrainingDetailService, TrainingDetailService>();
 builder.Services.AddTransient<IAcademicYearService, AcademicYearService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IStudentScoreService, StudentScoreService>();
 
 builder.Services.AddTransient<IEvaluationFormRepository, EvaluationFormRepository>();
 builder.Services.AddTransient<ITrainingDirectoryRepository, TrainingDirectoryRepository>();
@@ -45,7 +48,9 @@ builder.Services.AddTransient<ITrainingContentRepository, TrainingContentReposit
 builder.Services.AddTransient<ITrainingDetailRepository, TrainingDetailRepository>();
 builder.Services.AddTransient<IAcademicYearRepository, AcademicYearRepository>();
 builder.Services.AddTransient<IUserAccountRepository, UserAccountRepository>();
-
+builder.Services.AddTransient<IScoreRepository, ScoreRepository>();
+builder.Services.AddTransient<IStudentScoreDetailRepository, StudentScoreDetailRepository>();
+builder.Services.AddTransient<IStudentScoreContentRepository, StudentScoreContentRepository>(); ;
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
 
